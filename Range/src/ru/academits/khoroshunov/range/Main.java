@@ -5,52 +5,57 @@ class Range {
     private double to;
 
     Range(double from, double to) {
-        this.from = from;
-        this.to = to;
+        if (from < to) {
+            this.from = from;
+            this.to = to;
+        } else {
+            this.from = to;
+            this.to = from;
+        }
     }
 
     double getFrom() {
-        return this.from;
+        return from;
     }
 
     double getTo() {
-        return this.to;
+        return to;
     }
 
     double getLength() {
-        return this.to - this.from;
+        return to - from;
     }
 
     boolean isInside(double x) {
-        return x >= this.from && x <= this.to;
+        return x >= from && x <= to;
     }
 
     Range getIntersectionRange(Range r) {
-        if (this.from <= r.from && this.to >= r.to) {
+        if (from <= r.from && to >= r.to) {
             return r;
         }
-        if (this.from >= r.from && this.to <= r.to) {
+        if (from >= r.from && to <= r.to) {
             return this;
         }
-        if (this.from <= r.from && this.to <= r.to && this.to >= r.from) {
-            return new Range(r.from, this.to);
+        if (from <= r.from && to <= r.to && to >= r.from) {
+            return new Range(r.from, to);
         }
-        if (this.from >= r.from && this.to >= r.to && this.from <= r.to) {
-            return new Range(this.from, r.to);
+        if (from >= r.from && to >= r.to && from <= r.to) {
+            return new Range(from, r.to);
         }
         return null;
     }
 
     Range[] getUnionRanges(Range r) {
         Range[] ranges = new Range[2];
-        if (this.from >= r.from && this.to <= r.to) {
+        if (from >= r.from && to <= r.to) {
             ranges[0] = r;
         }
-        if (this.from <= r.from && this.to >= r.to) {
+        if (from <= r.from && to >= r.to) {
             ranges[0] = this;
         }
-        if (this.to <= r.from || r.to <= this.from) {
-            if (this.to <= r.from) {
+        if (to <= r.from || r.to <= from) {
+            if (to <= r.from) {
                 ranges[0] = this;
                 ranges[1] = r;
             } else {
@@ -58,32 +63,32 @@ class Range {
                 ranges[1] = this;
             }
         }
-        if (this.from <= r.from && this.to <= r.to && this.to >= r.from) {
-            ranges[0] = new Range(this.from, r.to);
+        if (from <= r.from && to <= r.to && to >= r.from) {
+            ranges[0] = new Range(from, r.to);
         }
-        if (this.from >= r.from && this.to >= r.to && this.from <= r.to) {
-            ranges[0] = new Range(r.from, this.to);
+        if (from >= r.from && to >= r.to && from <= r.to) {
+            ranges[0] = new Range(r.from, to);
         }
         return ranges;
     }
 
     Range[] getOddRanges(Range r) {
         Range[] ranges = new Range[2];
-        if (this.from >= r.from && this.to <= r.to) {
+        if (from >= r.from && to <= r.to) {
             return ranges;
         }
-        if (this.to < r.from || this.from > r.to) {
+        if (to < r.from || from > r.to) {
             ranges[0] = this;
         }
-        if (this.from < r.from && this.to <= r.to && this.to >= r.from) {
-            ranges[0] = new Range(this.from, r.from);
+        if (from < r.from && to <= r.to && to >= r.from) {
+            ranges[0] = new Range(from, r.from);
         }
-        if (this.from >= r.from && this.to > r.to && this.from <= r.to) {
-            ranges[0] = new Range(r.to, this.to);
+        if (from >= r.from && to > r.to && from <= r.to) {
+            ranges[0] = new Range(r.to, to);
         }
-        if (this.from < r.from && this.to > r.to) {
-            ranges[0] = new Range(this.from, r.from);
-            ranges[1] = new Range(r.to, this.to);
+        if (from < r.from && to > r.to) {
+            ranges[0] = new Range(from, r.from);
+            ranges[1] = new Range(r.to, to);
         }
         return ranges;
     }
@@ -91,7 +96,7 @@ class Range {
 
 public class Main {
     public static void main(String[] args) {
-        Range range = new Range(1.2, 15.2);
+        Range range = new Range(15.2, 1.2);
         System.out.println("Длина заданного диапазона: " + range.getLength());
 
         double x1 = 2.8;
@@ -107,8 +112,8 @@ public class Main {
             System.out.println("Число - " + (x2) + " находится за пределами заданного диапазона");
         }
 
-        Range range1 = new Range(1, 22);
-        Range range2 = new Range(5, 14);
+        Range range1 = new Range(1, 14);
+        Range range2 = new Range(12, 18);
 
         Range rangeOut = range1.getIntersectionRange(range2);
         if (rangeOut == null) {
