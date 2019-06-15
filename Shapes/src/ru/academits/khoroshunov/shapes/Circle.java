@@ -1,9 +1,9 @@
 package ru.academits.khoroshunov.shapes;
 
-public class Circle implements Shapes {
+public class Circle implements Shape {
     private double radius;
 
-    Circle(double radius) {
+    public Circle(double radius) {
         this.radius = radius;
     }
 
@@ -41,8 +41,7 @@ public class Circle implements Shapes {
 
     @Override
     public int hashCode() {
-        Object o = radius;
-        return o.hashCode();
+        return Double.hashCode(radius);
     }
 
     @Override

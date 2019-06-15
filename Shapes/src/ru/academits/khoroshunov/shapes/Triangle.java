@@ -1,6 +1,6 @@
 package ru.academits.khoroshunov.shapes;
 
-public class Triangle implements Shapes {
+public class Triangle implements Shape {
     private double x1;
     private double y1;
     private double x2;
@@ -8,7 +8,7 @@ public class Triangle implements Shapes {
     private double x3;
     private double y3;
 
-    Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -17,7 +17,7 @@ public class Triangle implements Shapes {
         this.y3 = y3;
     }
 
-    private double max(double a, double b, double c) {
+    private static double getMaxValue(double a, double b, double c) {
         if (a < b) {
             a = b;
         }
@@ -27,7 +27,7 @@ public class Triangle implements Shapes {
         return a;
     }
 
-    private double min(double a, double b, double c) {
+    private static double getMinValue(double a, double b, double c) {
         if (a > b) {
             a = b;
         }
@@ -37,18 +37,18 @@ public class Triangle implements Shapes {
         return a;
     }
 
-    private double sideLength(double a1, double b1, double a2, double b2) {
-        return Math.sqrt(Math.pow(a2 - a1, 2) + Math.pow(b2 - b1, 2));
+    private static double getSideLength(double point1X, double point1Y, double point2X, double point2Y) {
+        return Math.sqrt(Math.pow(point2X - point1X, 2) + Math.pow(point2Y - point1Y, 2));
     }
 
     @Override
     public double getWidth() {
-        return max(x1, x2, x3) - min(x1, x2, x3);
+        return getMaxValue(x1, x2, x3) - getMinValue(x1, x2, x3);
     }
 
     @Override
     public double getHeight() {
-        return max(y1, y2, y3) - min(y1, y2, y3);
+        return getMaxValue(y1, y2, y3) - getMinValue(y1, y2, y3);
     }
 
     @Override
@@ -58,28 +58,38 @@ public class Triangle implements Shapes {
 
     @Override
     public double getPerimeter() {
-        double side1 = sideLength(x1, y1, x2, y2);
-        double side2 = sideLength(x2, y2, x3, y3);
-        double side3 = sideLength(x3, y3, x1, y1);
+        double side1 = getSideLength(x1, y1, x2, y2);
+        double side2 = getSideLength(x2, y2, x3, y3);
+        double side3 = getSideLength(x3, y3, x1, y1);
         return side1 + side2 + side3;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Triangle triangle = (Triangle) o;
-        return Double.compare(triangle.getArea(), getArea()) == 0 &&
-                Double.compare(triangle.getPerimeter(), getPerimeter()) == 0;
+        return Double.compare(triangle.x1, x1) == 0 &&
+                Double.compare(triangle.y1, y1) == 0 &&
+                Double.compare(triangle.x2, x2) == 0 &&
+                Double.compare(triangle.y2, y2) == 0 &&
+                Double.compare(triangle.x3, x3) == 0 &&
+                Double.compare(triangle.y3, y3) == 0;
     }
 
     @Override
     public int hashCode() {
-        Object o1 = getArea();
-        Object o2 = getPerimeter();
         int result = 1;
-        result = 31 * result + o1.hashCode();
-        result = 31 * result + o2.hashCode();
+        result = 31 * result + Double.hashCode(x1);
+        result = 31 * result + Double.hashCode(y1);
+        result = 31 * result + Double.hashCode(x2);
+        result = 31 * result + Double.hashCode(y2);
+        result = 31 * result + Double.hashCode(x3);
+        result = 31 * result + Double.hashCode(y3);
         return result;
     }
 

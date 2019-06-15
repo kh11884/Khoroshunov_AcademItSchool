@@ -1,9 +1,9 @@
 package ru.academits.khoroshunov.shapes;
 
-public class Square implements Shapes {
+public class Square implements Shape {
     private double sideLength;
 
-    Square(double sideLength) {
+    public Square(double sideLength) {
         this.sideLength = sideLength;
     }
 
@@ -41,8 +41,7 @@ public class Square implements Shapes {
 
     @Override
     public int hashCode() {
-        Object o = sideLength;
-        return o.hashCode();
+        return Double.hashCode(sideLength);
     }
 
     @Override

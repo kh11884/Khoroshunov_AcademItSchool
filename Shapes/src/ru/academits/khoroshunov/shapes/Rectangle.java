@@ -1,10 +1,10 @@
 package ru.academits.khoroshunov.shapes;
 
-public class Rectangle implements Shapes {
+public class Rectangle implements Shape {
     private double width;
     private double height;
 
-    Rectangle(double width, double height) {
+    public Rectangle(double width, double height) {
         this.width = width;
         this.height = height;
     }
@@ -44,11 +44,9 @@ public class Rectangle implements Shapes {
 
     @Override
     public int hashCode() {
-        Object o1 = width;
-        Object o2 = height;
         int result = 1;
-        result = 31 * result + o1.hashCode();
-        result = 31 * result + o2.hashCode();
+        result = 31 * result + Double.hashCode(width);
+        result = 31 * result + Double.hashCode(height);
         return result;
     }
 
