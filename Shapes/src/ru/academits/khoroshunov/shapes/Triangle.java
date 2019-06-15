@@ -63,4 +63,30 @@ public class Triangle implements Shapes {
         double side3 = sideLength(x3, y3, x1, y1);
         return side1 + side2 + side3;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+        return Double.compare(triangle.getArea(), getArea()) == 0 &&
+                Double.compare(triangle.getPerimeter(), getPerimeter()) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        Object o1 = getArea();
+        Object o2 = getPerimeter();
+        int result = 1;
+        result = 31 * result + o1.hashCode();
+        result = 31 * result + o2.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Треугольник. " + "Вершина1 (" + x1 + ", " + y1 + "), " +
+                "Вершина2 (" + x2 + ", " + y2 + "), " +
+                "Вершина3 (" + x3 + ", " + y3 + ")";
+    }
 }

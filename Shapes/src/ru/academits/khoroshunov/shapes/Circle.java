@@ -26,4 +26,27 @@ public class Circle implements Shapes {
     public double getPerimeter() {
         return Math.PI * radius * 2;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Circle circle = (Circle) o;
+        return Double.compare(circle.radius, radius) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        Object o = radius;
+        return o.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Круг. " + "радиус = " + radius;
+    }
 }
