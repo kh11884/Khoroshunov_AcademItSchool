@@ -24,7 +24,7 @@ public class Main {
         }
 
         Range range1 = new Range(5, 10);
-        Range range2 = new Range(10, 15);
+        Range range2 = new Range(11, 15);
 
         Range rangeOut = range1.getIntersection(range2);
         if (rangeOut == null) {
@@ -43,16 +43,16 @@ public class Main {
                     rangesUnion[1].getFrom() + " - " + rangesUnion[1].getTo());
         }
 
-        Range[] rangesOdd = range1.getDifference(range2);
-        if (rangesOdd.length == 0) {
+        Range[] rangesDifference = range1.getDifference(range2);
+        if (rangesDifference.length == 0) {
             System.out.println("Разность диапазонов. Пустой диапазон.");
-        } else if (rangesOdd.length == 1) {
+        } else if (rangesDifference.length == 1) {
             System.out.println("Разность диапазонов. Новый диапазон: " +
-                    rangesOdd[0].getFrom() + " - " + rangesOdd[0].getTo());
+                    rangesDifference[0].getFrom() + " - " + rangesDifference[0].getTo());
         } else {
             System.out.println("Разность диапазонов.  Новые диапазоны: " +
-                    rangesOdd[0].getFrom() + " - " + rangesOdd[0].getTo() + " и " +
-                    rangesOdd[1].getFrom() + " - " + rangesOdd[1].getTo());
+                    rangesDifference[0].getFrom() + " - " + rangesDifference[0].getTo() + " и " +
+                    rangesDifference[1].getFrom() + " - " + rangesDifference[1].getTo());
         }
     }
 }
