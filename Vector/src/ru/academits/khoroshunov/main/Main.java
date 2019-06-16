@@ -4,43 +4,50 @@ import ru.academits.khoroshunov.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        Vector vector = new Vector(2);
-        System.out.println(vector.getSize());
-        Vector vectorCopy = new Vector(vector);
-        System.out.println(vectorCopy);
+        System.out.println("Проверка конструкторов.");
+        Vector vector1 = new Vector(2);
+        System.out.println("Vector(n). Вектор1: " + vector1 + " размерность вектора: " + vector1.getSize());
+
+        Vector vector2 = new Vector(vector1);
+        System.out.println("Vector(Vector). Вектор2: " + vector2 + " размерность вектора: " + vector2.getSize());
 
         double[] myArray = {1, 2, 3, 4, 5};
+        Vector vector3 = new Vector(myArray);
+        System.out.println("Vector(double[]). Вектор3: " + vector3 + " размерность вектора: " + vector3.getSize());
+
         double[] myArray1 = {6, 7, 3};
-        Vector vector1 = new Vector(5, myArray);
-        Vector vector2 = new Vector(myArray1);
+        Vector vector4 = new Vector(3, myArray1);
+        System.out.println("Vector(n, double[]). Вектор4: " + vector4 + " размерность вектора: " + vector4.getSize());
+        System.out.println();
 
-        // проверка перегрузки toString
-        System.out.println("Вектор1 " + vector1);
-        System.out.println("Вектор2 " + vector2);
+        System.out.println("Проверка нестатических методов:");
+        Vector sumVectors = vector3.add(vector4);
+        System.out.println("Сложения векторов 3 и 4. Результирующий вектор: " + sumVectors);
 
-        // проверка сложения векторов
-        Vector sumVectors = vector1.add(vector2);
-        System.out.println(sumVectors);
+        Vector subtractVectors = vector3.subtract(vector4);
+        System.out.println("Вычитания векторов 3 и 4. Результирующий вектор: " + subtractVectors);
 
-        // проверка вычитания векторов
-        Vector subtractVectors = vector1.subtract(vector2);
-        System.out.println(subtractVectors);
+        Vector scalarMultiplyVector = vector4.multiplyByScalar(3);
+        System.out.println("Умножения вектора4 на скаляр 3. Результирующий вектор: " + scalarMultiplyVector);
 
-        // проверка умножения на скаляр
-        Vector scalarMultiplyVector = vector2.multiplyByScalar(3);
-        System.out.println(scalarMultiplyVector);
+        Vector reversibleVector = vector4.reverse();
+        System.out.println("Разворот вектора4. Результирующий вектор: " + reversibleVector);
 
-        // проверка реверсирования
-        Vector reversibleVector = vector2.reverse();
-        System.out.println(reversibleVector);
+        double vectorLength = vector4.getLength();
+        System.out.println("Рассчет длины вектора 4: " + vectorLength);
 
-        //проверка расссчета длины вектора
-        double vectorLength = vector2.getLength();
-        System.out.println(vectorLength);
+        vector4.setIndexCoordinate(2, 2.5);
+        System.out.println("Присвоение и получение координаты 2,5 для вектора4 по индексу2: " + vector4.getIndexCoordinate(2));
+        System.out.println();
 
-        //проверка установки и получения координаты по индексу
-        subtractVectors.setIndexCoordinate(3, 2.5);
-        System.out.println(subtractVectors.getIndexCoordinate(3));
+        System.out.println("Проверка нестатических методов:");
+        Vector sumVectors1 = Vector.getSum(vector3, vector4);
+        System.out.println("Сложения векторов 3 и 4. Результирующий вектор: " + sumVectors1);
 
+        Vector oddVectors1 = Vector.getOdd(vector3, vector4);
+        System.out.println("Вычитания векторов 3 и 4. Результирующий вектор: " + oddVectors1);
+
+        double scalarMultiply = Vector.getScalarMultiply(vector3, vector4);
+        System.out.println("Скалярного поизведения векторов 3 и 4. Результирующий вектор: " + scalarMultiply);
     }
 }
