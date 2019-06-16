@@ -24,16 +24,16 @@ public class Main {
         }
 
         Range range1 = new Range(5, 10);
-        Range range2 = new Range(1, 6);
+        Range range2 = new Range(10, 15);
 
-        Range rangeOut = range1.getIntersectionRange(range2);
+        Range rangeOut = range1.getIntersection(range2);
         if (rangeOut == null) {
             System.out.println("Пересечение диапазонов. диапазоны не пересекаюся");
         } else {
             System.out.println("Пересечение диапазонов. Новый диапазон: " + rangeOut.getFrom() + " - " + rangeOut.getTo());
         }
 
-        Range[] rangesUnion = range1.getUnionRanges(range2);
+        Range[] rangesUnion = range1.getUnion(range2);
         if (rangesUnion.length == 1) {
             System.out.println("Объединение диапазонов. Новый диапазон: " +
                     rangesUnion[0].getFrom() + " - " + rangesUnion[0].getTo());
@@ -43,8 +43,8 @@ public class Main {
                     rangesUnion[1].getFrom() + " - " + rangesUnion[1].getTo());
         }
 
-        Range[] rangesOdd = range1.getOddRanges(range2);
-        if (rangesOdd == null) {
+        Range[] rangesOdd = range1.getDifference(range2);
+        if (rangesOdd.length == 0) {
             System.out.println("Разность диапазонов. Пустой диапазон.");
         } else if (rangesOdd.length == 1) {
             System.out.println("Разность диапазонов. Новый диапазон: " +

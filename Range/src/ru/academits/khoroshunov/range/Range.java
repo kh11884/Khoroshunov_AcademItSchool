@@ -38,56 +38,31 @@ public class Range {
         return x >= from && x <= to;
     }
 
-    public Range getIntersectionRange(Range r) {
-        if (from <= r.from && to >= r.to) {
-            return new Range(r.from, r.to);
-        }
-        if (from >= r.from && to <= r.to) {
-            return new Range(from, to);
-        }
-        if (from <= r.from && to <= r.to && to >= r.from) {
-            return new Range(r.from, to);
-        }
-        if (from >= r.from && to >= r.to && from <= r.to) {
-            return new Range(from, r.to);
-        } else {
+    public Range getIntersection(Range r) {
+        if (to < r.from || from > r.to) {
             return null;
+        } else {
+            return new Range(Math.max(from, r.from), Math.min(to, r.to));
         }
     }
 
-    public Range[] getUnionRanges(Range r) {
-        if (from >= r.from && to <= r.to) {
-            return new Range[]{new Range(r.from, r.to)};
-        }
-        if (from <= r.from && to >= r.to) {
-            return new Range[]{new Range(from, to)};
-        }
-        if (from <= r.from && to <= r.to && to >= r.from) {
-            return new Range[]{new Range(from, r.to)};
-        }
-        if (from >= r.from && to >= r.to && from <= r.to) {
-            return new Range[]{new Range(r.from, to)};
+    public Range[] getUnion(Range r) {
+        if (to < r.from || from > r.to) {
+            return new Range[]{
+                    new Range(Math.min(from, r.from), Math.min(to, r.to)),
+                    new Range(Math.max(from, r.from), Math.max(to, r.to))
+            };
         } else {
-            if (to <= r.from) {
-                return new Range[]{
-                        new Range(from, to),
-                        new Range(r.from, r.to)
-                };
-            } else {
-                return new Range[]{
-                        new Range(r.from, r.to),
-                        new Range(from, to)
-                };
-            }
+            return new Range[]{new Range(Math.min(from, r.from), Math.max(to, r.to))};
         }
     }
 
-    public Range[] getOddRanges(Range r) {
-        if (from >= r.from && to <= r.to) {
-            return null;
-        }
+    public Range[] getDifference(Range r) {
         if (to < r.from || from > r.to) {
             return new Range[]{new Range(from, to)};
+        }
+        if (from >= r.from && to <= r.to) {
+            return new Range[]{};
         }
         if (from < r.from && to <= r.to && to >= r.from) {
             return new Range[]{new Range(from, r.from)};
