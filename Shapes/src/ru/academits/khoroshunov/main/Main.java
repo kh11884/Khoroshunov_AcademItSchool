@@ -1,7 +1,6 @@
 package ru.academits.khoroshunov.main;
 
 import ru.academits.khoroshunov.shapes.*;
-
 import java.util.Arrays;
 
 public class Main {

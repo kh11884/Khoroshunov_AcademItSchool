@@ -1,5 +1,6 @@
-package ru.academits.khoroshunov.shapes;
+package ru.academits.khoroshunov.main;
 
+import ru.academits.khoroshunov.shapes.Shape;
 import java.util.Comparator;
 
 public class PerimeterComparator implements Comparator<Shape> {
