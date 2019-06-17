@@ -29,7 +29,6 @@ public class Vector {
         }
         if (n < coordinates.length) {
             this.coordinates = Arrays.copyOf(coordinates, coordinates.length);
-            ;
         } else {
             this.coordinates = Arrays.copyOf(coordinates, n);
         }
@@ -37,14 +36,6 @@ public class Vector {
 
     public int getSize() {
         return coordinates.length;
-    }
-
-    public double[] getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(double[] coordinates) {
-        this.coordinates = coordinates;
     }
 
     @Override
