@@ -22,29 +22,29 @@ public class Main {
 
         System.out.println("Проверка нестатических методов:");
         Vector sumVectors = vector3.add(vector4);
-        System.out.println("Сложения векторов 3 и 4. Результирующий вектор: " + sumVectors);
+        System.out.println("Сложения векторов. Результирующий вектор: " + sumVectors);
 
-        Vector subtractVectors = vector3.subtract(vector4);
-        System.out.println("Вычитания векторов 3 и 4. Результирующий вектор: " + subtractVectors);
+        Vector subtractVectors = new Vector(new double[]{1, 2}).subtract(new Vector(new double[]{5, 3, 3}));
+        System.out.println("Вычитания векторов. Результирующий вектор: " + subtractVectors);
 
         Vector scalarMultiplyVector = vector4.multiplyByScalar(3);
-        System.out.println("Умножения вектора4 на скаляр 3. Результирующий вектор: " + scalarMultiplyVector);
+        System.out.println("Умножения вектора на скаляр 3. Результирующий вектор: " + scalarMultiplyVector);
 
         Vector reversibleVector = vector4.reverse();
-        System.out.println("Разворот вектора4. Результирующий вектор: " + reversibleVector);
+        System.out.println("Разворот вектора. Результирующий вектор: " + reversibleVector);
 
         double vectorLength = vector4.getLength();
         System.out.println("Рассчет длины вектора 4: " + vectorLength);
 
-        vector4.setIndexCoordinate(2, 2.5);
-        System.out.println("Присвоение и получение координаты 2,5 для вектора4 по индексу2: " + vector4.getIndexCoordinate(2));
+        vector4.setCoordinate(2, 2.5);
+        System.out.println("Присвоение и получение координаты 2,5 для вектора4 по индексу2: " + vector4.getCoordinate(2));
         System.out.println();
 
         System.out.println("Проверка нестатических методов:");
         Vector sumVectors1 = Vector.getSum(vector3, vector4);
         System.out.println("Сложения векторов 3 и 4. Результирующий вектор: " + sumVectors1);
 
-        Vector oddVectors1 = Vector.getOdd(vector3, vector4);
+        Vector oddVectors1 = Vector.subtract(vector3, vector4);
         System.out.println("Вычитания векторов 3 и 4. Результирующий вектор: " + oddVectors1);
 
         double scalarMultiply = Vector.getScalarMultiply(vector3, vector4);

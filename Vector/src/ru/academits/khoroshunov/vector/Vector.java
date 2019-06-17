@@ -24,28 +24,32 @@ public class Vector {
     }
 
     public Vector(int n, double[] coordinates) {
-        if (n <= 0 || coordinates.length == 0) {
+        if (n <= 0) {
             throw new IllegalArgumentException("Размерность вектора не может быть меньше 1.");
         }
         if (n < coordinates.length) {
-            throw new IllegalArgumentException("Размерность вектора не может быть меньше длины переданного массива.");
+            this.coordinates = Arrays.copyOf(coordinates, coordinates.length);
+            ;
+        } else {
+            this.coordinates = Arrays.copyOf(coordinates, n);
         }
-        this.coordinates = Arrays.copyOf(coordinates, n);
     }
 
     public int getSize() {
         return coordinates.length;
     }
 
+    public double[] getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(double[] coordinates) {
+        this.coordinates = coordinates;
+    }
+
     @Override
     public String toString() {
-        if (coordinates == null) {
-            return "null";
-        }
         int iMax = getSize() - 1;
-        if (iMax == -1) {
-            return "{}";
-        }
         StringBuilder b = new StringBuilder();
         b.append('{');
         for (int i = 0; ; i++) {
@@ -57,82 +61,95 @@ public class Vector {
         }
     }
 
-    public Vector add(Vector vector) {
-        Vector bigVector;
-        Vector smallVector;
-        if (getSize() > vector.getSize()) {
-            bigVector = new Vector(coordinates);
-            smallVector = new Vector(vector.coordinates);
+    private Vector getBigVector(Vector vector) {
+        if (getSize() >= vector.getSize()) {
+            return this;
         } else {
-            bigVector = new Vector(vector.coordinates);
-            smallVector = new Vector(coordinates);
+            return vector;
         }
-        Vector result = new Vector(bigVector.getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            if (i < smallVector.getSize()) {
-                result.coordinates[i] = bigVector.coordinates[i] + smallVector.coordinates[i];
+    }
+
+    private Vector getSmallVector(Vector vector) {
+        if (getSize() < vector.getSize()) {
+            return this;
+        } else {
+            return vector;
+        }
+    }
+
+    public Vector add(Vector vector) {
+        Vector bigVector = this.getBigVector(vector);
+        Vector smallVector = this.getSmallVector(vector);
+        int bigVectorSize = bigVector.getSize();
+        int smallVectorSize = smallVector.getSize();
+
+        double[] result = new double[bigVectorSize];
+        for (int i = 0; i < bigVectorSize; i++) {
+            if (i < smallVectorSize) {
+                result[i] = bigVector.coordinates[i] + smallVector.coordinates[i];
             } else {
-                result.coordinates[i] = bigVector.coordinates[i];
+                result[i] = bigVector.coordinates[i];
             }
         }
-        return result;
+        this.coordinates = result;
+        return this;
     }
 
     public Vector subtract(Vector vector) {
-        Vector bigVector;
-        Vector smallVector;
-        if (getSize() > vector.getSize()) {
-            bigVector = new Vector(coordinates);
-            smallVector = new Vector(vector.coordinates);
-        } else {
-            bigVector = new Vector(vector.coordinates);
-            smallVector = new Vector(coordinates);
-        }
-        Vector result = new Vector(bigVector.getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            if (i < smallVector.getSize()) {
-                result.coordinates[i] = bigVector.coordinates[i] - smallVector.coordinates[i];
+        Vector bigVector = this.getBigVector(vector);
+        Vector smallVector = this.getSmallVector(vector);
+        int bigVectorSize = bigVector.getSize();
+        int smallVectorSize = smallVector.getSize();
+
+        double[] result = new double[bigVectorSize];
+        for (int i = 0; i < bigVectorSize; i++) {
+            if (i < smallVectorSize) {
+                result[i] = coordinates[i] - vector.coordinates[i];
             } else {
-                result.coordinates[i] = bigVector.coordinates[i];
+                if (vector.equals(smallVector)) {
+                    result[i] = coordinates[i];
+                } else {
+                    result[i] = vector.coordinates[i] * -1;
+                }
+
             }
         }
-        return result;
+        this.coordinates = result;
+        return this;
     }
 
     public Vector multiplyByScalar(double scalar) {
-        Vector result = new Vector(getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            result.coordinates[i] = coordinates[i] * scalar;
+        for (int i = 0; i < getSize(); i++) {
+            coordinates[i] = coordinates[i] * scalar;
         }
-        return result;
+        return this;
     }
 
     public Vector reverse() {
-        Vector result = new Vector(this.getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            result.coordinates[i] = coordinates[i] * -1;
+        for (int i = 0; i < getSize(); i++) {
+            coordinates[i] = coordinates[i] * -1;
         }
-        return result;
+        return this;
     }
 
     public double getLength() {
         double value = 0;
-        for (int i = 0; i < this.getSize(); i++) {
-            value += coordinates[i] * coordinates[i];
+        for (double d: coordinates) {
+            value += d * d;
         }
         return Math.sqrt(value);
     }
 
-    public double getIndexCoordinate(int index) {
-        if (index < 0 || index > this.getSize() - 1) {
-            throw new IllegalArgumentException("Значение индекса не принадлежит размерности вектора.");
+    public double getCoordinate(int index) {
+        if (index < 0 || index >= this.getSize()) {
+            throw new ArrayIndexOutOfBoundsException("Значение индекса не принадлежит размерности вектора.");
         }
         return coordinates[index];
     }
 
-    public void setIndexCoordinate(int index, double coordinate) {
-        if (index < 0 || index > this.getSize() - 1) {
-            throw new IllegalArgumentException("Значение индекса не принадлежит размерности вектора.");
+    public void setCoordinate(int index, double coordinate) {
+        if (index < 0 || index >= this.getSize()) {
+            throw new ArrayIndexOutOfBoundsException("Значение индекса не принадлежит размерности вектора.");
         }
         coordinates[index] = coordinate;
     }
@@ -155,45 +172,11 @@ public class Vector {
     }
 
     public static Vector getSum(Vector vector1, Vector vector2) {
-        Vector bigVector;
-        Vector smallVector;
-        if (vector1.getSize() > vector2.getSize()) {
-            bigVector = new Vector(vector1.coordinates);
-            smallVector = new Vector(vector2.coordinates);
-        } else {
-            bigVector = new Vector(vector2.coordinates);
-            smallVector = new Vector(vector1.coordinates);
-        }
-        Vector result = new Vector(bigVector.getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            if (i < smallVector.getSize()) {
-                result.coordinates[i] = bigVector.coordinates[i] + smallVector.coordinates[i];
-            } else {
-                result.coordinates[i] = bigVector.coordinates[i];
-            }
-        }
-        return result;
+        return vector1.add(vector2);
     }
 
-    public static Vector getOdd(Vector vector1, Vector vector2) {
-        Vector bigVector;
-        Vector smallVector;
-        if (vector1.getSize() > vector2.getSize()) {
-            bigVector = new Vector(vector1.coordinates);
-            smallVector = new Vector(vector2.coordinates);
-        } else {
-            bigVector = new Vector(vector2.coordinates);
-            smallVector = new Vector(vector1.coordinates);
-        }
-        Vector result = new Vector(bigVector.getSize());
-        for (int i = 0; i < result.getSize(); i++) {
-            if (i < smallVector.getSize()) {
-                result.coordinates[i] = bigVector.coordinates[i] - smallVector.coordinates[i];
-            } else {
-                result.coordinates[i] = bigVector.coordinates[i];
-            }
-        }
-        return result;
+    public static Vector subtract(Vector vector1, Vector vector2) {
+        return vector1.subtract(vector2);
     }
 
     public static double getScalarMultiply(Vector vector1, Vector vector2) {
