@@ -39,7 +39,7 @@ public class Range {
     }
 
     public Range getIntersection(Range r) {
-        if (to < r.from || from > r.to) {
+        if (to <= r.from || from >= r.to) {
             return null;
         } else {
             return new Range(Math.max(from, r.from), Math.min(to, r.to));
@@ -58,16 +58,16 @@ public class Range {
     }
 
     public Range[] getDifference(Range r) {
-        if (to < r.from || from > r.to) {
+        if (to <= r.from || from >= r.to) {
             return new Range[]{new Range(from, to)};
         }
         if (from >= r.from && to <= r.to) {
             return new Range[]{};
         }
-        if (from < r.from && to <= r.to && to >= r.from) {
+        if (from < r.from && to <= r.to) {
             return new Range[]{new Range(from, r.from)};
         }
-        if (from >= r.from && to > r.to && from <= r.to) {
+        if (to > r.to && from >= r.from) {
             return new Range[]{new Range(r.to, to)};
         } else {
             return new Range[]{
