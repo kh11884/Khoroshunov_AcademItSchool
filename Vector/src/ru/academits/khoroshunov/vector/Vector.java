@@ -52,25 +52,25 @@ public class Vector {
         }
     }
 
-    private Vector getBigVector(Vector vector) {
-        if (getSize() >= vector.getSize()) {
-            return this;
+    private static Vector getBigVector(Vector vector1, Vector vector2) {
+        if (vector1.getSize() >= vector2.getSize()) {
+            return vector1;
         } else {
-            return vector;
+            return vector2;
         }
     }
 
-    private Vector getSmallVector(Vector vector) {
-        if (getSize() < vector.getSize()) {
-            return this;
+    private static Vector getSmallVector(Vector vector1, Vector vector2) {
+        if (vector1.getSize() < vector2.getSize()) {
+            return vector1;
         } else {
-            return vector;
+            return vector2;
         }
     }
 
     public Vector add(Vector vector) {
-        Vector bigVector = this.getBigVector(vector);
-        Vector smallVector = this.getSmallVector(vector);
+        Vector bigVector = Vector.getBigVector(this, vector);
+        Vector smallVector = Vector.getSmallVector(this, vector);
         int bigVectorSize = bigVector.getSize();
         int smallVectorSize = smallVector.getSize();
 
@@ -87,8 +87,8 @@ public class Vector {
     }
 
     public Vector subtract(Vector vector) {
-        Vector bigVector = this.getBigVector(vector);
-        Vector smallVector = this.getSmallVector(vector);
+        Vector bigVector = Vector.getBigVector(this, vector);
+        Vector smallVector = Vector.getSmallVector(this, vector);
         int bigVectorSize = bigVector.getSize();
         int smallVectorSize = smallVector.getSize();
 
@@ -171,7 +171,7 @@ public class Vector {
     }
 
     public static double getScalarMultiply(Vector vector1, Vector vector2) {
-        int smallVectorSize = vector1.getSmallVector(vector2).getSize();
+        int smallVectorSize = Vector.getSmallVector(vector1, vector2).getSize();
         double result = 0;
         for (int i = 0; i < smallVectorSize; i++) {
             result += vector1.coordinates[i] * vector2.coordinates[i];
