@@ -125,7 +125,7 @@ public class Vector {
 
     public double getLength() {
         double value = 0;
-        for (double d: coordinates) {
+        for (double d : coordinates) {
             value += d * d;
         }
         return Math.sqrt(value);
@@ -171,18 +171,10 @@ public class Vector {
     }
 
     public static double getScalarMultiply(Vector vector1, Vector vector2) {
-        Vector bigVector;
-        Vector smallVector;
-        if (vector1.getSize() > vector2.getSize()) {
-            bigVector = new Vector(vector1.coordinates);
-            smallVector = new Vector(vector2.coordinates);
-        } else {
-            bigVector = new Vector(vector2.coordinates);
-            smallVector = new Vector(vector1.coordinates);
-        }
+        int smallVectorSize = vector1.getSmallVector(vector2).getSize();
         double result = 0;
-        for (int i = 0; i < smallVector.getSize(); i++) {
-            result += smallVector.coordinates[i] * bigVector.coordinates[i];
+        for (int i = 0; i < smallVectorSize; i++) {
+            result += vector1.coordinates[i] * vector2.coordinates[i];
         }
         return result;
     }
