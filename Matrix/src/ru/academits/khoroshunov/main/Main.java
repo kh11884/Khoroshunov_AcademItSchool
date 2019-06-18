@@ -5,29 +5,142 @@ import ru.academits.khoroshunov.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        // проверка конструктора матрицы nxm
+        System.out.println("ПРОВЕРКА КОНСТРУКТОРОВ.");
         Matrix m1 = new Matrix(2, 3);
         System.out.println("Matrix(int n, int m): " + m1);
 
-        // проверка конструктора матрицы (Matrix)
         Matrix m2 = new Matrix(m1);
         System.out.println("Matrix(Matrix): " + m2);
 
-        // проверка конструктора Matrix(double[][])
-        double[][] twoLevelArray = {{1, 2}, {3}};
+        double[][] twoLevelArray = {{1, 2, 3}, {4, 5, 6}, {7, 8, 1}};
         Matrix m3 = new Matrix(twoLevelArray);
         System.out.println("Matrix(double[][]): " + m3);
 
-        // проверка конструктора Matrix(Vector[])
-        double[] myArray = {1, 2, 3, 4, 5};
-        Vector vector1 = new Vector(myArray);
-        double[] myArray1 = {6, 7, 3};
-        Vector vector2 = new Vector(3, myArray1);
+        Vector vector1 = new Vector(new double[]{1, 2, 3, 4, 5});
+        Vector vector2 = new Vector(new double[]{6, 7, 3});
         Vector[] vectorArray = {vector1, vector2};
         Matrix m4 = new Matrix(vectorArray);
         System.out.println("Matrix(Vector[]): " + m4);
+        System.out.println();
 
-        // проверка метода получить размер матрицы
-        System.out.println("Размер матрицы. размер n: " + m4.getSize().getN() + ", размер m: "+ m4.getSize().getM());
+        System.out.println("ПРОВЕРКА НЕСТАТИЧЕСКИХ МЕТОДОВ.");
+        System.out.println("Получить размер матрицы. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        System.out.println("матрица: " + m1);
+        System.out.println("Возвращаемый результат: размер n: " + m1.getSize().getN() + ", размер m: " + m1.getSize().getM());
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Получить векстор-строку. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {6, 7}});
+        System.out.println("матрица: " + m1);
+        int index = 1;
+        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getLineVector(index));
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Задать векстор-строку. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        System.out.println("матрица: " + m1);
+        index = 1;
+        Vector v1 = new Vector(new double[]{1, 1});
+        System.out.println("Добавляем вектор " + v1 + " в строку " + index);
+        m1.setLineVector(index, v1);
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Получить векстор-столбец. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        System.out.println("матрица: " + m1);
+        index = 1;
+        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getColumnVector(index));
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Транспонировать матрицу. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        System.out.println("матрица: " + m1);
+        System.out.println("Возвращаемый результат: " + m1.transpose());
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Умножение на скаляр. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        int scalar = 3;
+        System.out.println("матрица: " + m1 + " скаляр: " + scalar);
+        System.out.println("Возвращаемый результат: " + m1.multiplyByScalar(scalar));
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Вычисление детерминанта. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2, 8}, {4, 5, 8}, {4, 5, 5}});
+        System.out.println("матрица: " + m1);
+        System.out.println("Возвращаемый результат: " + m1.getDeterminant());
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Умножение на вектор. До операции:");
+        m1 = new Matrix(new double[][]{{3}, {2}, {0}, {-1}});
+        v1 = new Vector(new double[]{-1, 1, 0, 2});
+        System.out.println("матрица: " + m1 + " Вектор: " + v1);
+        System.out.println("Возвращаемый результат: " + m1.multiplyByVector(v1));
+        System.out.println("После операции:");
+        System.out.println("матрица: " + m1);
+        System.out.println();
+
+        System.out.println("Сложение матриц. До операции:");
+        m1 = new Matrix(new double[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+        m2 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 1}});
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
+        System.out.println("Возвращаемый результат: " + m1.getSum(m2));
+        System.out.println("После операции:");
+        System.out.println("матрица1: " + m1);
+        System.out.println();
+
+        System.out.println("Вычитание матриц. До операции:");
+        m1 = new Matrix(new double[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+        m2 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 1}});
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
+        System.out.println("Возвращаемый результат: " + m1.subtract(m2));
+        System.out.println("После операции:");
+        System.out.println("матрица1: " + m1);
+        System.out.println("---------------------");
+        System.out.println();
+
+
+        System.out.println("ПРОВЕРКА СТАТИЧЕСКИХ МЕТОДОВ.");
+        System.out.println("Сложение матриц. До операции:");
+        m1 = new Matrix(new double[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+        m2 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 1}});
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
+        System.out.println("Возвращаемый результат: " + Matrix.getSum(m1, m2));
+        System.out.println("После операции:");
+        System.out.println("матрица1: " + m1);
+        System.out.println();
+
+        System.out.println("Вычитание матриц. До операции:");
+        m1 = new Matrix(new double[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
+        m2 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 1}});
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
+        System.out.println("Возвращаемый результат: " + Matrix.subtract(m1, m2));
+        System.out.println("После операции:");
+        System.out.println("матрица1: " + m1);
+        System.out.println();
+
+        System.out.println("Умножение матриц. До операции:");
+        m1 = new Matrix(new double[][]{{1, 1, 1, 4}, {1, 1, 1, 5}, {1, 1, 1, 6}});
+        m2 = new Matrix(new double[][]{{1, 2}, {4, 5}, {7, 8}, {4, 2}});
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
+        System.out.println("Возвращаемый результат: " + Matrix.getMatrixMultiply(m1, m2));
+        System.out.println("После операции:");
+        System.out.println("матрица1: " + m1);
+        System.out.println();
     }
 }
