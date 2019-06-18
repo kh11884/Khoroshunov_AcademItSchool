@@ -16,14 +16,14 @@ public class Main {
         System.out.println("Vector(double[]). Вектор3: " + vector1 + " размерность вектора: " + vector1.getSize());
 
         double[] myArray1 = {6, 7, 3};
-        vector2 = new Vector(3, myArray1);
+        vector2 = new Vector(1, myArray1);
         System.out.println("Vector(n, double[]). Вектор4: " + vector2 + " размерность вектора: " + vector2.getSize());
         System.out.println();
 
         System.out.println("ПРОВЕРКА НЕСТАТИЧЕСКИХ МЕТОДОВ:");
         System.out.println("Сложение векторов. До операции:");
-        vector1 = new Vector(new double[]{2, 2, 2, 2});
-        vector2 = new Vector(new double[]{1, 1});
+        vector1 = new Vector(new double[]{2, 2});
+        vector2 = new Vector(new double[]{1, 1, 1, 1, 1});
         System.out.println("Вектор 1: " + vector1);
         System.out.println("Вектор 2: " + vector2);
         Vector result = vector1.add(vector2);
@@ -34,8 +34,8 @@ public class Main {
         System.out.println();
 
         System.out.println("Вычитание векторов. До операции:");
-        vector1 = new Vector(new double[]{2, 2, 2, 2});
-        vector2 = new Vector(new double[]{1, 1});
+        vector1 = new Vector(new double[]{1, 1, 1});
+        vector2 = new Vector(new double[]{2, 2, 2, 2, 2});
         System.out.println("Вектор 1: " + vector1);
         System.out.println("Вектор 2: " + vector2);
         result = vector1.subtract(vector2);
