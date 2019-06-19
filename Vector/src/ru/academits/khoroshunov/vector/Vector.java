@@ -49,42 +49,31 @@ public class Vector {
     }
 
     public Vector add(Vector vector) {
-        if (getSize() >= vector.getSize()) {
-            for (int i = 0; i < vector.getSize(); i++) {
-                coordinates[i] += vector.coordinates[i];
-            }
-        } else {
-            double[] result = new double[vector.getSize()];
-            for (int i = 0; i < result.length; i++) {
-                if (i < getSize()) {
-                    result[i] = coordinates[i] + vector.coordinates[i];
-                } else {
-                    result[i] += vector.coordinates[i];
-                }
-            }
-            this.coordinates = result;
+        for (int i = 0; i < Math.min(getSize(), vector.getSize()); i++) {
+            coordinates[i] += vector.coordinates[i];
+        }
+        if (getSize() < vector.getSize()) {
+            double[] intermediateValue = Arrays.copyOf(coordinates, vector.getSize());
+            System.arraycopy(vector.coordinates, getSize(), intermediateValue, getSize(), vector.getSize() - getSize());
+            coordinates = intermediateValue;
         }
         return this;
     }
 
     public Vector subtract(Vector vector) {
-        if (getSize() >= vector.getSize()) {
-            for (int i = 0; i < vector.getSize(); i++) {
-                coordinates[i] -= vector.coordinates[i];
+        for (int i = 0; i < Math.min(getSize(), vector.getSize()); i++) {
+            coordinates[i] -= vector.coordinates[i];
+        }
+        if (getSize() < vector.getSize()) {
+            double[] intermediateValue = Arrays.copyOf(coordinates, vector.getSize());
+            for(int i = getSize(); i < vector.getSize(); i++){
+                intermediateValue[i] -= vector.coordinates[i];
             }
-        } else {
-            double[] result = new double[vector.getSize()];
-            for (int i = 0; i < result.length; i++) {
-                if (i < getSize()) {
-                    result[i] = coordinates[i] - vector.coordinates[i];
-                } else {
-                    result[i] -= vector.coordinates[i];
-                }
-            }
-            this.coordinates = result;
+            coordinates = intermediateValue;
         }
         return this;
     }
+
 
     public Vector multiplyByScalar(double scalar) {
         for (int i = 0; i < getSize(); i++) {
