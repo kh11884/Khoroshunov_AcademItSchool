@@ -49,31 +49,26 @@ public class Vector {
     }
 
     public Vector add(Vector vector) {
-        for (int i = 0; i < Math.min(getSize(), vector.getSize()); i++) {
-            coordinates[i] += vector.coordinates[i];
-        }
         if (getSize() < vector.getSize()) {
-            double[] intermediateValue = Arrays.copyOf(coordinates, vector.getSize());
-            System.arraycopy(vector.coordinates, getSize(), intermediateValue, getSize(), vector.getSize() - getSize());
-            coordinates = intermediateValue;
+            coordinates = Arrays.copyOf(coordinates, vector.getSize());
+        }
+        int cycleLength = vector.getSize();
+        for (int i = 0; i < cycleLength; i++) {
+            coordinates[i] += vector.coordinates[i];
         }
         return this;
     }
 
     public Vector subtract(Vector vector) {
-        for (int i = 0; i < Math.min(getSize(), vector.getSize()); i++) {
-            coordinates[i] -= vector.coordinates[i];
-        }
         if (getSize() < vector.getSize()) {
-            double[] intermediateValue = Arrays.copyOf(coordinates, vector.getSize());
-            for(int i = getSize(); i < vector.getSize(); i++){
-                intermediateValue[i] -= vector.coordinates[i];
-            }
-            coordinates = intermediateValue;
+            coordinates = Arrays.copyOf(coordinates, vector.getSize());
+        }
+        int cycleLength = vector.getSize();
+        for (int i = 0; i < cycleLength; i++) {
+            coordinates[i] -= vector.coordinates[i];
         }
         return this;
     }
-
 
     public Vector multiplyByScalar(double scalar) {
         for (int i = 0; i < getSize(); i++) {
