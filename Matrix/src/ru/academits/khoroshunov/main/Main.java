@@ -27,27 +27,27 @@ public class Main {
         System.out.println("Получить размер матрицы. До операции:");
         m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
         System.out.println("матрица: " + m1);
-        System.out.println("Возвращаемый результат: размер n: " + m1.getSize().getN() + ", размер m: " + m1.getSize().getM());
+        System.out.println("Возвращаемый результат: размер n: " + m1.getWidth() + ", размер m: " + m1.getHeight());
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
 
-        System.out.println("Получить векстор-строку. До операции:");
+        System.out.println("Получить вектор-строку. До операции:");
         m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {6, 7}});
         System.out.println("матрица: " + m1);
         int index = 1;
-        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getLineVector(index));
+        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getRow(index));
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
 
-        System.out.println("Задать векстор-строку. До операции:");
+        System.out.println("Задать вектор-строку. До операции:");
         m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
         System.out.println("матрица: " + m1);
         index = 1;
         Vector v1 = new Vector(new double[]{1, 1});
         System.out.println("Добавляем вектор " + v1 + " в строку " + index);
-        m1.setLineVector(index, v1);
+        m1.setRow(index, v1);
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
@@ -56,7 +56,7 @@ public class Main {
         m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
         System.out.println("матрица: " + m1);
         index = 1;
-        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getColumnVector(index));
+        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getColumn(index));
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
@@ -92,7 +92,7 @@ public class Main {
         System.out.println("матрица: " + m1 + " Вектор: " + v1);
         System.out.println("Возвращаемый результат: " + m1.multiplyByVector(v1));
         System.out.println("После операции:");
-        System.out.println("матрица: " + m1);
+        System.out.println("матрица: " + m1 + " Вектор: " + v1);
         System.out.println();
 
         System.out.println("Сложение матриц. До операции:");
@@ -101,7 +101,7 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("Возвращаемый результат: " + m1.getSum(m2));
         System.out.println("После операции:");
-        System.out.println("матрица1: " + m1);
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println();
 
         System.out.println("Вычитание матриц. До операции:");
@@ -110,7 +110,7 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("Возвращаемый результат: " + m1.subtract(m2));
         System.out.println("После операции:");
-        System.out.println("матрица1: " + m1);
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("---------------------");
         System.out.println();
 
@@ -122,7 +122,7 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("Возвращаемый результат: " + Matrix.getSum(m1, m2));
         System.out.println("После операции:");
-        System.out.println("матрица1: " + m1);
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println();
 
         System.out.println("Вычитание матриц. До операции:");
@@ -131,7 +131,7 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("Возвращаемый результат: " + Matrix.subtract(m1, m2));
         System.out.println("После операции:");
-        System.out.println("матрица1: " + m1);
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println();
 
         System.out.println("Умножение матриц. До операции:");
@@ -140,7 +140,7 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("Возвращаемый результат: " + Matrix.getMatrixMultiply(m1, m2));
         System.out.println("После операции:");
-        System.out.println("матрица1: " + m1);
+        System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println();
     }
 }
