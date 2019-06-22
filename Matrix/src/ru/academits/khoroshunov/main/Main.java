@@ -27,7 +27,7 @@ public class Main {
         System.out.println("Получить размер матрицы. До операции:");
         m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
         System.out.println("матрица: " + m1);
-        System.out.println("Возвращаемый результат: размер n: " + m1.getWidth() + ", размер m: " + m1.getHeight());
+        System.out.println("Возвращаемый результат: размер n: " + m1.getColumnsQuantity() + ", размер m: " + m1.getRowsQuantity());
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
@@ -53,16 +53,16 @@ public class Main {
         System.out.println();
 
         System.out.println("Получить векстор-столбец. До операции:");
-        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        m1 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
         System.out.println("матрица: " + m1);
         index = 1;
-        System.out.println("Возвращаемый результат: Вектор-строка " + index + ": " + m1.getColumn(index));
+        System.out.println("Возвращаемый результат: Вектор-столбец " + index + ": " + m1.getColumn(index));
         System.out.println("После операции:");
         System.out.println("матрица: " + m1);
         System.out.println();
 
         System.out.println("Транспонировать матрицу. До операции:");
-        m1 = new Matrix(new double[][]{{1, 2}, {4, 5}, {4, 5}});
+        m1 = new Matrix(new double[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
         System.out.println("матрица: " + m1);
         System.out.println("Возвращаемый результат: " + m1.transpose());
         System.out.println("После операции:");
@@ -113,7 +113,6 @@ public class Main {
         System.out.println("матрица1: " + m1 + " Матрица2: " + m2);
         System.out.println("---------------------");
         System.out.println();
-
 
         System.out.println("ПРОВЕРКА СТАТИЧЕСКИХ МЕТОДОВ.");
         System.out.println("Сложение матриц. До операции:");
