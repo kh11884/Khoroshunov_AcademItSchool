@@ -86,9 +86,9 @@ public class Main {
         System.out.println("матрица: " + m1);
         System.out.println();
 
-        System.out.println("Умножение на вектор. До операции:");
-        m1 = new Matrix(new double[][]{{3}, {2}, {0}, {-1}});
-        v1 = new Vector(new double[]{-1, 1, 0, 2});
+        System.out.println("Умножение матрицы на вектор-столбец. До операции:");
+        m1 = new Matrix(new double[][]{{1, 2, 8}, {4, 5, 6},{4, 5, 5}});
+        v1 = new Vector(new double[]{-1, 2, 0});
         System.out.println("матрица: " + m1 + " Вектор: " + v1);
         System.out.println("Возвращаемый результат: " + m1.multiplyByVector(v1));
         System.out.println("После операции:");
