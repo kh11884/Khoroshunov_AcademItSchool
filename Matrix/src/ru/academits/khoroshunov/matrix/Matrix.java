@@ -27,18 +27,26 @@ public class Matrix {
     }
 
     public Matrix(double[][] matrix) {
-        int rowsQuantity = matrix.length;
-        if (rowsQuantity == 0) {
-            throw new IllegalArgumentException("Размерность матрицы не может быть нулевой");
+        if (matrix == null) {
+            throw new IllegalArgumentException("В аргументах передан массив null.");
         }
-
+        if (matrix.length == 0) {
+            throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
+        }
         int maxLength = 0;
         for (double[] array : matrix) {
+            if (array == null) {
+                throw new IllegalArgumentException("А аргументах передан массив null.");
+            }
             if (maxLength < array.length) {
                 maxLength = array.length;
             }
+            if (maxLength == 0) {
+                throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
+            }
         }
 
+        int rowsQuantity = matrix.length;
         rows = new Vector[rowsQuantity];
         for (int i = 0; i < rowsQuantity; i++) {
             rows[i] = new Vector(maxLength, matrix[i]);
@@ -106,7 +114,8 @@ public class Matrix {
         return new Vector(values);
     }
 
-    private void transposeSquareMatrix(int matrixSize) {
+    private void transposeSquareMatrix() {
+        int matrixSize = getColumnsQuantity();
         for (int i = 0; i < matrixSize; i++) {
             for (int j = i + 1; j < matrixSize; j++) {
                 double intermediateValue = rows[i].getCoordinate(j);
@@ -120,7 +129,7 @@ public class Matrix {
         int columnsQuantity = getColumnsQuantity();
         int rowsQuantity = getRowsQuantity();
         if (rowsQuantity == columnsQuantity) {
-            transposeSquareMatrix(rowsQuantity);
+            transposeSquareMatrix();
         } else {
             Vector[] result = new Vector[columnsQuantity];
             for (int i = 0; i < columnsQuantity; i++) {
@@ -202,16 +211,12 @@ public class Matrix {
 
         int rowsQuantity = getRowsQuantity();
         Vector result = new Vector(rowsQuantity);
-        int vectorLength = vector.getSize();
         for (int i = 0; i < rowsQuantity; i++) {
-            for (int j = 0; j < vectorLength; j++) {
-                result.setCoordinate(i, result.getCoordinate(i) + rows[i].getCoordinate(j)*vector.getCoordinate(j));
-            }
+            result.setCoordinate(i, Vector.getScalarMultiply(getRow(i), vector));
         }
 
         return result;
     }
-
 
     public Matrix getSum(Matrix matrix) {
         if (getRowsQuantity() != matrix.getRowsQuantity() || getColumnsQuantity() != matrix.getColumnsQuantity()) {
