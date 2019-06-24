@@ -33,6 +33,10 @@ public class Matrix {
         if (matrix == null) {
             throw new IllegalArgumentException("В аргументах передан массив null.");
         }
+        int rowsQuantity = matrix.length;
+        if (rowsQuantity == 0) {
+            throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
+        }
         int columnsQuantity = 0;
         for (double[] array : matrix) {
             if (array == null) {
@@ -41,12 +45,11 @@ public class Matrix {
             if (columnsQuantity < array.length) {
                 columnsQuantity = array.length;
             }
-            if (columnsQuantity == 0) {
-                throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
-            }
+        }
+        if (columnsQuantity == 0) {
+            throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
         }
 
-        int rowsQuantity = matrix.length;
         rows = new Vector[rowsQuantity];
         for (int i = 0; i < rowsQuantity; i++) {
             rows[i] = new Vector(columnsQuantity, matrix[i]);
