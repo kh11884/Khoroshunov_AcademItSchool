@@ -17,6 +17,9 @@ public class Matrix {
     }
 
     public Matrix(Matrix matrix) {
+        if (matrix == null) {
+            throw new IllegalArgumentException("В аргументах передана матрица null.");
+        }
         rows = new Vector[matrix.getRowsQuantity()];
         int rowsQuantity = matrix.getRowsQuantity();
         int columnsQuantity = matrix.getColumnsQuantity();
@@ -29,10 +32,6 @@ public class Matrix {
     public Matrix(double[][] matrix) {
         if (matrix == null) {
             throw new IllegalArgumentException("В аргументах передан массив null.");
-        }
-        int rowsQuantity = matrix.length;
-        if (rowsQuantity == 0) {
-            throw new IllegalArgumentException("Размерность матрицы не может быть равна 0");
         }
         int columnsQuantity = 0;
         for (double[] array : matrix) {
@@ -47,6 +46,7 @@ public class Matrix {
             }
         }
 
+        int rowsQuantity = matrix.length;
         rows = new Vector[rowsQuantity];
         for (int i = 0; i < rowsQuantity; i++) {
             rows[i] = new Vector(columnsQuantity, matrix[i]);
@@ -54,7 +54,10 @@ public class Matrix {
     }
 
     public Matrix(Vector[] vectors) {
-        if (vectors == null || vectors.length == 0) {
+        if (vectors == null) {
+            throw new IllegalArgumentException("В аргементах передан массив null");
+        }
+        if (vectors.length == 0) {
             throw new IllegalArgumentException("Размерность матрицы не может быть нулевой");
         }
 
@@ -212,7 +215,7 @@ public class Matrix {
         int rowsQuantity = getRowsQuantity();
         Vector result = new Vector(rowsQuantity);
         for (int i = 0; i < rowsQuantity; i++) {
-            result.setCoordinate(i, Vector.getScalarMultiply(getRow(i), vector));
+            result.setCoordinate(i, Vector.getScalarMultiply(rows[i], vector));
         }
 
         return result;
