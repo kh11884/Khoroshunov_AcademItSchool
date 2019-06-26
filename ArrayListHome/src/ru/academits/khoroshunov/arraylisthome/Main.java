@@ -14,14 +14,14 @@ public class Main {
                 numbers.add(Integer.valueOf(scanner.nextLine()));
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         System.out.println("Список, прочитанный из файла. Количество значений: " + numbers.size());
         System.out.println(numbers);
         System.out.println();
 
-        for(int i = 0; i < numbers.size(); i++){
-            if(numbers.get(i)%2 == 0){
+        for (int i = 0; i < numbers.size(); i++) {
+            if (numbers.get(i) % 2 == 0) {
                 numbers.remove(i);
                 i--;
             }
@@ -31,8 +31,8 @@ public class Main {
         System.out.println();
 
         ArrayList<Integer> uniqueNumbers = new ArrayList<>();
-        for (int value: numbers) {
-            if(!uniqueNumbers.contains(value)){
+        for (Integer value : numbers) {
+            if (!uniqueNumbers.contains(value)) {
                 uniqueNumbers.add(value);
             }
         }
