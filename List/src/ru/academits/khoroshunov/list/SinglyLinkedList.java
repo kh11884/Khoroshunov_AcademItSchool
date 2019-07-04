@@ -4,6 +4,7 @@ import ru.academits.khoroshunov.item.ListItem;
 
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
+    private ListItem<T> tail;
     private int count;
 
     public SinglyLinkedList() {
@@ -14,99 +15,128 @@ public class SinglyLinkedList<T> {
     }
 
     public T getFirst() {
+        if (count == 0) {
+            throw new IllegalArgumentException("Метод вызывается от пустого массива");
+        }
+
         return head.getData();
     }
 
-    public T get(int index) {
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
+    private ListItem<T> getNode(int index) {
+        if (index == count - 1) {
+            return tail;
         }
-
-        int i = 0;
-        ListItem<T> p = head;
-        if (p == null) {
-            return null;
-        } else {
-            while (p.getNext() != null && i != index) {
-                p = p.getNext();
-                i++;
-            }
-            return p.getData();
-        }
-    }
-
-    public T set(int index, T data) {
-        if (index < 0 || index >= getSize()) {
-            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
-        }
-
         int i = 0;
         ListItem<T> p = head;
         while (p.getNext() != null && i != index) {
             p = p.getNext();
             i++;
         }
+        return p;
+    }
 
-        T value = p.getData();
-        p.setData(data);
+    public T get(int index) {
+        if (count == 0) {
+            throw new IllegalArgumentException("Метод вызывается от пустого массива");
+        }
+        if (index < 0 || index >= getSize()) {
+            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
+        }
+        return getNode(index).getData();
+    }
+
+    public T set(int index, T data) {
+        if (count == 0) {
+            throw new IllegalArgumentException("Метод вызывается от пустого массива");
+        }
+        if (index < 0 || index >= getSize()) {
+            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
+        }
+
+        ListItem<T> node = getNode(index);
+        T value = node.getData();
+        node.setData(data);
         return value;
     }
 
     public T delete(int index) {
+        if (count == 0) {
+            throw new IllegalArgumentException("Метод вызывается от пустого массива");
+        }
         if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
 
-        int i = 0;
         ListItem<T> p = head;
-        ListItem<T> prev = null;
-        while (p.getNext() != null && i != index) {
-            prev = p;
-            p = p.getNext();
-            i++;
-        }
-
-        if (prev != null) {
-            prev.setNext(p.getNext());
+        if (count == 1) {
+            head = null;
+        } else if (index == 0) {
+            head = head.getNext();
         } else {
-            head = p.getNext();
+            ListItem<T> prev = getNode(index - 1);
+            p = prev.getNext();
+            if (index == count - 1) {
+                prev.setNext(null);
+                tail = prev;
+            } else {
+                prev.setNext(p.getNext());
+            }
         }
         count--;
         return p.getData();
     }
 
     public void add(T data) {
-        head = new ListItem<>(data, head);
+        ListItem<T> newElement = new ListItem<>(data);
+
+        if (count == 0) {
+            head = newElement;
+            tail = newElement;
+        } else if (count == 1) {
+            head.setNext(newElement);
+            tail = newElement;
+        } else {
+            tail.setNext(newElement);
+            tail = newElement;
+        }
+        count++;
+    }
+
+    public void addFirst(T data) {
+        ListItem<T> newElement = new ListItem<>(data);
+
+        if (count == 0) {
+            head = newElement;
+            tail = newElement;
+        } else {
+            newElement.setNext(head);
+            if (count == 1) {
+                tail = head;
+            }
+            head = newElement;
+        }
         count++;
     }
 
     public void insert(int index, T data) {
-        if (index < 0 || index >= getSize()) {
+        if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
-
-        int i = 0;
-        ListItem<T> p = head;
-        ListItem<T> prev = null;
-        while (p != null && i != index) {
-            prev = p;
-            p = p.getNext();
-            i++;
-        }
-
-        ListItem<T> item = new ListItem<>(data);
-        if (prev != null) {
-            prev.setNext(item);
+        if (index == 0) {
+            addFirst(data);
         } else {
-            head = item;
+            ListItem<T> item = new ListItem<>(data);
+            ListItem<T> prev = getNode(index - 1);
+            item.setNext(prev.getNext());
+            prev.setNext(item);
+            count++;
         }
-        item.setNext(p);
-        count++;
     }
 
     public boolean delete(T data) {
         for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
-            if (data.equals(p.getData())) {
+            if ((data == null && p.getData() == null) ||
+                    (data != null && data.equals(p.getData()))) {
                 if (prev != null) {
                     prev.setNext(p.getNext());
                 } else {
@@ -121,8 +151,9 @@ public class SinglyLinkedList<T> {
 
     public boolean deleteAll(T data) {
         boolean result = false;
-        for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
-            if (data.equals(p.getData())) {
+        for (ListItem<T> p = head, prev = null; p != null; p = p.getNext()) {
+            if ((data == null && p.getData() == null) ||
+                    (data != null && data.equals(p.getData()))) {
                 if (prev != null) {
                     prev.setNext(p.getNext());
                 } else {
@@ -130,12 +161,17 @@ public class SinglyLinkedList<T> {
                 }
                 count--;
                 result = true;
+            } else {
+                prev = p;
             }
         }
         return result;
     }
 
     public T deleteFirst() {
+        if (count == 0) {
+            throw new IllegalArgumentException("Метод вызывается от пустого массива");
+        }
         T data = head.getData();
         head = head.getNext();
         count--;
@@ -143,20 +179,24 @@ public class SinglyLinkedList<T> {
     }
 
     public void reverse() {
-        if (head == null) {
+        if (head == null || count == 1) {
             return;
         }
+
+        ListItem<T> previous = null;
+        ListItem<T> current = head;
         ListItem<T> next = head.getNext();
-        int listSize = count;
+        ListItem<T> tempTail = current;
 
-        add(head.getData());
-        head.setNext(null);
-
-        for (int i = 1; i < listSize; i++) {
-            add(next.getData());
+        while (next != null) {
+            current.setNext(previous);
+            previous = current;
+            current = next;
             next = next.getNext();
         }
-        count = listSize;
+        current.setNext(previous);
+        head = current;
+        tail = tempTail;
     }
 
     public SinglyLinkedList<T> copy() {
@@ -164,7 +204,6 @@ public class SinglyLinkedList<T> {
         for (ListItem<T> p = head; p != null; p = p.getNext()) {
             newList.add(p.getData());
         }
-        newList.reverse();
         return newList;
     }
 

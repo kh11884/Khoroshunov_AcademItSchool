@@ -1,7 +1,5 @@
 package ru.academits.khoroshunov.main;
 
-import ru.academits.khoroshunov.item.RandomLinkListItem;
-import ru.academits.khoroshunov.list.RandomLinkList;
 import ru.academits.khoroshunov.list.SinglyLinkedList;
 
 public class Main {
@@ -14,11 +12,12 @@ public class Main {
         list.add("e");
         list.add("f");
         list.add("g");
+        list.addFirst("first");
 
         System.out.println(list + " Количество элементов списка: " + list.getSize());
         System.out.println();
 
-        int index = 6;
+        int index = 0;
         System.out.println("Метод get: получаем элемент по индексу " + index);
         System.out.println(list.get(index));
         System.out.println();
@@ -28,14 +27,14 @@ public class Main {
         System.out.println();
 
         String testValue = "X";
-        index = 6;
+        index = 7;
         System.out.println("Метод set: устанавливаем значение " + testValue + " по индексу " + index);
         String deletedItem = list.set(index, testValue);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
         System.out.println("Затертый элемент: " + deletedItem);
         System.out.println();
 
-        index = 0;
+        index = 6;
         System.out.println("Метод delete: удаляем элемент по индексу " + index);
         deletedItem = list.delete(index);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
@@ -43,13 +42,17 @@ public class Main {
         System.out.println();
 
         testValue = "X";
-        index = 0;
+        index = 6;
         System.out.println("Метод insert: вставляем элемент " + testValue + " по индексу " + index);
         list.insert(index, testValue);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
         System.out.println();
 
-        testValue = "X";
+        list.set(0, "f");
+        list.set(3, "f");
+        list.set(4, "f");
+        System.out.println(list);
+        testValue = "f";
         System.out.println("Метод deleteAll: удаляем все элементы со значением " + testValue);
         boolean da = list.deleteAll(testValue);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
@@ -57,8 +60,10 @@ public class Main {
         System.out.println();
 
         testValue = "f";
+        list.set(1, "f");
+        System.out.println(list);
         System.out.println("Метод delete: удаляем первое вхождение элемента " + testValue);
-        da = list.delete("f");
+        da = list.delete(testValue);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
         System.out.println("Был ли удален элемент: " + da);
         System.out.println();
@@ -74,11 +79,7 @@ public class Main {
         list.deleteFirst();
         list.add("a");
         list.add("b");
-        list.add("c");
-        list.add("d");
-        list.add("e");
-        list.add("f");
-        list.add("g");
+        list.add("с");
 
         System.out.println("Метод reverse.");
         System.out.println("Список до применения метода:");
@@ -101,53 +102,5 @@ public class Main {
         list.set(1, "xxx");
         System.out.println("Исходный список: " + list);
         System.out.println("Конечный список: " + list1);
-        System.out.println("-----------------------------------------");
-        System.out.println();
-
-        System.out.println("Проверка копирования с доп ссылкой.");
-        RandomLinkList<String> randomLinkList = new RandomLinkList<>();
-        RandomLinkListItem<String> a = new RandomLinkListItem<>("Первый");
-        RandomLinkListItem<String> b = new RandomLinkListItem<>("Второй");
-        RandomLinkListItem<String> c = new RandomLinkListItem<>("Третий");
-        RandomLinkListItem<String> d = new RandomLinkListItem<>("Четвертый");
-        RandomLinkListItem<String> e = new RandomLinkListItem<>("Пятый");
-        RandomLinkListItem<String> f = new RandomLinkListItem<>("Шестой");
-        RandomLinkListItem<String> g = new RandomLinkListItem<>("Седьмой");
-        a.setRandomLink(c);
-        b.setRandomLink(f);
-        c.setRandomLink(g);
-        d.setRandomLink(a);
-        e.setRandomLink(a);
-        f.setRandomLink(e);
-        randomLinkList.add(a);
-        randomLinkList.add(b);
-        randomLinkList.add(c);
-        randomLinkList.add(d);
-        randomLinkList.add(e);
-        randomLinkList.add(f);
-        randomLinkList.add(g);
-
-        System.out.println("Исходный список:");
-        System.out.println(randomLinkList);
-        RandomLinkList<String> copyRandomLinkList;
-        copyRandomLinkList = randomLinkList.copy();
-        System.out.println("Копия списка:");
-        System.out.println(copyRandomLinkList);
-        System.out.println();
-
-        System.out.println("Данные элементов ссылок исходного списка:");
-        randomLinkList.printDataLinkedElement();
-        System.out.println("Данные элементов ссылок копии списка:");
-        copyRandomLinkList.printDataLinkedElement();
-        System.out.println();
-
-        System.out.println("Меняем одну из ссылок исходного списка и один элемент исходного списка");
-        b.setRandomLink(null);
-        c.setData("XXX");
-
-        System.out.println("Данные элементов ссылок исходного списка:");
-        randomLinkList.printDataLinkedElement();
-        System.out.println("Данные элементов ссылок копии списка:");
-        copyRandomLinkList.printDataLinkedElement();
     }
 }
