@@ -2,9 +2,10 @@ package ru.academits.khoroshunov.list;
 
 import ru.academits.khoroshunov.item.ListItem;
 
+import java.util.Objects;
+
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
-    private ListItem<T> tail;
     private int count;
 
     public SinglyLinkedList() {
@@ -23,22 +24,14 @@ public class SinglyLinkedList<T> {
     }
 
     private ListItem<T> getNode(int index) {
-        if (index == count - 1) {
-            return tail;
-        }
-        int i = 0;
         ListItem<T> p = head;
-        while (p.getNext() != null && i != index) {
+        for (int i = 0; i < index; i++) {
             p = p.getNext();
-            i++;
         }
         return p;
     }
 
     public T get(int index) {
-        if (count == 0) {
-            throw new IllegalArgumentException("Метод вызывается от пустого массива");
-        }
         if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
@@ -46,9 +39,6 @@ public class SinglyLinkedList<T> {
     }
 
     public T set(int index, T data) {
-        if (count == 0) {
-            throw new IllegalArgumentException("Метод вызывается от пустого массива");
-        }
         if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
@@ -60,9 +50,6 @@ public class SinglyLinkedList<T> {
     }
 
     public T delete(int index) {
-        if (count == 0) {
-            throw new IllegalArgumentException("Метод вызывается от пустого массива");
-        }
         if (index < 0 || index >= getSize()) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
@@ -75,12 +62,7 @@ public class SinglyLinkedList<T> {
         } else {
             ListItem<T> prev = getNode(index - 1);
             p = prev.getNext();
-            if (index == count - 1) {
-                prev.setNext(null);
-                tail = prev;
-            } else {
-                prev.setNext(p.getNext());
-            }
+            prev.setNext(p.getNext());
         }
         count--;
         return p.getData();
@@ -88,33 +70,17 @@ public class SinglyLinkedList<T> {
 
     public void add(T data) {
         ListItem<T> newElement = new ListItem<>(data);
-
         if (count == 0) {
             head = newElement;
-            tail = newElement;
-        } else if (count == 1) {
-            head.setNext(newElement);
-            tail = newElement;
         } else {
-            tail.setNext(newElement);
-            tail = newElement;
+            ListItem<T> p = getNode(count - 1);
+            p.setNext(newElement);
         }
         count++;
     }
 
     public void addFirst(T data) {
-        ListItem<T> newElement = new ListItem<>(data);
-
-        if (count == 0) {
-            head = newElement;
-            tail = newElement;
-        } else {
-            newElement.setNext(head);
-            if (count == 1) {
-                tail = head;
-            }
-            head = newElement;
-        }
+        head = new ListItem<>(data, head);
         count++;
     }
 
@@ -135,8 +101,7 @@ public class SinglyLinkedList<T> {
 
     public boolean delete(T data) {
         for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
-            if ((data == null && p.getData() == null) ||
-                    (data != null && data.equals(p.getData()))) {
+            if (Objects.equals(data, p.getData())) {
                 if (prev != null) {
                     prev.setNext(p.getNext());
                 } else {
@@ -152,8 +117,7 @@ public class SinglyLinkedList<T> {
     public boolean deleteAll(T data) {
         boolean result = false;
         for (ListItem<T> p = head, prev = null; p != null; p = p.getNext()) {
-            if ((data == null && p.getData() == null) ||
-                    (data != null && data.equals(p.getData()))) {
+            if (Objects.equals(data, p.getData())) {
                 if (prev != null) {
                     prev.setNext(p.getNext());
                 } else {
@@ -186,7 +150,6 @@ public class SinglyLinkedList<T> {
         ListItem<T> previous = null;
         ListItem<T> current = head;
         ListItem<T> next = head.getNext();
-        ListItem<T> tempTail = current;
 
         while (next != null) {
             current.setNext(previous);
@@ -196,7 +159,6 @@ public class SinglyLinkedList<T> {
         }
         current.setNext(previous);
         head = current;
-        tail = tempTail;
     }
 
     public SinglyLinkedList<T> copy() {
