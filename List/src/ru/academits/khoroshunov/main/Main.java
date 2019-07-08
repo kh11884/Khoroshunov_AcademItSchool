@@ -92,15 +92,15 @@ public class Main {
         System.out.println("Метод copy.");
         SinglyLinkedList<String> list1 = new SinglyLinkedList<>();
         System.out.println("До применения метода:");
-        System.out.println("Исходный список: " + list);
-        System.out.println("Конечный список: " + list1);
+        System.out.println("Исходный список: " + list + " Количество элементов: " + list.getSize());
+        System.out.println("Конечный список: " + list1 + " Количество элементов: " + list1.getSize());
         list1 = list.copy();
         System.out.println("После применения метода:");
-        System.out.println("Исходный список: " + list);
-        System.out.println("Конечный список: " + list1);
+        System.out.println("Исходный список: " + list + " Количество элементов: " + list.getSize());
+        System.out.println("Конечный список: " + list1 + " Количество элементов: " + list1.getSize());
         System.out.println("Проверяем, что получилась копия списка. Изменяем один элемент исходного списка");
         list.set(1, "xxx");
-        System.out.println("Исходный список: " + list);
-        System.out.println("Конечный список: " + list1);
+        System.out.println("Исходный список: " + list + " Количество элементов: " + list.getSize());
+        System.out.println("Конечный список: " + list1 + " Количество элементов: " + list1.getSize());
     }
 }
