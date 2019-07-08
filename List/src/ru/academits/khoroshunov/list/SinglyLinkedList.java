@@ -55,9 +55,7 @@ public class SinglyLinkedList<T> {
         }
 
         ListItem<T> p = head;
-        if (count == 1) {
-            head = null;
-        } else if (index == 0) {
+        if (index == 0) {
             head = head.getNext();
         } else {
             ListItem<T> prev = getNode(index - 1);
@@ -85,9 +83,10 @@ public class SinglyLinkedList<T> {
     }
 
     public void insert(int index, T data) {
-        if (index < 0 || index >= count) {
+        if (index < 0 || index > count) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
+
         if (index == 0) {
             addFirst(data);
         } else {
@@ -136,6 +135,7 @@ public class SinglyLinkedList<T> {
         if (count == 0) {
             throw new IllegalArgumentException("Метод вызывается от пустого массива");
         }
+
         T data = head.getData();
         head = head.getNext();
         count--;
@@ -163,8 +163,15 @@ public class SinglyLinkedList<T> {
 
     public SinglyLinkedList<T> copy() {
         SinglyLinkedList<T> newList = new SinglyLinkedList<>();
-        for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            newList.add(p.getData());
+        if (head == null) {
+            return newList;
+        }
+
+        newList.head = new ListItem<>(head.getData());
+        ListItem<T> newP = newList.head;
+        for (ListItem<T> p = head.getNext(); p != null; p = p.getNext()) {
+            newP.setNext(new ListItem<>(p.getData()));
+            newP = newP.getNext();
         }
         return newList;
     }

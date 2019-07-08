@@ -41,8 +41,8 @@ public class Main {
         System.out.println("Удаленный элемент: " + deletedItem);
         System.out.println();
 
-        testValue = "X";
-        index = 6;
+        testValue = "Y";
+        index = 7;
         System.out.println("Метод insert: вставляем элемент " + testValue + " по индексу " + index);
         list.insert(index, testValue);
         System.out.println(list + " Количество элементов списка: " + list.getSize());
