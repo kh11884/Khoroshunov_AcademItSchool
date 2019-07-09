@@ -168,10 +168,9 @@ public class SinglyLinkedList<T> {
         }
 
         newList.head = new ListItem<>(head.getData());
-        newList.count++;
+        newList.count = count;
         for (ListItem<T> p = head.getNext(), newP = newList.head; p != null; p = p.getNext(), newP = newP.getNext()) {
             newP.setNext(new ListItem<>(p.getData()));
-            newList.count++;
         }
         return newList;
     }
