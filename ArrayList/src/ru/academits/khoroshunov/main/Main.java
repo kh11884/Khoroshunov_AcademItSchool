@@ -127,9 +127,10 @@ public class Main {
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println("Вставляем элемент \"" + element1 + "\" по индексу - " + index4);
-        arrayList1.set(index4, element1);
+        String result = arrayList1.set(index4, element1);
         System.out.println("после операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
+        System.out.println("Метод set вовзратил значение: " + result);
         System.out.println();
 
         int index5 = 7;
@@ -152,7 +153,7 @@ public class Main {
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        String element4 = "e";
+        String element4 = "x";
         System.out.println("Проверка метода LastIndexOf");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
@@ -161,32 +162,33 @@ public class Main {
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        int index6 = 1;
-        int index7 = 3;
-        System.out.println("Проверка метода subList");
+        System.out.println("Проверка метода ensureCapacity");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        ArrayList subList = arrayList1.subList(index6, index7);
-        System.out.println("после операции. Исходный список");
+        System.out.println("Длина зарезервированного массива: " + arrayList1.getArrayLengthForTest());
+        arrayList1.ensureCapacity(15);
+        System.out.println("после операции.");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        System.out.println("после операции. Возвращенный подсписок от индекса " + index6 + " до индекса " + index7);
-        System.out.println(subList + " Длина подсписка: " + subList.size());
+        System.out.println("Длина зарезервированного массива: " + arrayList1.getArrayLengthForTest());
         System.out.println();
 
         System.out.println("Проверка метода trimToSize");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
+        System.out.println("Длина зарезервированного массива: " + arrayList1.getArrayLengthForTest());
         arrayList1.trimToSize();
         System.out.println("после операции.");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
+        System.out.println("Длина зарезервированного массива: " + arrayList1.getArrayLengthForTest());
         System.out.println();
 
         System.out.println("Проверка метода clear");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
+        System.out.println("Содержимое массива: " + Arrays.toString(arrayList1.getArrayForTest()));
         arrayList1.clear();
         System.out.println("после операции.");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        System.out.println();
+        System.out.println("Содержимое массива: " + Arrays.toString(arrayList1.getArrayForTest()));
     }
 }

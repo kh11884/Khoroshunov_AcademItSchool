@@ -14,6 +14,9 @@ public class ArrayList<E> implements List {
     }
 
     public ArrayList(int capacity) {
+        if (capacity < 1) {
+            throw new IllegalArgumentException("Длина списка не может быть меньше 1");
+        }
         //noinspection unchecked
         items = (E[]) new Object[capacity];
         length = 0;
@@ -33,7 +36,6 @@ public class ArrayList<E> implements List {
     public boolean contains(Object o) {
         for (int i = 0; i < length; i++) {
             if (Objects.equals(o, items[i])) {
-
                 return true;
             }
         }
@@ -87,7 +89,6 @@ public class ArrayList<E> implements List {
         for (int i = 0; i < length; i++) {
             if (Objects.equals(o, items[i])) {
                 remove(i);
-                modCount++;
                 return true;
             }
         }
@@ -116,7 +117,7 @@ public class ArrayList<E> implements List {
         E[] resultArray = (E[]) new Object[resultArrayLength];
         System.arraycopy(items, 0, resultArray, 0, index);
         System.arraycopy(addedArray, 0, resultArray, index, addedArray.length);
-        System.arraycopy(items, index, resultArray, index+addedArray.length, length - index);
+        System.arraycopy(items, index, resultArray, index + addedArray.length, length - index);
         items = resultArray;
         length = resultArrayLength;
         modCount++;
@@ -184,9 +185,9 @@ public class ArrayList<E> implements List {
 
     @Override
     public Object[] toArray(Object[] a) {
-        if(a.length >= length) {
+        if (a.length >= length) {
             a = Arrays.copyOf(toArray(), a.length);
-        } else{
+        } else {
             a = toArray();
         }
         return a;
@@ -205,9 +206,10 @@ public class ArrayList<E> implements List {
         if (index < 0 || index >= length) {
             throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
         }
+        E result = items[index];
         //noinspection unchecked
         items[index] = (E) data;
-        return items[index];
+        return result;
     }
 
     @Override
@@ -252,13 +254,14 @@ public class ArrayList<E> implements List {
 
     @Override
     public int lastIndexOf(Object o) {
-        int result = -1;
-        for (int i = 0; i < length; i++) {
+        int i = length - 1;
+        for (; i > -1;) {
             if (Objects.equals(o, items[i])) {
-                result = i;
+                return i;
             }
+            i--;
         }
-        return result;
+        return i;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -273,23 +276,13 @@ public class ArrayList<E> implements List {
         return null;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ArrayList subList(int fromIndex, int toIndex) {
-        if (fromIndex < 0 || fromIndex >= length || toIndex < 0 || toIndex >= length) {
-            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
-        }
-        if (fromIndex > toIndex) {
-            throw new IllegalArgumentException("Неправильные значения индекса");
-        }
-
-        int resultLength = toIndex - fromIndex;
-        ArrayList result = new ArrayList(resultLength);
-        result.length = resultLength;
-        System.arraycopy(items, fromIndex, result.items, 0,resultLength);
-        return result;
+        return null;
     }
 
-    private void ensureCapacity(int requiredCapacity) {
+    public void ensureCapacity(int requiredCapacity) {
         if (requiredCapacity > items.length) {
             int newSize = items.length;
             while (newSize < requiredCapacity) {
@@ -303,12 +296,14 @@ public class ArrayList<E> implements List {
         items = Arrays.copyOf(items, items.length * 2);
     }
 
-
     public void trimToSize() {
-        items = Arrays.copyOf(items, length);
+        if (length < items.length) {
+            items = Arrays.copyOf(items, length);
+        }
     }
 
     public void clear() {
+        Arrays.fill(items, null);
         modCount++;
         length = 0;
     }
@@ -323,6 +318,14 @@ public class ArrayList<E> implements List {
             }
         }
         return b.append(']').toString();
+    }
+
+    public int getArrayLengthForTest() {
+        return items.length;
+    }
+
+    public E[] getArrayForTest() {
+        return items;
     }
 }
 
