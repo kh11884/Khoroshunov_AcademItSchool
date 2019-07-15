@@ -34,12 +34,7 @@ public class ArrayList<E> implements List {
 
     @Override
     public boolean contains(Object o) {
-        for (int i = 0; i < length; i++) {
-            if (Objects.equals(o, items[i])) {
-                return true;
-            }
-        }
-        return false;
+            return indexOf(o) > -1;
     }
 
     private class MyListIterator implements Iterator<E> {
@@ -51,7 +46,7 @@ public class ArrayList<E> implements List {
         }
 
         public E next() {
-            if (currentIndex >= length) {
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             if (saveModCount != modCount) {
@@ -255,7 +250,7 @@ public class ArrayList<E> implements List {
     @Override
     public int lastIndexOf(Object o) {
         int i = length - 1;
-        for (; i > -1;) {
+        for (; i > -1; ) {
             if (Objects.equals(o, items[i])) {
                 return i;
             }
