@@ -38,7 +38,7 @@ public class Main {
 
         System.out.println("Проверка итератора. Выводим содержимое списка:");
         Iterator i = arrayList1.iterator();
-        for (; i.hasNext();) {
+        for (; i.hasNext(); ) {
             String text = String.valueOf(i.next());
             System.out.print(text + " ");
         }
@@ -57,6 +57,7 @@ public class Main {
 
         List collection1 = Arrays.asList("b", "d");
         System.out.println("Проверка метора addAll. Добавим коллекцию: " + collection1.toString());
+        //noinspection unchecked
         arrayList1.addAll(collection1);
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
@@ -66,6 +67,7 @@ public class Main {
         System.out.println("Проверка метора addAll(int index, Collection c). Добавим коллекцию: " + collection2.toString() + " по индексу " + index2);
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
+        //noinspection unchecked
         arrayList1.addAll(index2, collection2);
         System.out.println("после операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
@@ -105,10 +107,10 @@ public class Main {
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        System.out.println("Проверка метода Object[] toArray(Object[] a)");
+        System.out.println("Проверка метода <T> T[] toArray(T[] a)");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        Object[] array1 = new String[15];
+        String[] array1 = new String[]{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
         array1 = arrayList1.toArray(array1);
         System.out.println("Получившийся массив ");
         System.out.println(Arrays.toString(array1));

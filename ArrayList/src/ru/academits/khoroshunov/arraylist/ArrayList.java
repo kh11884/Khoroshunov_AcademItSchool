@@ -2,7 +2,7 @@ package ru.academits.khoroshunov.arraylist;
 
 import java.util.*;
 
-public class ArrayList<E> implements List {
+public class ArrayList<E> implements List<E> {
     private int length;
     private int modCount;
     private E[] items;
@@ -34,7 +34,7 @@ public class ArrayList<E> implements List {
 
     @Override
     public boolean contains(Object o) {
-            return indexOf(o) > -1;
+        return indexOf(o) > -1;
     }
 
     private class MyListIterator implements Iterator<E> {
@@ -68,6 +68,23 @@ public class ArrayList<E> implements List {
     }
 
     @Override
+    public <T> T[] toArray(T[] a) {
+        if (a == null) {
+            throw new NullPointerException("Передан пустой массив.");
+        }
+
+        if (a.length < length) {
+            //noinspection unchecked
+            return (T[]) Arrays.copyOf(items, length);
+        }
+        //noinspection SuspiciousSystemArraycopy
+        System.arraycopy(items, 0, a, 0, length);
+        if (a.length > length)
+            a[length] = null;
+        return a;
+    }
+
+    @Override
     public boolean add(Object data) {
         if (length == items.length) {
             increaseCapacity();
@@ -91,43 +108,58 @@ public class ArrayList<E> implements List {
     }
 
     @Override
-    public boolean addAll(Collection c) {
-        //noinspection unchecked
-        E[] addedArray = (E[]) c.toArray();
-        if (length + addedArray.length >= items.length) {
-            ensureCapacity(length + addedArray.length);
+    public boolean addAll(Collection<? extends E> c) {
+        int resultLength = length;
+        if (length + c.size() >= items.length) {
+            ensureCapacity(length + c.size());
         }
-        System.arraycopy(addedArray, 0, items, length, addedArray.length);
-        length += addedArray.length;
-        modCount++;
-        return true;
+        for (Object element : c) {
+            //noinspection unchecked
+            items[length] = (E) element;
+            length++;
+        }
+        if (resultLength != length) {
+            modCount++;
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public boolean addAll(int index, Collection c) {
-        //noinspection unchecked
-        E[] addedArray = (E[]) c.toArray();
-        int resultArrayLength = length + addedArray.length;
-        //noinspection unchecked
-        E[] resultArray = (E[]) new Object[resultArrayLength];
-        System.arraycopy(items, 0, resultArray, 0, index);
-        System.arraycopy(addedArray, 0, resultArray, index, addedArray.length);
-        System.arraycopy(items, index, resultArray, index + addedArray.length, length - index);
-        items = resultArray;
-        length = resultArrayLength;
-        modCount++;
-        return true;
+    public boolean addAll(int index, Collection<? extends E> c) {
+        if (index < 0 || index > length) {
+            throw new IndexOutOfBoundsException("Значение индекса за пределами списка.");
+        }
+        if (c == null) {
+            throw new NullPointerException("Передана пустая коллекция.");
+        }
+
+        int resultLength = length;
+        int newLength = length - index + c.size();
+        if (newLength > items.length) {
+            ensureCapacity(length - index + c.size());
+        }
+        System.arraycopy(items, index, items, index + c.size(), length - index);
+        for (Object element : c) {
+            //noinspection unchecked
+            items[index] = (E) element;
+            index++;
+        }
+        length += c.size();
+        if (resultLength != length) {
+            modCount++;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean retainAll(Collection c) {
         boolean isModified = false;
-        //noinspection unchecked
-        E[] newArray = (E[]) c.toArray();
         for (int i = 0; i < length; i++) {
             boolean mustBeDeleted = true;
-            for (E e : newArray) {
-                if (Objects.equals(items[i], e)) {
+            for (Object element : c) {
+                if (Objects.equals(items[i], element)) {
                     mustBeDeleted = false;
                     break;
                 }
@@ -144,11 +176,9 @@ public class ArrayList<E> implements List {
     @Override
     public boolean removeAll(Collection c) {
         boolean isModified = false;
-        //noinspection unchecked
-        E[] newArray = (E[]) c.toArray();
-        for (E e : newArray) {
+        for (Object element : c) {
             for (int j = 0; j < length; j++) {
-                if (Objects.equals(items[j], e)) {
+                if (Objects.equals(items[j], element)) {
                     remove(j);
                     j--;
                     isModified = true;
@@ -161,12 +191,10 @@ public class ArrayList<E> implements List {
     @Override
     public boolean containsAll(Collection c) {
         boolean isContains;
-        //noinspection unchecked
-        E[] newArray = (E[]) c.toArray();
-        for (E e : newArray) {
+        for (Object element : c) {
             isContains = false;
             for (int i = 0; i < length; i++) {
-                if (Objects.equals(items[i], e)) {
+                if (Objects.equals(items[i], element)) {
                     isContains = true;
                     break;
                 }
@@ -176,16 +204,6 @@ public class ArrayList<E> implements List {
             }
         }
         return true;
-    }
-
-    @Override
-    public Object[] toArray(Object[] a) {
-        if (a.length >= length) {
-            a = Arrays.copyOf(toArray(), a.length);
-        } else {
-            a = toArray();
-        }
-        return a;
     }
 
     @Override
@@ -261,19 +279,19 @@ public class ArrayList<E> implements List {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ListIterator listIterator() {
+    public ListIterator<E> listIterator() {
         return null;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ListIterator listIterator(int index) {
+    public ListIterator<E> listIterator(int index) {
         return null;
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public ArrayList subList(int fromIndex, int toIndex) {
+    public List<E> subList(int fromIndex, int toIndex) {
         return null;
     }
 
