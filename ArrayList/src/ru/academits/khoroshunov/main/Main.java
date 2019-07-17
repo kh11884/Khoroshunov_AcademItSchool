@@ -110,10 +110,9 @@ public class Main {
         System.out.println("Проверка метода <T> T[] toArray(T[] a)");
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        String[] array1 = new String[]{"1", "1", "1", "1", "1", "1", "1", "1", "1", "1", "1"};
-        array1 = arrayList1.toArray(array1);
+        String[] array1 = new String[]{"1", "1", "1", "1", "1"};
         System.out.println("Получившийся массив ");
-        System.out.println(Arrays.toString(array1));
+        System.out.println(Arrays.toString(arrayList1.toArray(array1)));
         System.out.println();
 
         int index3 = 7;

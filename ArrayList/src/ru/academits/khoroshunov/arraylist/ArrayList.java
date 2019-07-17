@@ -79,8 +79,9 @@ public class ArrayList<E> implements List<E> {
         }
         //noinspection SuspiciousSystemArraycopy
         System.arraycopy(items, 0, a, 0, length);
-        if (a.length > length)
+        if (a.length > length) {
             a[length] = null;
+        }
         return a;
     }
 
