@@ -3,6 +3,7 @@ package ru.academits.khoroshunov.main;
 import ru.academits.khoroshunov.arraylist.ArrayList;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class Main {
         System.out.println();
         System.out.println();
 
-        System.out.println("Проверка метода E[] toArray()");
+        System.out.println("Проверка метода Object[] toArray");
         System.out.println(Arrays.toString(arrayList1.toArray()));
         System.out.println();
 
@@ -55,25 +56,23 @@ public class Main {
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        List collection1 = Arrays.asList("b", "d");
+        Collection<String> collection1 = Arrays.asList("b", "d");
         System.out.println("Проверка метора addAll. Добавим коллекцию: " + collection1.toString());
-        //noinspection unchecked
         arrayList1.addAll(collection1);
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        List collection2 = Arrays.asList("x", "y");
+        Collection<String> collection2 = Arrays.asList("x", "y");
         int index2 = 0;
         System.out.println("Проверка метора addAll(int index, Collection c). Добавим коллекцию: " + collection2.toString() + " по индексу " + index2);
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
-        //noinspection unchecked
         arrayList1.addAll(index2, collection2);
         System.out.println("после операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
         System.out.println();
 
-        List collection3 = Arrays.asList("x", "y", "b");
+        Collection<String> collection3 = Arrays.asList("x", "y", "b");
         System.out.println("Проверка метода retainAll. Удаляем элементы не принадлежащие коллекции " + collection3.toString());
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
@@ -86,7 +85,7 @@ public class Main {
         arrayList1.add(3, "c");
         arrayList1.add(5, "e");
         arrayList1.add(6, "f");
-        List collection4 = Arrays.asList("x", "b");
+        Collection<String> collection4 = Arrays.asList("x", "b");
         System.out.println("Проверка метода removeAll. Удаляем элементы принадлежащие коллекции " + collection4.toString());
         System.out.println("до операции");
         System.out.println(arrayList1 + " Длина списка: " + arrayList1.size());
