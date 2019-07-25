@@ -2,26 +2,26 @@ package ru.academits.khoroshunov.hashtable;
 
 import java.util.*;
 
-public class HashTable<T> implements Collection<T> {
+public class HashTable<E> implements Collection<E> {
     private int size;
-    private ArrayList<T>[] hashCell;
+    private int hashLevels;
+    private ArrayList<E>[] hashCell;
     private int modCount;
 
     public HashTable() {
-        size = 11;
-        //noinspection unchecked
-        hashCell = new ArrayList[size];
-        for (int i = 0; i < size; i++) {
-            hashCell[i] = new ArrayList<>();
-        }
+        this(11);
     }
 
-    public HashTable(int size) {
-        this.size = size;
-        //noinspection unchecked
-        hashCell = new ArrayList[size];
-        for (int i = 0; i < size; i++) {
-            hashCell[i] = new ArrayList<>();
+    public HashTable(int hashLevels) {
+        if (hashLevels < 1) {
+            throw new IllegalArgumentException("Размер Хэш-таблицы не может быть меньше 1.");
+        } else {
+            this.hashLevels = hashLevels;
+            //noinspection unchecked
+            hashCell = new ArrayList[hashLevels];
+            for (int i = 0; i < hashLevels; i++) {
+                hashCell[i] = new ArrayList<>();
+            }
         }
     }
 
@@ -32,137 +32,112 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean isEmpty() {
-        for (ArrayList<T> cell : hashCell) {
-            if (cell != null) {
-                return false;
-            }
-        }
-        return true;
+        return size == 0;
     }
 
     @Override
     public boolean contains(Object o) {
-        if (isEmpty()) {
-            throw new NullPointerException("Метод вызывется от пустой Хэш-таблицы.");
+        if (o == null) {
+            return hashCell[0].contains(null);
         }
-        int objectHash = Math.abs(o.hashCode() % size());
+        int objectHash = Math.abs(o.hashCode() % hashLevels);
         return hashCell[objectHash].contains(o);
     }
 
-    private class MyListIterator implements Iterator<T> {
+    private class MyListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private int saveModCount = modCount;
+        private Object[] array = toArray();
 
         public boolean hasNext() {
-            Object[] array = toArray();
-            return currentIndex + 1 < array.length;
+            return currentIndex + 1 < size;
         }
 
-        public T next() {
+        public E next() {
             if (!hasNext()) {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("Следующий элемент отсутсвует.");
             }
             if (saveModCount != modCount) {
-                throw new ConcurrentModificationException();
+                throw new ConcurrentModificationException("Список был изменен во время выполенния итератора");
             }
             ++currentIndex;
-            Object[] array = toArray();
             //noinspection unchecked
-            return (T) array[currentIndex];
+            return (E) array[currentIndex];
         }
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<E> iterator() {
         return new MyListIterator();
     }
 
     @Override
     public Object[] toArray() {
-        ArrayList<T> array = new ArrayList<>();
-        for (ArrayList<T> cell : hashCell) {
+        ArrayList<E> array = new ArrayList<>();
+        for (ArrayList<E> cell : hashCell) {
             array.addAll(cell);
         }
         return array.toArray();
     }
 
     @Override
-    public boolean add(Object o) {
-        int hashCode = Math.abs(o.hashCode() % size);
-        int checkValue = hashCell[hashCode].size();
-        //noinspection unchecked
-        hashCell[hashCode].add((T) o);
-        if (checkValue == hashCell[hashCode].size()) {
-            return false;
+    public <T> T[] toArray(T[] a) {
+        if (a == null) {
+            throw new NullPointerException("Передан пустой массив.");
         }
+
+        if (a.length < size) {
+            //noinspection unchecked
+            return Arrays.copyOf((T[]) toArray(), size);
+        }
+
+        //noinspection SuspiciousSystemArraycopy
+        System.arraycopy(toArray(), 0, a, 0, size);
+        if (a.length > size) {
+            a[size] = null;
+        }
+        return a;
+    }
+
+    @Override
+    public boolean add(E e) {
+        boolean isAdded;
+        int hashCode;
+        if (e == null) {
+            hashCode = 0;
+        } else {
+            hashCode = Math.abs(e.hashCode() % hashLevels);
+        }
+        isAdded = hashCell[hashCode].add(e);
+        size++;
         modCount++;
-        return true;
+        return isAdded;
     }
 
     @Override
     public boolean remove(Object o) {
-        int hashCode = Math.abs(o.hashCode() % size);
-        int checkValue = hashCell[hashCode].size();
-        hashCell[hashCode].remove(o);
-        if (checkValue == hashCell[hashCode].size()) {
-            return false;
+        boolean isRemoved;
+        int hashCode;
+        if (o == null) {
+            hashCode = 0;
+        } else {
+            hashCode = Math.abs(o.hashCode() % hashLevels);
         }
-        modCount++;
-        return true;
+        isRemoved = hashCell[hashCode].remove(o);
+
+        if (isRemoved) {
+            modCount++;
+            size--;
+        }
+        return isRemoved;
     }
 
     @Override
-    public boolean addAll(Collection c) {
-        int checkValue = 0;
-        for (Object element : c) {
-            if (add(element)) {
-                checkValue++;
-            }
-        }
-        return checkValue > 0;
-    }
-
-    @Override
-    public void clear() {
-        for (int i = 0; i < size; i++) {
-            hashCell[i].clear();
-        }
-        modCount++;
-    }
-
-    @Override
-    public boolean retainAll(Collection c) {
-        boolean isModified = false;
-        for (int i = 0; i < size; i++) {
-            //noinspection SuspiciousMethodCalls
-            if (hashCell[i].retainAll(c)) {
-                isModified = true;
-                modCount++;
-            }
-        }
-        return isModified;
-    }
-
-    @Override
-    public boolean removeAll(Collection c) {
-        boolean isModified = false;
-        for (Object element : c) {
-            int hashCode = Math.abs(element.hashCode() % size);
-            //noinspection SuspiciousMethodCalls
-            while (hashCell[hashCode].remove(element)) {
-                isModified = true;
-                modCount++;
-            }
-        }
-        return isModified;
-    }
-
-    @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(Collection<?> c) {
         boolean isContains;
         for (Object element : c) {
             isContains = false;
-            int hashCode = Math.abs(element.hashCode() % size);
+            int hashCode = Math.abs(element.hashCode() % hashLevels);
             if (hashCell[hashCode] == null) {
                 return false;
             }
@@ -180,33 +155,67 @@ public class HashTable<T> implements Collection<T> {
     }
 
     @Override
-    public <E> E[] toArray(E[] a) {
-        if (a == null) {
-            throw new NullPointerException("Передан пустой массив.");
+    public boolean addAll(Collection<? extends E> c) {
+        boolean isAdded = false;
+        for (Object element : c) {
+            //noinspection unchecked
+            isAdded = add((E) element);
         }
+        return isAdded;
+    }
 
-        //noinspection unchecked
-        E[] array = (E[]) toArray();
-        if (a.length < array.length) {
-            return Arrays.copyOf(array, array.length);
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        boolean isModified = false;
+        for (int i = 0; i < hashLevels; i++) {
+            size -= hashCell[i].size();
+            if (hashCell[i].retainAll(c)) {
+                isModified = true;
+                modCount++;
+            }
+            size += hashCell[i].size();
         }
+        return isModified;
+    }
 
-        System.arraycopy(array, 0, a, 0, array.length);
-        if (a.length > array.length) {
-            a[array.length] = null;
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        boolean isModified = false;
+        for (Object element : c) {
+            int hashCode;
+            if (element == null) {
+                hashCode = 0;
+            } else {
+                hashCode = Math.abs(element.hashCode() % hashLevels);
+            }
+            //noinspection SuspiciousMethodCalls
+            while (hashCell[hashCode].remove(element)) {
+                isModified = true;
+                modCount++;
+                size--;
+            }
         }
-        return a;
+        return isModified;
+    }
+
+    @Override
+    public void clear() {
+        for (int i = 0; i < hashLevels; i++) {
+            hashCell[i].clear();
+        }
+        modCount++;
+        size = 0;
     }
 
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append('[');
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < hashLevels; i++) {
             b.append(i);
             b.append("=");
             b.append(Arrays.toString(hashCell[i].toArray()));
-            if (i < size - 1) {
+            if (i < hashLevels - 1) {
                 b.append(", ");
             }
         }
