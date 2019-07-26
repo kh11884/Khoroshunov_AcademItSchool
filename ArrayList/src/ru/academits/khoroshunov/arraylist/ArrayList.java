@@ -122,9 +122,8 @@ public class ArrayList<E> implements List<E> {
         int resultLength = length;
         ensureCapacity(length + c.size());
 
-        for (Object element : c) {
-            //noinspection unchecked
-            items[length] = (E) element;
+        for (E element : c) {
+            items[length] = element;
             length++;
         }
         if (resultLength != length) {
