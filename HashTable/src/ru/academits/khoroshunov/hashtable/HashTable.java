@@ -4,7 +4,6 @@ import java.util.*;
 
 public class HashTable<E> implements Collection<E> {
     private int size;
-    private int hashLevels;
     private ArrayList<E>[] hashCell;
     private int modCount;
 
@@ -15,13 +14,11 @@ public class HashTable<E> implements Collection<E> {
     public HashTable(int hashLevels) {
         if (hashLevels < 1) {
             throw new IllegalArgumentException("Размер Хэш-таблицы не может быть меньше 1.");
-        } else {
-            this.hashLevels = hashLevels;
-            //noinspection unchecked
-            hashCell = new ArrayList[hashLevels];
-            for (int i = 0; i < hashLevels; i++) {
-                hashCell[i] = new ArrayList<>();
-            }
+        }
+        //noinspection unchecked
+        hashCell = new ArrayList[hashLevels];
+        for (int i = 0; i < hashLevels; i++) {
+            hashCell[i] = new ArrayList<>();
         }
     }
 
@@ -40,8 +37,7 @@ public class HashTable<E> implements Collection<E> {
         if (o == null) {
             return hashCell[0].contains(null);
         }
-        int objectHash = Math.abs(o.hashCode() % hashLevels);
-        return hashCell[objectHash].contains(o);
+        return hashCell[getHashTableLevel(o)].contains(o);
     }
 
     private class MyListIterator implements Iterator<E> {
@@ -88,7 +84,7 @@ public class HashTable<E> implements Collection<E> {
 
         if (a.length < size) {
             //noinspection unchecked
-            return Arrays.copyOf((T[]) toArray(), size);
+            return (T[]) Arrays.copyOf(toArray(), size, a.getClass());
         }
 
         //noinspection SuspiciousSystemArraycopy
@@ -102,13 +98,7 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean add(E e) {
         boolean isAdded;
-        int hashCode;
-        if (e == null) {
-            hashCode = 0;
-        } else {
-            hashCode = Math.abs(e.hashCode() % hashLevels);
-        }
-        isAdded = hashCell[hashCode].add(e);
+        isAdded = hashCell[getHashTableLevel(e)].add(e);
         size++;
         modCount++;
         return isAdded;
@@ -117,13 +107,7 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean remove(Object o) {
         boolean isRemoved;
-        int hashCode;
-        if (o == null) {
-            hashCode = 0;
-        } else {
-            hashCode = Math.abs(o.hashCode() % hashLevels);
-        }
-        isRemoved = hashCell[hashCode].remove(o);
+        isRemoved = hashCell[getHashTableLevel(o)].remove(o);
 
         if (isRemoved) {
             modCount++;
@@ -134,20 +118,9 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        boolean isContains;
         for (Object element : c) {
-            isContains = false;
-            int hashCode = Math.abs(element.hashCode() % hashLevels);
-            if (hashCell[hashCode] == null) {
-                return false;
-            }
-            for (int i = 0; i < hashCell[hashCode].size(); i++) {
-                if (Objects.equals(hashCell[hashCode].get(i), element)) {
-                    isContains = true;
-                    break;
-                }
-            }
-            if (!isContains) {
+            int level = getHashTableLevel(element);
+            if (hashCell[level] == null || !hashCell[level].contains(element)) {
                 return false;
             }
         }
@@ -157,9 +130,8 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean addAll(Collection<? extends E> c) {
         boolean isAdded = false;
-        for (Object element : c) {
-            //noinspection unchecked
-            isAdded = add((E) element);
+        for (E element : c) {
+            isAdded = add(element);
         }
         return isAdded;
     }
@@ -167,13 +139,13 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean retainAll(Collection<?> c) {
         boolean isModified = false;
-        for (int i = 0; i < hashLevels; i++) {
-            size -= hashCell[i].size();
-            if (hashCell[i].retainAll(c)) {
+        for (ArrayList<E> cell : hashCell) {
+            size -= cell.size();
+            if (cell.retainAll(c)) {
                 isModified = true;
                 modCount++;
             }
-            size += hashCell[i].size();
+            size += cell.size();
         }
         return isModified;
     }
@@ -182,14 +154,9 @@ public class HashTable<E> implements Collection<E> {
     public boolean removeAll(Collection<?> c) {
         boolean isModified = false;
         for (Object element : c) {
-            int hashCode;
-            if (element == null) {
-                hashCode = 0;
-            } else {
-                hashCode = Math.abs(element.hashCode() % hashLevels);
-            }
+            int level = getHashTableLevel(element);
             //noinspection SuspiciousMethodCalls
-            while (hashCell[hashCode].remove(element)) {
+            while (hashCell[level].remove(element)) {
                 isModified = true;
                 modCount++;
                 size--;
@@ -200,8 +167,8 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public void clear() {
-        for (int i = 0; i < hashLevels; i++) {
-            hashCell[i].clear();
+        for (ArrayList<E> cell : hashCell) {
+            cell.clear();
         }
         modCount++;
         size = 0;
@@ -211,14 +178,21 @@ public class HashTable<E> implements Collection<E> {
     public String toString() {
         StringBuilder b = new StringBuilder();
         b.append('[');
-        for (int i = 0; i < hashLevels; i++) {
+        for (int i = 0; i < hashCell.length; i++) {
             b.append(i);
             b.append("=");
-            b.append(Arrays.toString(hashCell[i].toArray()));
-            if (i < hashLevels - 1) {
+            b.append(hashCell[i]);
+            if (i < hashCell.length - 1) {
                 b.append(", ");
             }
         }
         return b.append(']').toString();
+    }
+
+    private int getHashTableLevel(Object o) {
+        if (o == null) {
+            return 0;
+        }
+        return Math.abs(o.hashCode() % hashCell.length);
     }
 }
