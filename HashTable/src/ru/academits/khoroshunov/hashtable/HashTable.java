@@ -43,7 +43,8 @@ public class HashTable<E> implements Collection<E> {
     private class MyListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private int saveModCount = modCount;
-        private Object[] array = toArray();
+        private int level = 0;
+        private int position = 0;
 
         public boolean hasNext() {
             return currentIndex + 1 < size;
@@ -56,9 +57,12 @@ public class HashTable<E> implements Collection<E> {
             if (saveModCount != modCount) {
                 throw new ConcurrentModificationException("Список был изменен во время выполенния итератора");
             }
-            ++currentIndex;
-            //noinspection unchecked
-            return (E) array[currentIndex];
+            while (position >= hashCell[level].size()) {
+                level++;
+                position = 0;
+            }
+            currentIndex++;
+            return hashCell[level].get(position++);
         }
     }
 
@@ -69,11 +73,13 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public Object[] toArray() {
-        ArrayList<E> array = new ArrayList<>();
-        for (ArrayList<E> cell : hashCell) {
-            array.addAll(cell);
+        Object[] array = new Object[size];
+        int i = 0;
+        for (E element : this) {
+            array[i] = element;
+            i++;
         }
-        return array.toArray();
+        return array;
     }
 
     @Override
@@ -120,6 +126,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean containsAll(Collection<?> c) {
         for (Object element : c) {
             int level = getHashTableLevel(element);
+            //noinspection SuspiciousMethodCalls
             if (hashCell[level] == null || !hashCell[level].contains(element)) {
                 return false;
             }
