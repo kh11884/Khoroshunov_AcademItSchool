@@ -1,46 +1,48 @@
 package ru.academits.khoroshunov.tree;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
+import java.util.function.Consumer;
 
 public class Tree<T> {
     private TreeNode<T> treeRoot;
     private int size;
+    private Comparator<? super T> comparator;
 
-    public Tree(T data) {
-        treeRoot = new TreeNode<>(data);
-        size++;
+    public Tree() {
+        comparator = null;
+    }
+
+    public Tree(Comparator<? super T> comparator) {
+        this.comparator = comparator;
     }
 
     public int getSize() {
         return size;
     }
 
-    public void printTreeRecursionDeepGoRound() {
-        recursionDeepGoRound(treeRoot);
+    public void printTreeRecursionDeepGoRound(Consumer<T> method) {
+        recursionDeepGoRound(treeRoot, method);
     }
 
-    private void recursionDeepGoRound(TreeNode<T> node) {
-        System.out.print(node.getData() + ", ");
-
+    private void recursionDeepGoRound(TreeNode<T> node, Consumer<T> method) {
+        method.accept(node.getData());
         if (node.getLeft() != null && node.getRight() != null) {
-            recursionDeepGoRound(node.getLeft());
-            recursionDeepGoRound(node.getRight());
+            recursionDeepGoRound(node.getLeft(), method);
+            recursionDeepGoRound(node.getRight(), method);
         } else if (node.getLeft() != null) {
-            recursionDeepGoRound(node.getLeft());
+            recursionDeepGoRound(node.getLeft(), method);
         } else if (node.getRight() != null) {
-            recursionDeepGoRound(node.getRight());
+            recursionDeepGoRound(node.getRight(), method);
         }
     }
 
-    public void printTreeWidthGoRound() {
+    public void treeWidthGoRound(Consumer<T> method) {
         Queue<TreeNode<T>> queue = new LinkedList<>();
         queue.add(treeRoot);
 
         while (!queue.isEmpty()) {
             TreeNode<T> node = queue.remove();
-            System.out.print(node.getData() + ", ");
+            method.accept(node.getData());
             if (node.getLeft() != null) {
                 queue.add(node.getLeft());
             }
@@ -50,13 +52,13 @@ public class Tree<T> {
         }
     }
 
-    public void printTreeDeepGoRound() {
+    public void treeDeepGoRound(Consumer<T> method) {
         Deque<TreeNode<T>> stack = new LinkedList<>();
         stack.addLast(treeRoot);
 
         while (!stack.isEmpty()) {
             TreeNode<T> node = stack.removeLast();
-            System.out.print(node.getData() + ", ");
+            method.accept(node.getData());
 
             if (node.getRight() != null) {
                 stack.addLast(node.getRight());
@@ -68,18 +70,45 @@ public class Tree<T> {
     }
 
     public void insert(T data) {
-        insertNode(treeRoot, data);
-        size++;
+        if (treeRoot == null) {
+            treeRoot = new TreeNode<>(data);
+            size = 1;
+        } else {
+            insertNode(treeRoot, data);
+            size++;
+        }
+    }
+
+    private int getCompareResult(TreeNode<T> currentNode, T data) {
+        if (comparator != null) {
+            return comparator.compare(data, currentNode.getData());
+        } else {
+            if (currentNode.getData() == null) {
+                if (data == null) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else if (data == null) {
+                return -1;
+            } else {
+                //noinspection unchecked
+                Comparable<? super T> cpr = (Comparable<? super T>) data;
+                return cpr.compareTo(currentNode.getData());
+            }
+        }
     }
 
     private void insertNode(TreeNode<T> currentNode, T data) {
-        if (data.hashCode() < currentNode.getData().hashCode()) {
+        int compareResult = getCompareResult(currentNode, data);
+
+        if (compareResult < 0) {
             if (currentNode.getLeft() != null) {
                 insertNode(currentNode.getLeft(), data);
             } else {
                 currentNode.setLeft(new TreeNode<>(data));
             }
-        } else if (data.hashCode() > currentNode.getData().hashCode()) {
+        } else if (compareResult > 0) {
             if (currentNode.getRight() != null) {
                 insertNode(currentNode.getRight(), data);
             } else {
@@ -96,25 +125,30 @@ public class Tree<T> {
         if (currentNode == null) {
             return false;
         }
-        if (data.equals(currentNode.getData())) {
+        if (Objects.equals(data, currentNode.getData())) {
             return true;
         }
-        return data.hashCode() < currentNode.getData().hashCode() ?
+        return getCompareResult(currentNode, data) < 0 ?
                 findNode(currentNode.getLeft(), data)
                 : findNode(currentNode.getRight(), data);
     }
 
-    public void delete(T data) {
+    public boolean delete(T data) {
+        boolean isDeleted = isContains(data);
         deleteNode(treeRoot, data);
-        size--;
+        if (isDeleted) {
+            size--;
+        }
+        return isDeleted;
     }
 
     private TreeNode<T> deleteNode(TreeNode<T> currentNode, T data) {
         if (currentNode == null) {
             return null;
         }
+
         T currentData = currentNode.getData();
-        if (data.equals(currentData)) {
+        if (Objects.equals(data, currentData)) {
             if (currentNode.getLeft() == null && currentNode.getRight() == null) {
                 return null;
             }
@@ -131,15 +165,20 @@ public class Tree<T> {
             currentNode.setRight(deleteNode(currentNode.getRight(), smallData));
             return currentNode;
         }
-        if (data.hashCode() < currentNode.getData().hashCode()) {
+
+        if (getCompareResult(currentNode, data) < 0) {
             currentNode.setLeft(deleteNode(currentNode.getLeft(), data));
             return currentNode;
         }
+
         currentNode.setRight(deleteNode(currentNode.getRight(), data));
         return currentNode;
     }
 
     private T findSmallData(TreeNode<T> node) {
-        return node.getLeft() == null ? node.getData() : findSmallData(node.getLeft());
+        while (node.getLeft() != null) {
+            node = node.getLeft();
+        }
+        return node.getData();
     }
 }
