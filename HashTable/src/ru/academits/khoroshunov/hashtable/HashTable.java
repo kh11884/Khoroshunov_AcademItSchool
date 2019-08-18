@@ -34,17 +34,14 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object o) {
-        if (o == null) {
-            return hashCell[0].contains(null);
-        }
-        return hashCell[getHashTableLevel(o)].contains(o);
+        return hashCell[getHashTableIndex(o)].contains(o);
     }
 
     private class MyListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private int saveModCount = modCount;
-        private int level = 0;
-        private int position = 0;
+        private int hashIndex = 0;
+        private int arrayListIndex = 0;
 
         public boolean hasNext() {
             return currentIndex + 1 < size;
@@ -57,12 +54,13 @@ public class HashTable<E> implements Collection<E> {
             if (saveModCount != modCount) {
                 throw new ConcurrentModificationException("Список был изменен во время выполенния итератора");
             }
-            while (position >= hashCell[level].size()) {
-                level++;
-                position = 0;
+            while (arrayListIndex >= hashCell[hashIndex].size()) {
+                hashIndex++;
+                arrayListIndex = 0;
             }
             currentIndex++;
-            return hashCell[level].get(position++);
+            arrayListIndex++;
+            return hashCell[hashIndex].get(arrayListIndex - 1);
         }
     }
 
@@ -103,8 +101,7 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean add(E e) {
-        boolean isAdded;
-        isAdded = hashCell[getHashTableLevel(e)].add(e);
+        boolean isAdded = hashCell[getHashTableIndex(e)].add(e);
         size++;
         modCount++;
         return isAdded;
@@ -112,8 +109,7 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object o) {
-        boolean isRemoved;
-        isRemoved = hashCell[getHashTableLevel(o)].remove(o);
+        boolean isRemoved = hashCell[getHashTableIndex(o)].remove(o);
 
         if (isRemoved) {
             modCount++;
@@ -125,9 +121,7 @@ public class HashTable<E> implements Collection<E> {
     @Override
     public boolean containsAll(Collection<?> c) {
         for (Object element : c) {
-            int level = getHashTableLevel(element);
-            //noinspection SuspiciousMethodCalls
-            if (hashCell[level] == null || !hashCell[level].contains(element)) {
+            if (!contains(element)) {
                 return false;
             }
         }
@@ -161,7 +155,7 @@ public class HashTable<E> implements Collection<E> {
     public boolean removeAll(Collection<?> c) {
         boolean isModified = false;
         for (Object element : c) {
-            int level = getHashTableLevel(element);
+            int level = getHashTableIndex(element);
             //noinspection SuspiciousMethodCalls
             while (hashCell[level].remove(element)) {
                 isModified = true;
@@ -196,7 +190,7 @@ public class HashTable<E> implements Collection<E> {
         return b.append(']').toString();
     }
 
-    private int getHashTableLevel(Object o) {
+    private int getHashTableIndex(Object o) {
         if (o == null) {
             return 0;
         }
