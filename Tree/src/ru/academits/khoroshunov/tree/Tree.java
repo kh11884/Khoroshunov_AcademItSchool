@@ -1,5 +1,6 @@
 package ru.academits.khoroshunov.tree;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -83,29 +84,28 @@ public class Tree<T> {
         }
     }
 
-    private int getCompareResult(T nodeData, T data) {
+    private int compare(T nodeData, T data) {
         if (comparator != null) {
             return comparator.compare(data, nodeData);
-        } else {
-            if (nodeData == null) {
-                if (data == null) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            } else if (data == null) {
-                return -1;
-            }
-            //noinspection unchecked
-            Comparable<? super T> cpr = (Comparable<? super T>) data;
-            return cpr.compareTo(nodeData);
         }
+        if (nodeData == null) {
+            if (data == null) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else if (data == null) {
+            return -1;
+        }
+        //noinspection unchecked
+        Comparable<? super T> cpr = (Comparable<? super T>) data;
+        return cpr.compareTo(nodeData);
     }
 
     private void insertNode(TreeNode<T> currentNode, TreeNode<T> insertedNode) {
         do {
-            int compareResult = getCompareResult(currentNode.getData(), insertedNode.getData());
-            if (compareResult > 0) {
+            int compareResult = compare(currentNode.getData(), insertedNode.getData());
+            if (compareResult >= 0) {
                 if (currentNode.getRight() == null) {
                     currentNode.setRight(insertedNode);
                     size++;
@@ -113,7 +113,7 @@ public class Tree<T> {
                 } else {
                     currentNode = currentNode.getRight();
                 }
-            } else if (compareResult < 0) {
+            } else {
                 if (currentNode.getLeft() == null) {
                     currentNode.setLeft(insertedNode);
                     size++;
@@ -121,8 +121,6 @@ public class Tree<T> {
                 } else {
                     currentNode = currentNode.getLeft();
                 }
-            } else {
-                return;
             }
         } while (currentNode != null);
     }
@@ -136,9 +134,10 @@ public class Tree<T> {
 
     private TreeNode<T> findNode(TreeNode<T> currentNode, T data) {
         do {
-            if (getCompareResult(currentNode.getData(), data) > 0) {
+            int compareResult = compare(currentNode.getData(), data);
+            if (compareResult > 0) {
                 currentNode = currentNode.getRight();
-            } else if (getCompareResult(currentNode.getData(), data) < 0) {
+            } else if (compareResult < 0) {
                 currentNode = currentNode.getLeft();
             } else {
                 return currentNode;
@@ -157,7 +156,7 @@ public class Tree<T> {
         boolean isRight = false;
 
         do {
-            int compareResult = getCompareResult(currentNode.getData(), data);
+            int compareResult = compare(currentNode.getData(), data);
 
             if (compareResult > 0) {
                 parentNode = currentNode;
@@ -180,11 +179,10 @@ public class Tree<T> {
                     return true;
                 }
                 // если два ребенка
-                Object[] smallestNodes = getSmallestNodes(currentNode.getRight());
-                //noinspection unchecked
-                TreeNode<T> smallestChildParent = (TreeNode<T>) smallestNodes[0];
-                //noinspection unchecked
-                TreeNode<T> smallestChild = (TreeNode<T>) smallestNodes[1];
+                TreeNode<T>[] smallestNodes = getSmallestNodes(currentNode.getRight());
+                TreeNode<T> smallestChildParent = smallestNodes[0];
+                TreeNode<T> smallestChild = smallestNodes[1];
+
                 if (smallestChildParent != null) {
                     smallestChildParent.setLeft(smallestChild.getRight());
                 }
@@ -205,12 +203,15 @@ public class Tree<T> {
         return false;
     }
 
-    private Object[] getSmallestNodes(TreeNode<T> node) {
-        Object[] smallestNodes = new Object[2];
+    private TreeNode<T>[] getSmallestNodes(TreeNode<T> node) {
+        //noinspection unchecked
+        TreeNode<T>[] smallestNodes = (TreeNode<T>[]) Array.newInstance(node.getClass(), 2);
+
         while (node.getLeft() != null) {
             smallestNodes[0] = node;
             node = node.getLeft();
         }
+
         smallestNodes[1] = node;
         return smallestNodes;
     }
