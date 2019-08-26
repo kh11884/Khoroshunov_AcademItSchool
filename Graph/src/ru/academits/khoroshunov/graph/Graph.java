@@ -61,6 +61,9 @@ public class Graph {
     }
 
     public void recursionDeepGoRound(Consumer method) {
+        if (graph == null) {
+            throw new NullPointerException("Метод вызван от пустого графа.");
+        }
         boolean[] visited = new boolean[graph.length];
         doRecursionDeepGoRound(0, visited, method);
     }
