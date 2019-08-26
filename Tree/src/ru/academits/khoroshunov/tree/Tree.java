@@ -84,27 +84,27 @@ public class Tree<T> {
         }
     }
 
-    private int compare(T nodeData, T data) {
+    private int compare(T data1, T data2) {
         if (comparator != null) {
-            return comparator.compare(data, nodeData);
+            return comparator.compare(data1, data2);
         }
-        if (nodeData == null) {
-            if (data == null) {
+        if (data1 == null) {
+            if (data2 == null) {
                 return 0;
             } else {
                 return 1;
             }
-        } else if (data == null) {
+        } else if (data2 == null) {
             return -1;
         }
         //noinspection unchecked
-        Comparable<? super T> cpr = (Comparable<? super T>) data;
-        return cpr.compareTo(nodeData);
+        Comparable<? super T> cpr = (Comparable<? super T>) data1;
+        return cpr.compareTo(data2);
     }
 
     private void insertNode(TreeNode<T> currentNode, TreeNode<T> insertedNode) {
         do {
-            int compareResult = compare(currentNode.getData(), insertedNode.getData());
+            int compareResult = compare(insertedNode.getData(), currentNode.getData());
             if (compareResult >= 0) {
                 if (currentNode.getRight() == null) {
                     currentNode.setRight(insertedNode);
@@ -134,7 +134,7 @@ public class Tree<T> {
 
     private TreeNode<T> findNode(TreeNode<T> currentNode, T data) {
         do {
-            int compareResult = compare(currentNode.getData(), data);
+            int compareResult = compare(data, currentNode.getData());
             if (compareResult > 0) {
                 currentNode = currentNode.getRight();
             } else if (compareResult < 0) {
@@ -156,7 +156,7 @@ public class Tree<T> {
         boolean isRight = false;
 
         do {
-            int compareResult = compare(currentNode.getData(), data);
+            int compareResult = compare(data, currentNode.getData());
 
             if (compareResult > 0) {
                 parentNode = currentNode;
@@ -205,7 +205,7 @@ public class Tree<T> {
 
     private TreeNode<T>[] getSmallestNodes(TreeNode<T> node) {
         //noinspection unchecked
-        TreeNode<T>[] smallestNodes = (TreeNode<T>[]) Array.newInstance(node.getClass(), 2);
+        TreeNode<T>[] smallestNodes = (TreeNode<T>[]) new TreeNode[2];
 
         while (node.getLeft() != null) {
             smallestNodes[0] = node;
