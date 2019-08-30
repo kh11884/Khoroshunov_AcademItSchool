@@ -91,10 +91,10 @@ public class Tree<T> {
             if (data2 == null) {
                 return 0;
             } else {
-                return 1;
+                return -1;
             }
         } else if (data2 == null) {
-            return -1;
+            return 1;
         }
         //noinspection unchecked
         Comparable<? super T> cpr = (Comparable<? super T>) data1;
@@ -186,14 +186,14 @@ public class Tree<T> {
                     smallestChildParent.setLeft(smallestChild.getRight());
                 }
                 if (currentNode == treeRoot) {
-                    smallestChild.setRight(currentNode.getRight());
+                    if (smallestChild == currentNode.getRight()) {
+                        smallestChild.setRight(null);
+                    } else {
+                        smallestChild.setRight(currentNode.getRight());
+                    }
                     smallestChild.setLeft(currentNode.getLeft());
                 } else {
-                    if (isRight) {
-                        smallestChild.setRight(currentNode.getRight());
-                    } else {
-                        smallestChild.setLeft(currentNode.getLeft());
-                    }
+                    smallestChild.setLeft(currentNode.getLeft());
                 }
                 deleteNode(parentNode, smallestChild, isRight);
                 return true;

@@ -75,5 +75,34 @@ public class Main {
         System.out.println("Проверка обхода в ширину.");
         tree.treeWidthGoRound(printData);
         System.out.println();
+
+        System.out.println("Проверка блока кода с бесконечным циклом");
+        Tree<Integer> tree2 = new Tree<>();
+        tree2.insert(1);
+        tree2.insert(5);
+        tree2.insert(15);
+        tree2.insert(10);
+        tree2.insert(20);
+
+        tree2.treeWidthGoRound(System.out::println);
+        System.out.println();
+
+        tree2.delete(15);
+        tree2.treeWidthGoRound(System.out::println);
+        System.out.println();
+
+        System.out.println("Проверка удаления разных элементов:");
+        for (Integer i = 0; i < 24; i++) {
+            System.out.println("Удалим элемент: " + i);
+            System.out.println(tree.delete(i));
+            tree.recursionDeepGoRound(printData);
+            System.out.println(" Количество элементов дерева: " + tree.getSize());
+            System.out.println();
+            System.out.println();
+        }
+        System.out.println("проверка метода delete. Удалим элемент: null");
+        System.out.println(tree.delete(null));
+        tree.recursionDeepGoRound(printData);
+        System.out.println(" Количество элементов дерева: " + tree.getSize());
     }
 }
