@@ -41,19 +41,20 @@ public class Main {
         tree.insert(2);
         tree.insert(14);
         tree.insert(18);
-        tree.insert(null);
+        tree.insert(17);
+        tree.insert(19);
 
-        tree.recursionDeepGoRound(printData);
+        tree.treeWidthGoRound(printData);
         System.out.println();
 
         System.out.println("Проверка метода getSize.");
         System.out.println(tree.getSize());
         System.out.println();
 
-        Integer element = 5;
+        Integer element = 15;
         System.out.println("проверка метода delete. Удалим элемент: " + element);
         System.out.println(tree.delete(element));
-        tree.recursionDeepGoRound(printData);
+        tree.treeWidthGoRound(printData);
         System.out.println(" Количество элементов дерева: " + tree.getSize());
         System.out.println();
 
@@ -95,14 +96,14 @@ public class Main {
         for (Integer i = 0; i < 24; i++) {
             System.out.println("Удалим элемент: " + i);
             System.out.println(tree.delete(i));
-            tree.recursionDeepGoRound(printData);
+            tree.treeWidthGoRound(printData);
             System.out.println(" Количество элементов дерева: " + tree.getSize());
             System.out.println();
             System.out.println();
         }
         System.out.println("проверка метода delete. Удалим элемент: null");
         System.out.println(tree.delete(null));
-        tree.recursionDeepGoRound(printData);
+        tree.treeWidthGoRound(printData);
         System.out.println(" Количество элементов дерева: " + tree.getSize());
     }
 }

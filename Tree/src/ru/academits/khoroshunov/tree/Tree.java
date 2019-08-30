@@ -194,6 +194,9 @@ public class Tree<T> {
                     smallestChild.setLeft(currentNode.getLeft());
                 } else {
                     smallestChild.setLeft(currentNode.getLeft());
+                    if (currentNode.getRight() != smallestChild) {
+                        smallestChild.setRight(currentNode.getRight());
+                    }
                 }
                 deleteNode(parentNode, smallestChild, isRight);
                 return true;
