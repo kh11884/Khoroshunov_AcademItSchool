@@ -12,19 +12,20 @@ public class Graph {
         this.graph = graph;
     }
 
-    public void widthGoRound(Consumer method) {
+    public void widthGoRound(Consumer<Integer> method) {
         if (graph == null) {
             throw new NullPointerException("Метод вызван от пустого графа.");
         }
         Queue<Integer> queue = new LinkedList<>();
         boolean[] visited = new boolean[graph.length];
-        queue.add(0);
+        for (int i = 0; i < graph.length; i++) {
+            queue.add(i);
+        }
 
         while (!queue.isEmpty()) {
             int node = queue.remove();
             if (!visited[node]) {
                 visited[node] = true;
-                //noinspection unchecked
                 method.accept(node);
                 for (int i = 0; i < graph[node].length; i++) {
                     int value = graph[node][i];
@@ -36,19 +37,20 @@ public class Graph {
         }
     }
 
-    public void deepGoRound(Consumer method) {
+    public void deepGoRound(Consumer<Integer> method) {
         if (graph == null) {
             throw new NullPointerException("Метод вызван от пустого графа.");
         }
         Deque<Integer> stack = new LinkedList<>();
         boolean[] visited = new boolean[graph.length];
-        stack.add(0);
+        for (int i = 0; i < graph.length; i++) {
+            stack.addLast(i);
+        }
 
         while (!stack.isEmpty()) {
             int node = stack.removeLast();
             if (!visited[node]) {
                 visited[node] = true;
-                //noinspection unchecked
                 method.accept(node);
                 for (int i = 0; i < graph[node].length; i++) {
                     int value = graph[node][i];
@@ -60,21 +62,22 @@ public class Graph {
         }
     }
 
-    public void recursionDeepGoRound(Consumer method) {
+    public void recursionDeepGoRound(Consumer<Integer> method) {
         if (graph == null) {
             throw new NullPointerException("Метод вызван от пустого графа.");
         }
         boolean[] visited = new boolean[graph.length];
-        doRecursionDeepGoRound(0, visited, method);
+        for (int i = 0; i < graph.length; i++) {
+            doRecursionDeepGoRound(i, visited, method);
+        }
     }
 
-    private void doRecursionDeepGoRound(int node, boolean[] visited, Consumer method) {
+    private void doRecursionDeepGoRound(int node, boolean[] visited, Consumer<Integer> method) {
         if (visited[node]) {
             return;
         }
 
         visited[node] = true;
-        //noinspection unchecked
         method.accept(node);
 
         for (int i = node; i < graph[node].length; i++) {

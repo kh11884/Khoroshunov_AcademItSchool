@@ -20,9 +20,11 @@ public class Main {
         System.out.println("Проверка метода \"Обход в ширину\".");
         graph.widthGoRound(printData);
         System.out.println();
+        System.out.println();
 
         System.out.println("Проверка метода \"Обход в глубину\".");
         graph.deepGoRound(printData);
+        System.out.println();
         System.out.println();
 
         System.out.println("Проверка метода \"Обход в глубину с рекурсией\".");
