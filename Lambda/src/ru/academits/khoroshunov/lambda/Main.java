@@ -3,54 +3,74 @@ package ru.academits.khoroshunov.lambda;
 import ru.academits.khoroshunov.person.Person;
 
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-        List<Person> personList = Arrays.asList(new Person("Андрей", 40),
+        List<Person> personList = Arrays.asList(new Person("Андрей", 45),
                 new Person("Иван", 38),
                 new Person("Петр", 15),
                 new Person("Николай", 29),
-                new Person("Андрей", 13),
+                new Person("Андрей", 14),
                 new Person("Игорь", 35),
-                new Person("Андрей", 13),
-                new Person("Ольга", 14),
+                new Person("Ольга", 10),
+                new Person("Ольга", 13),
                 new Person("Сергей", 11),
                 new Person("Денис", 18));
 
-        //  А) получить список уникальных имен
+        System.out.println("Получаем и выводим уникальные имена.");
         //noinspection Convert2MethodRef
-        Stream<String> personsNames = personList.stream().map(person -> person.getName()).distinct();
-
-        // Б) вывести список уникальных имен
+        Stream<String> personsNames = personList.stream().
+                map(person -> person.getName()).
+                distinct();
         System.out.println(personsNames.collect(Collectors.joining(", ", "Имена: ", ".")));
         System.out.println();
 
-        // В) получить список людей младше 18, посчитать для них средний возраст
-        System.out.print("Средний возраст людей моложе 18 лет: ");
-        //noinspection Convert2MethodRef,OptionalGetWithoutIsPresent
-        System.out.println(personList.stream().filter(person -> person.getAge() < 18).mapToDouble(person -> person.getAge()).average().getAsDouble());
+        System.out.println("Получаем список людей моложе 18 лет и выводим для них средний возраст: ");
+        List<Person> under18YearsOldPerson = personList.stream().
+                filter(person -> person.getAge() < 18).
+                collect(Collectors.toList());
+        //noinspection Convert2MethodRef
+        System.out.println(under18YearsOldPerson.stream().
+                map(person -> person.getName()).
+                collect(Collectors.joining(", ")));
+        //noinspection Convert2MethodRef, OptionalGetWithoutIsPresent
+        System.out.println("Средний возраст: "
+                + under18YearsOldPerson.stream().
+                mapToDouble(person -> person.getAge()).
+                average()
+                .getAsDouble()
+                + " лет.");
         System.out.println();
 
-        // Г) при помощи группировки получить Map, в котором ключи – имена, а значения – средний возраст
-        //noinspection Convert2MethodRef
-//        Map<String, Double> personsByName = personList.stream().collect(Collectors.groupingBy(person -> person.getName(),personList.stream()
-//                ));
-//        Map<Integer, List<Person>> personsByAge = persons .stream().collect(Collectors.(p -> p.getAge()));
-//        System.out.println(personsByName);
+        System.out.println("При помощи группировки получаем Map, в котором ключи – имена, а значения – средний возраст.");
+        Map<String, Double> personsByName = personList.stream()
+                .collect(Collectors.groupingBy(Person::getName,
+                        Collectors.averagingInt(Person::getAge)));
+        System.out.println(personsByName);
 
+        System.out.println("Имена людей от 20 до 45 по убыванию возраста.");
+        //noinspection Convert2MethodRef
+        personList.stream()
+                .filter(age -> age.getAge() >= 20 && age.getAge() < 45)
+                .sorted((age1, age2) -> age2.getAge() - age1.getAge())
+                .map(name -> name.getName())
+                .forEach(System.out::println);
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите целое число - сколько элементов корней нужно вычислить: ");
         int sqrtQuantity = scanner.nextInt() + 1;
-        DoubleStream.iterate(0, x -> x + 1).map(Math::sqrt).limit(sqrtQuantity).forEach(System.out::println);
+        DoubleStream.iterate(0, x -> x + 1)
+                .map(Math::sqrt)
+                .limit(sqrtQuantity)
+                .forEach(System.out::println);
 
-        System.out.print("Введите целое число - сколько элементов чисел фибоначи нужно вычислить: ");
-        int fiboQuantity = scanner.nextInt() + 1;
-        Stream.iterate(new int[]{1, 1}, p -> new int[]{p[1], p[0] + p[1]}).limit(fiboQuantity).forEach(p -> System.out.println(p[0]));
+        System.out.print("Введите целое число - сколько элементов чисел фибоначчи нужно вычислить: ");
+        int fibonacciQuantity = scanner.nextInt();
+        Stream.iterate(new int[]{0, 1}, p -> new int[]{p[1], p[0] + p[1]})
+                .limit(fibonacciQuantity)
+                .forEach(p -> System.out.println(p[0]));
     }
-
 }
