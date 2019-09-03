@@ -22,33 +22,34 @@ public class Main {
 
         System.out.println("Получаем и выводим уникальные имена.");
         //noinspection Convert2MethodRef
-        Stream<String> personsNames = personList.stream().
-                map(person -> person.getName()).
-                distinct();
+        Stream<String> personsNames = personList.stream()
+                .map(person -> person.getName())
+                .distinct();
         System.out.println(personsNames.collect(Collectors.joining(", ", "Имена: ", ".")));
         System.out.println();
 
         System.out.println("Получаем список людей моложе 18 лет и выводим для них средний возраст: ");
-        List<Person> under18YearsOldPerson = personList.stream().
-                filter(person -> person.getAge() < 18).
-                collect(Collectors.toList());
+        List<Person> under18YearsOldPerson = personList.stream()
+                .filter(person -> person.getAge() < 18)
+                .collect(Collectors.toList());
         //noinspection Convert2MethodRef
-        System.out.println(under18YearsOldPerson.stream().
-                map(person -> person.getName()).
-                collect(Collectors.joining(", ")));
+        System.out.println(under18YearsOldPerson.stream()
+                .map(person -> person.getName())
+                .collect(Collectors.joining(", ")));
         //noinspection Convert2MethodRef, OptionalGetWithoutIsPresent
         System.out.println("Средний возраст: "
-                + under18YearsOldPerson.stream().
-                mapToDouble(person -> person.getAge()).
-                average()
+                + under18YearsOldPerson.stream()
+                .mapToDouble(person -> person.getAge())
+                .average()
                 .getAsDouble()
                 + " лет.");
         System.out.println();
 
         System.out.println("При помощи группировки получаем Map, в котором ключи – имена, а значения – средний возраст.");
         Map<String, Double> personsByName = personList.stream()
-                .collect(Collectors.groupingBy(Person::getName,
-                        Collectors.averagingInt(Person::getAge)));
+                .collect(Collectors
+                        .groupingBy(Person::getName, Collectors
+                                .averagingInt(Person::getAge)));
         System.out.println(personsByName);
 
         System.out.println("Имена людей от 20 до 45 по убыванию возраста.");
@@ -71,6 +72,7 @@ public class Main {
         int fibonacciQuantity = scanner.nextInt();
         Stream.iterate(new int[]{0, 1}, p -> new int[]{p[1], p[0] + p[1]})
                 .limit(fibonacciQuantity)
-                .forEach(p -> System.out.println(p[0]));
+                .map(p -> p[0])
+                .forEach(System.out::println);
     }
 }
