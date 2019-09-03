@@ -47,9 +47,7 @@ public class Main {
 
         System.out.println("При помощи группировки получаем Map, в котором ключи – имена, а значения – средний возраст.");
         Map<String, Double> personsByName = personList.stream()
-                .collect(Collectors
-                        .groupingBy(Person::getName, Collectors
-                                .averagingInt(Person::getAge)));
+                .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
         System.out.println(personsByName);
 
         System.out.println("Имена людей от 20 до 45 по убыванию возраста.");
@@ -71,8 +69,8 @@ public class Main {
         System.out.print("Введите целое число - сколько элементов чисел фибоначчи нужно вычислить: ");
         int fibonacciQuantity = scanner.nextInt();
         Stream.iterate(new int[]{0, 1}, p -> new int[]{p[1], p[0] + p[1]})
-                .limit(fibonacciQuantity)
                 .map(p -> p[0])
+                .limit(fibonacciQuantity)
                 .forEach(System.out::println);
     }
 }
