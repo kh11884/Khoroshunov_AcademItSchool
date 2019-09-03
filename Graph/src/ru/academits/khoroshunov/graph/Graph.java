@@ -20,21 +20,21 @@ public class Graph {
         Queue<Integer> queue = new LinkedList<>();
         boolean[] visited = new boolean[graph.length];
 
-        for (int k = 0; k < graph.length; k++) {
-            if (visited[k]) {
+        for (int i = 0; i < graph.length; i++) {
+            if (visited[i]) {
                 continue;
             }
-            queue.add(k);
+            queue.add(i);
 
             while (!queue.isEmpty()) {
                 int node = queue.remove();
                 if (!visited[node]) {
                     visited[node] = true;
                     method.accept(node);
-                    for (int i = 0; i < graph[node].length; i++) {
-                        int value = graph[node][i];
+                    for (int k = 0; k < graph[node].length; k++) {
+                        int value = graph[node][k];
                         if (value > 0) {
-                            queue.add(i);
+                            queue.add(k);
                         }
                     }
                 }
@@ -50,21 +50,21 @@ public class Graph {
         Deque<Integer> stack = new LinkedList<>();
         boolean[] visited = new boolean[graph.length];
 
-        for (int k = 0; k < graph.length; k++) {
-            if (visited[k]) {
+        for (int i = 0; i < graph.length; i++) {
+            if (visited[i]) {
                 continue;
             }
-            stack.addLast(k);
+            stack.addLast(i);
 
             while (!stack.isEmpty()) {
                 int node = stack.removeLast();
                 if (!visited[node]) {
                     visited[node] = true;
                     method.accept(node);
-                    for (int i = 0; i < graph[node].length; i++) {
-                        int value = graph[node][i];
+                    for (int k = graph[node].length - 1; k >= 0; k--) {
+                        int value = graph[node][k];
                         if (value > 0) {
-                            stack.add(i);
+                            stack.add(k);
                         }
                     }
                 }
