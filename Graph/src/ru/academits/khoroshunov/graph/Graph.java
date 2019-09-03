@@ -31,10 +31,10 @@ public class Graph {
                 if (!visited[node]) {
                     visited[node] = true;
                     method.accept(node);
-                    for (int k = 0; k < graph[node].length; k++) {
-                        int value = graph[node][k];
+                    for (int j = 0; j < graph[node].length; j++) {
+                        int value = graph[node][j];
                         if (value > 0) {
-                            queue.add(k);
+                            queue.add(j);
                         }
                     }
                 }
@@ -61,10 +61,10 @@ public class Graph {
                 if (!visited[node]) {
                     visited[node] = true;
                     method.accept(node);
-                    for (int k = graph[node].length - 1; k >= 0; k--) {
-                        int value = graph[node][k];
+                    for (int j = graph[node].length - 1; j >= 0; j--) {
+                        int value = graph[node][j];
                         if (value > 0) {
-                            stack.add(k);
+                            stack.addLast(j);
                         }
                     }
                 }
