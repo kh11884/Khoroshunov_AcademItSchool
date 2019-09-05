@@ -10,39 +10,38 @@ public class Main {
         String scaleIn = (String) TemperatureConverterFrame.getComboBoxIn().getSelectedItem();
         String scaleOut = (String) TemperatureConverterFrame.getComboBoxOut().getSelectedItem();
         String textIn = TemperatureConverterFrame.getValueIn().getText();
-        double valueIn;
+        double valueIn = 0;
 
-        if (textIn != null && !textIn.equals("")) {
+        try {
             valueIn = Double.parseDouble(textIn);
-        } else {
-            valueIn = 0;
+        } catch (NumberFormatException e) {
             TemperatureConverterFrame.setValueIn("0.0");
         }
 
-        double result = 0;
-        if (scaleIn == null || scaleOut == null) {
-            return;
-        }
-        System.out.println("КомбоБокс ввод: " + scaleIn);
-        System.out.println("КомбоБокс вывод: " + scaleOut);
-
-        if (scaleIn.equals("цельсия") && scaleOut.equals("кельвина")) {
-            result = TemperatureCalculator.celsiusToKalvin(valueIn);
-        }
-        if (scaleIn.equals("цельсия") && scaleOut.equals("фаренгейта")) {
-            result = TemperatureCalculator.celsiusToFahrenheit(valueIn);
-        }
-        if (scaleIn.equals("кельвина") && scaleOut.equals("цельсия")) {
-            result = TemperatureCalculator.kalvinToCelsius(valueIn);
-        }
-        if (scaleIn.equals("кельвина") && scaleOut.equals("фаренгейта")) {
-            result = TemperatureCalculator.kalvinToFahrenheit(valueIn);
-        }
-        if (scaleIn.equals("фаренгейта") && scaleOut.equals("кельвина")) {
-            result = TemperatureCalculator.fahrenheitToKalvin(valueIn);
-        }
-        if (scaleIn.equals("фаренгейта") && scaleOut.equals("цельсия")) {
-            result = TemperatureCalculator.fahrenheitToCelsius(valueIn);
+        String switchValue = scaleIn + "-" + scaleOut;
+        double result;
+        switch (switchValue) {
+            case ("цельсия-кельвина"):
+                result = TemperatureCalculator.celsiusToKalvin(valueIn);
+                break;
+            case ("цельсия-фаренгейта"):
+                result = TemperatureCalculator.celsiusToFahrenheit(valueIn);
+                break;
+            case ("кельвина-цельсия"):
+                result = TemperatureCalculator.kalvinToCelsius(valueIn);
+                break;
+            case ("кельвина-фаренгейта"):
+                result = TemperatureCalculator.kalvinToFahrenheit(valueIn);
+                break;
+            case ("фаренгейта-кельвина"):
+                result = TemperatureCalculator.fahrenheitToKalvin(valueIn);
+                break;
+            case ("фаренгейта-цельсия"):
+                result = TemperatureCalculator.fahrenheitToCelsius(valueIn);
+                break;
+            default:
+                result = valueIn;
+                break;
         }
         TemperatureConverterFrame.setResult(result);
     }
