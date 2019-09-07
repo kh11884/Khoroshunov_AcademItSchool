@@ -1,6 +1,6 @@
 package view;
 
-import model.ScaleEnum;
+import model.Scales;
 import model.TemperatureCalculator;
 
 import javax.swing.*;
@@ -9,18 +9,18 @@ import java.awt.*;
 public class TemperatureConverterFrame {
     private JTextField valueIn;
     private JTextField result;
-    private JComboBox<ScaleEnum> comboBoxIn;
-    private JComboBox<ScaleEnum> comboBoxOut;
+    private JComboBox<Scales> comboBoxIn;
+    private JComboBox<Scales> comboBoxOut;
 
     public void setResult(double result) {
         this.result.setText(String.format("%.3f", result));
     }
 
-    public JComboBox<ScaleEnum> getComboBoxIn() {
+    public JComboBox<Scales> getComboBoxIn() {
         return comboBoxIn;
     }
 
-    public JComboBox<ScaleEnum> getComboBoxOut() {
+    public JComboBox<Scales> getComboBoxOut() {
         return comboBoxOut;
     }
 
@@ -118,10 +118,10 @@ public class TemperatureConverterFrame {
         JLabel label5 = new JLabel("Результат");
         panel.add(label5, cell_1_3);
 
-        comboBoxIn = new JComboBox<>(ScaleEnum.values());
+        comboBoxIn = new JComboBox<>(Scales.values());
         panel.add(comboBoxIn, cell_0_2);
 
-        comboBoxOut = new JComboBox<>(ScaleEnum.values());
+        comboBoxOut = new JComboBox<>(Scales.values());
         panel.add(comboBoxOut, cell_1_2);
 
         valueIn = new JTextField("", 10);

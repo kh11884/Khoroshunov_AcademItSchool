@@ -1,6 +1,6 @@
 package model;
 
-public enum ScaleEnum {
+public enum Scales {
     KELVIN("кельвина") {
         @Override
         public double getCurrentValue(double value) {
@@ -37,7 +37,7 @@ public enum ScaleEnum {
 
     private final String name;
 
-    ScaleEnum(String name) {
+    Scales(String name) {
         this.name = name;
     }
 
