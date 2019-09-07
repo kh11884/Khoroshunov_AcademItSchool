@@ -1,37 +1,38 @@
 package view;
 
-import main.Main;
+import model.ScaleEnum;
+import model.TemperatureCalculator;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class TemperatureConverterFrame {
-    private static JTextField valueIn;
-    private static JTextField result;
-    private static JComboBox<String> comboBoxIn;
-    private static JComboBox<String> comboBoxOut;
+    private JTextField valueIn;
+    private JTextField result;
+    private JComboBox<ScaleEnum> comboBoxIn;
+    private JComboBox<ScaleEnum> comboBoxOut;
 
-    public static void setResult(double result) {
-        TemperatureConverterFrame.result.setText(String.format("%.3f", result));
+    public void setResult(double result) {
+        this.result.setText(String.format("%.3f", result));
     }
 
-    public static JComboBox<String> getComboBoxIn() {
+    public JComboBox<ScaleEnum> getComboBoxIn() {
         return comboBoxIn;
     }
 
-    public static JComboBox<String> getComboBoxOut() {
+    public JComboBox<ScaleEnum> getComboBoxOut() {
         return comboBoxOut;
     }
 
-    public static JTextField getValueIn() {
+    public JTextField getValueIn() {
         return valueIn;
     }
 
-    public static void setValueIn(String valueIn) {
-        TemperatureConverterFrame.valueIn.setText(valueIn);
+    public void setValueIn(String valueIn) {
+        this.valueIn.setText(valueIn);
     }
 
-    public static void createFrame() {
+    public void createFrame() {
         JFrame frame = new JFrame("Конвертер температур");
         frame.setSize(320, 260);
         frame.setResizable(false);
@@ -117,16 +118,10 @@ public class TemperatureConverterFrame {
         JLabel label5 = new JLabel("Результат");
         panel.add(label5, cell_1_3);
 
-        String[] scales = {
-                "цельсия",
-                "фаренгейта",
-                "кельвина"
-        };
-
-        comboBoxIn = new JComboBox<>(scales);
+        comboBoxIn = new JComboBox<>(ScaleEnum.values());
         panel.add(comboBoxIn, cell_0_2);
 
-        comboBoxOut = new JComboBox<>(scales);
+        comboBoxOut = new JComboBox<>(ScaleEnum.values());
         panel.add(comboBoxOut, cell_1_2);
 
         valueIn = new JTextField("", 10);
@@ -137,7 +132,7 @@ public class TemperatureConverterFrame {
         panel.add(result, cell_1_4);
 
         JButton calcButton = new JButton("Рассчитать");
-        calcButton.addActionListener(e -> Main.calc());
+        calcButton.addActionListener(e -> TemperatureCalculator.calc(this));
         panel.add(calcButton, cell_0_5);
 
         JButton closeButton = new JButton("Закрыть");
