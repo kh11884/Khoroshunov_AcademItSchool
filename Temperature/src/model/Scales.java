@@ -3,8 +3,8 @@ package model;
 public enum Scales {
     KELVIN("кельвина") {
         @Override
-        public double getCurrentValue(double value) {
-            return value + 273.15;
+        public double getCurrentScaleValue(double celsiusValue) {
+            return celsiusValue + 273.15;
         }
 
         @Override
@@ -14,8 +14,8 @@ public enum Scales {
     },
     CELSIUS("цельсия") {
         @Override
-        public double getCurrentValue(double value) {
-            return value;
+        public double getCurrentScaleValue(double celsiusValue) {
+            return celsiusValue;
         }
 
         @Override
@@ -23,10 +23,10 @@ public enum Scales {
             return value;
         }
     },
-    FAHRENHEIT("фанергейта") {
+    FAHRENHEIT("фаренгейта") {
         @Override
-        public double getCurrentValue(double value) {
-            return value * 1.8 + 32;
+        public double getCurrentScaleValue(double celsiusValue) {
+            return celsiusValue * 1.8 + 32;
         }
 
         @Override
@@ -46,7 +46,7 @@ public enum Scales {
         return name;
     }
 
-    public abstract double getCurrentValue(double value);
+    public abstract double getCurrentScaleValue(double celsiusValue);
 
     public abstract double getCelsiusValue(double value);
 }

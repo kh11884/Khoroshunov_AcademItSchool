@@ -12,24 +12,24 @@ public class TemperatureConverterFrame {
     private JComboBox<Scales> comboBoxIn;
     private JComboBox<Scales> comboBoxOut;
 
-    public void setResult(double result) {
+    private void setResult(double result) {
         this.result.setText(String.format("%.3f", result));
     }
 
-    public JComboBox<Scales> getComboBoxIn() {
+    private JComboBox<Scales> getComboBoxIn() {
         return comboBoxIn;
     }
 
-    public JComboBox<Scales> getComboBoxOut() {
+    private JComboBox<Scales> getComboBoxOut() {
         return comboBoxOut;
     }
 
-    public JTextField getValueIn() {
+    private JTextField getValueIn() {
         return valueIn;
     }
 
-    public void setValueIn(String valueIn) {
-        this.valueIn.setText(valueIn);
+    private void setInZeroValue() {
+        this.valueIn.setText("0.0");
     }
 
     public void createFrame() {
@@ -132,12 +132,30 @@ public class TemperatureConverterFrame {
         panel.add(result, cell_1_4);
 
         JButton calcButton = new JButton("Рассчитать");
-        calcButton.addActionListener(e -> TemperatureCalculator.calc(this));
+        calcButton.addActionListener(e -> calc());
         panel.add(calcButton, cell_0_5);
 
         JButton closeButton = new JButton("Закрыть");
         closeButton.addActionListener(e -> frame.dispose());
         panel.add(closeButton, cell_1_5);
+    }
+
+    private void calc() {
+        String textIn = getValueIn().getText();
+        double valueIn = 0;
+
+        try {
+            valueIn = Double.parseDouble(textIn);
+        } catch (NumberFormatException e) {
+            setInZeroValue();
+        }
+
+        Scales scaleIn = (Scales) getComboBoxIn().getSelectedItem();
+        Scales scaleOut = (Scales) getComboBoxOut().getSelectedItem();
+
+        double degreesOut = TemperatureCalculator.getOutScaleValue(scaleIn, scaleOut, valueIn);
+
+        setResult(degreesOut);
     }
 }
 
