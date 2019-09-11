@@ -1,6 +1,6 @@
 package main;
 
-import view.MineField;
+import gui.MineField;
 
 import javax.swing.*;
 

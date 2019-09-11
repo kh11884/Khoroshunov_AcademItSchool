@@ -1,4 +1,4 @@
-package view;
+package gui;
 
 import model.Scales;
 import model.TemperatureCalculator;
@@ -37,7 +37,7 @@ public class TemperatureConverterFrame {
         frame.setSize(320, 260);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("./Temperature/src/view/image/icon.jpg");
+        ImageIcon icon = new ImageIcon("./Temperature/src/gui/image/icon.jpg");
         frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);

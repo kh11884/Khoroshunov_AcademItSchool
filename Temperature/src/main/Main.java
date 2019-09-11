@@ -1,6 +1,6 @@
 package main;
 
-import view.TemperatureConverterFrame;
+import gui.TemperatureConverterFrame;
 
 import javax.swing.*;
 
