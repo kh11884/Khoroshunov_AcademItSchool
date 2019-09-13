@@ -56,7 +56,7 @@ public class MineField {
         ButtonsField buttonsField = new ButtonsField(weight, height);
 
 
-        ImageIcon bomb = new ImageIcon("C:\\Users\\User\\IdeaProjects\\Khoroshunov_AcademItSchool_new\\MinesweeperUI\\src\\resources\\mines_icon.jpg");
+        ImageIcon bomb = new ImageIcon(".\\MinesweeperUI\\src\\resources\\mines_icon.jpg");
 
         for (int i = 0; i < buttonsField.getHeigth(); i++) {
             for (int j = 0; j < buttonsField.getWidth(); j++) {
@@ -70,15 +70,7 @@ public class MineField {
                     buttonText = String.valueOf(buttonValue);
                 }
 
-
-//                    if (buttonText.equals("9")) {
-//                        button.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
-//
-//                    } else {
-//                        button.setText(buttonText);
-//                    }
-
-                ImageIcon imageFlag = new ImageIcon("C:\\Users\\User\\IdeaProjects\\Khoroshunov_AcademItSchool_new\\MinesweeperUI\\src\\resources\\flag.jpg");
+                ImageIcon imageFlag = new ImageIcon(".\\MinesweeperUI\\src\\resources\\flag.jpg");
                 Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
                 button.addMouseListener(new MouseListener() {
                     @Override

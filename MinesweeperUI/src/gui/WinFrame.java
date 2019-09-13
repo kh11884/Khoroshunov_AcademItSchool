@@ -3,10 +3,10 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-class FaultFrame {
+class WinFrame {
 
-    static void createFaultFrame() {
-        JFrame faultFrame = new JFrame("Вы проиграли");
+    static void createWinFrame() {
+        JFrame faultFrame = new JFrame("Вы выйграли!");
         faultFrame.setSize(300, 200);
         faultFrame.setResizable(false);
         faultFrame.setLocationByPlatform(true);
@@ -18,11 +18,8 @@ class FaultFrame {
         JPanel panel = new JPanel(new GridLayout(2, 1, 1, 1));
         faultFrame.add(panel);
 
-        ImageIcon winImage = new ImageIcon(".\\MinesweeperUI\\src\\resources\\flag.jpg");
-        Icon winIcon = new ImageIcon(winImage.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
-
-        panel.add(new Label("Вы програли!"));
-        panel.add(new Label("Вы програли!"));
+        panel.add(new Label("Вы выйграли!"));
+        panel.add(new Label("Вы выйграли!"));
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
