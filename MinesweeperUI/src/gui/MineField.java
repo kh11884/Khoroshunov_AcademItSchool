@@ -65,7 +65,7 @@ public class MineField {
                     buttonText = String.valueOf(buttonValue);
                 }
 
-                button.addMouseListener(new FieldButtonClick(frame, button, buttonText));
+                button.addMouseListener(new FieldButtonClick(frame, button, j, i, buttonText));
                 panel.add(button);
             }
         }

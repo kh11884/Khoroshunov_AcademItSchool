@@ -7,6 +7,7 @@ import java.awt.*;
 class WinFrame {
 
     static void createWinFrame(JFrame frame) {
+        frame.setEnabled(false);
         JFrame faultFrame = new JFrame("Вы выйграли");
         faultFrame.setSize(300, 200);
         faultFrame.setResizable(false);

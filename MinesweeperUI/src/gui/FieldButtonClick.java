@@ -10,11 +10,15 @@ public class FieldButtonClick implements MouseListener {
     private JFrame frame;
     private JButton button;
     private String text;
+    private int posX;
+    private int posY;
 
-    public FieldButtonClick(JFrame frame, JButton button, String text) {
+    public FieldButtonClick(JFrame frame, JButton button, int posX, int posY, String text) {
         this.frame = frame;
         this.button = button;
         this.text = text;
+        this.posX = posX;
+        this.posY = posY;
     }
 
     @Override
@@ -29,6 +33,8 @@ public class FieldButtonClick implements MouseListener {
                 FaultFrame.createFaultFrame(frame);
             } else {
                 button.setText(text);
+                System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
+               //reveal(button.getX(), button.getY());
             }
         }
 
@@ -62,5 +68,25 @@ public class FieldButtonClick implements MouseListener {
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    void reveal(int x, int y){
+        if(outBounds(x,y))return;
+        //if(revealed[x][y])return;
+        button.setContentAreaFilled(false);
+        button.setText(text);
+        //if(calcNear(x,y)!=0)return;
+        reveal(x-1,y-1);
+        reveal(x-1,y+1);
+        reveal(x+1,y-1);
+        reveal(x+1,y+1);
+        reveal(x-1,y);
+        reveal(x+1,y);
+        reveal(x,y-1);
+        reveal(x,y+1);
+    }
+
+    private boolean outBounds(int x, int y) {
+        return x < 0 || x > 8 || y < 0 || y > 8;
     }
 }

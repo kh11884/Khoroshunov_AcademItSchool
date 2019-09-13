@@ -15,7 +15,7 @@ public class ButtonsField {
         buttonsField = new CellButton[height][width];
         for(int i = 0; i < height; i++){
             for(int j = 0; j< width; j++){
-                buttonsField[i][j] = new CellButton();
+                buttonsField[i][j] = new CellButton(j, i);
             }
         }
     }
