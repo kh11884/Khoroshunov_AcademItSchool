@@ -30,6 +30,10 @@ public class MineField {
 
         JButton newGameButton = new JButton("новая игра");
         newGameButton.setPreferredSize(dimension);
+        newGameButton.addActionListener(e -> {
+            frame.dispose();
+            MineField.createMineField();
+        });
         leftPanel.add(newGameButton);
 
         JButton aboutButton = new JButton("около");
@@ -65,7 +69,7 @@ public class MineField {
                     buttonText = String.valueOf(buttonValue);
                 }
 
-                button.addMouseListener(new FieldButtonClick(frame, button, j, i, buttonText));
+                button.addMouseListener(new FieldButtonClick(frame, buttonsField, button, j, i, buttonText));
                 panel.add(button);
             }
         }

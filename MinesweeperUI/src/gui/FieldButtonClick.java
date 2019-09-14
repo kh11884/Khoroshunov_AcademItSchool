@@ -1,5 +1,7 @@
 package gui;
 
+import model.MinesFieldTable;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -12,13 +14,15 @@ public class FieldButtonClick implements MouseListener {
     private String text;
     private int posX;
     private int posY;
+    private ButtonsField buttonsField;
 
-    public FieldButtonClick(JFrame frame, JButton button, int posX, int posY, String text) {
+    public FieldButtonClick(JFrame frame, ButtonsField buttonsField, JButton button, int posX, int posY, String text) {
         this.frame = frame;
         this.button = button;
         this.text = text;
         this.posX = posX;
         this.posY = posY;
+        this.buttonsField = buttonsField;
     }
 
     @Override
@@ -33,8 +37,8 @@ public class FieldButtonClick implements MouseListener {
                 FaultFrame.createFaultFrame(frame);
             } else {
                 button.setText(text);
-                System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
-               //reveal(button.getX(), button.getY());
+//                System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
+//                reveal(button.getX(), button.getY());
             }
         }
 
@@ -70,20 +74,22 @@ public class FieldButtonClick implements MouseListener {
 
     }
 
-    void reveal(int x, int y){
-        if(outBounds(x,y))return;
+    void reveal(int x, int y) {
+        if (outBounds(x, y)) return;
         //if(revealed[x][y])return;
+        JButton button = buttonsField.getButton(x, y);
         button.setContentAreaFilled(false);
         button.setText(text);
         //if(calcNear(x,y)!=0)return;
-        reveal(x-1,y-1);
-        reveal(x-1,y+1);
-        reveal(x+1,y-1);
-        reveal(x+1,y+1);
-        reveal(x-1,y);
-        reveal(x+1,y);
-        reveal(x,y-1);
-        reveal(x,y+1);
+        reveal(x + 1, y + 1);
+        reveal(x - 1, y - 1);
+        reveal(x - 1, y + 1);
+        reveal(x + 1, y - 1);
+
+        reveal(x - 1, y);
+        reveal(x + 1, y);
+        reveal(x, y - 1);
+        reveal(x, y + 1);
     }
 
     private boolean outBounds(int x, int y) {
