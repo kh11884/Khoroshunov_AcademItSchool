@@ -16,7 +16,7 @@ public class MineField {
         recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(650, 360);
+        frame.setSize(45 * weight + 250, 45 * height);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -46,16 +46,16 @@ public class MineField {
         JButton highScoresSButton = new JButton("Таблица рекордов");
         highScoresSButton.setPreferredSize(dimension);
         highScoresSButton.addActionListener(e -> {
-                        RecordFrame.createRecordFrame();
+            RecordFrame.createRecordFrame();
         });
         leftPanel.add(highScoresSButton);
 
         secondRest = new AtomicInteger(6000);
         JTextArea timeRest = new JTextArea();
         timer = new Timer(100, e -> {
-            double timerValue = (double)secondRest.getAndDecrement()/10;
+            double timerValue = (double) secondRest.getAndDecrement() / 10;
             timeRest.setText("Осталось " + timerValue + " секунд.");
-            if(0 == secondRest.get()){
+            if (0 == secondRest.get()) {
                 FaultFrame.createFaultFrame();
             }
         });

@@ -4,14 +4,14 @@ public class MinesFieldTable {
     private int[][] minesField;
 
     public MinesFieldTable(int minesQuantity, int column, int row) {
-        minesField = new int[column][row];
+        minesField = new int[row][column];
         int minesRest = minesQuantity;
 
         do {
             int randomRow = (int) Math.round(Math.random() * (row - 1));
             int randomColumn = (int) Math.round(Math.random() * (column - 1));
 
-            if (minesField[randomColumn][randomRow] != 0) {
+            if (minesField[randomRow][randomColumn] != 0) {
                 continue;
             }
             minesField[randomRow][randomColumn] = 9;
