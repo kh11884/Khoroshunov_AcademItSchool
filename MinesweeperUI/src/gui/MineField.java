@@ -4,8 +4,6 @@ import model.RecordTable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MineField {
@@ -14,14 +12,11 @@ public class MineField {
     public static RecordTable recordTable;
     static AtomicInteger secondRest;
 
-    public static void createMineField() {
-        int height = 9;
-        int weight = 9;
-        int minesQuantity = 1;
-        recordTable = new RecordTable("простой");
+    public static void createMineField(int height, int weight, int minesQuantity, String level) {
+        recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(660, 480);
+        frame.setSize(650, 360);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -40,7 +35,7 @@ public class MineField {
         newGameButton.setPreferredSize(dimension);
         newGameButton.addActionListener(e -> {
             frame.dispose();
-            MineField.createMineField();
+            StartFrame.createStartFrame();
         });
         leftPanel.add(newGameButton);
 
@@ -65,7 +60,6 @@ public class MineField {
             }
         });
         timer.start();
-
         leftPanel.add(timeRest);
 
         leftPanel.add(new Label());
@@ -89,5 +83,4 @@ public class MineField {
             }
         }
     }
-
 }

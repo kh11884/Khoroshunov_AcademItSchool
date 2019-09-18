@@ -16,16 +16,11 @@ public class RecordTable {
             while (stream.available() > 0) {
                 double record = stream.readDouble();
                 recordTable.add(record);
-                System.out.println(record);
             }
-
-            System.out.println(recordTable.toString());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 
     public ArrayList<Double> getRecordTable() {
         return recordTable;
@@ -36,9 +31,7 @@ public class RecordTable {
     }
 
     public void addNewRecord(double result) {
-        System.out.println(result);
         for (int i = 0; i < 10; i++) {
-            System.out.println();
             if (recordTable.size() == 0) {
                 recordTable.add(result);
                 break;
@@ -59,7 +52,6 @@ public class RecordTable {
         try (DataOutputStream stream =
                      new DataOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\easy.txt"))) {
             for (double record : MineField.recordTable.getRecordTable()) {
-                System.out.println(record);
                 stream.writeDouble(record);
             }
 

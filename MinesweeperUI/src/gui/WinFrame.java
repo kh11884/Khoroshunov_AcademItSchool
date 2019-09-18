@@ -12,12 +12,19 @@ class WinFrame {
         JFrame winFrame = new JFrame("Вы выйграли");
         winFrame.setSize(300, 200);
         winFrame.setResizable(false);
-        //frame.setLocationRelativeTo(null);
         winFrame.setLocationByPlatform(true);
         ImageIcon icon = new ImageIcon("./MinesweeperUI/src/resources/Minesweeper_icon.jpg");
         winFrame.setIconImage(icon.getImage());
-        winFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        winFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         winFrame.setVisible(true);
+
+        winFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                MineField.frame.setVisible(true);
+                MineField.frame.setEnabled(true);
+            }
+        });
 
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -37,9 +44,8 @@ class WinFrame {
         exitButton.addActionListener(e -> {
             MineField.frame.dispose();
             winFrame.dispose();
-            MineField.createMineField();
+            StartFrame.createStartFrame();
         });
         panel.add(exitButton);
-
     }
 }

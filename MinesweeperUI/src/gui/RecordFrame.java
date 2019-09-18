@@ -2,21 +2,28 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
-public class RecordFrame {
+ class RecordFrame {
     static void createRecordFrame() {
         MineField.timer.stop();
         MineField.frame.setEnabled(false);
         JFrame recordFrame = new JFrame("Таблица рекордов");
         recordFrame.setSize(200, 400);
         recordFrame.setResizable(false);
-        //frame.setLocationRelativeTo(null);
         recordFrame.setLocationByPlatform(true);
         ImageIcon icon = new ImageIcon("./MinesweeperUI/src/resources/Minesweeper_icon.jpg");
         recordFrame.setIconImage(icon.getImage());
         recordFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         recordFrame.setVisible(true);
+
+        recordFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                MineField.frame.setVisible(true);
+                MineField.frame.setEnabled(true);
+                MineField.timer.start();
+            }
+        });
 
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -28,7 +35,7 @@ public class RecordFrame {
         for (int i = 0; i < 10 ; i++) {
             String labelText;
             if(i < MineField.recordTable.getRecordTable().size()){
-                labelText = "1 место - " + MineField.recordTable.getRecordTable().get(i) + " секунд";
+                labelText = i + 1 + " место - " + MineField.recordTable.getRecordTable().get(i) + " секунд";
             } else {
                 labelText = "";
             }

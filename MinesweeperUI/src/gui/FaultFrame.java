@@ -11,13 +11,20 @@ class FaultFrame {
         JFrame faultFrame = new JFrame("Вы проиграли");
         faultFrame.setSize(300, 200);
         faultFrame.setResizable(false);
-        //frame.setLocationRelativeTo(null);
         faultFrame.setLocationByPlatform(true);
         ImageIcon icon = new ImageIcon("./MinesweeperUI/src/resources/Minesweeper_icon.jpg");
         faultFrame.setIconImage(icon.getImage());
         faultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         faultFrame.setVisible(true);
         faultFrame.setAlwaysOnTop(true);
+
+        faultFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                MineField.frame.setVisible(true);
+                MineField.frame.setEnabled(true);
+            }
+        });
 
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
@@ -34,7 +41,7 @@ class FaultFrame {
         exitButton.addActionListener(e -> {
             MineField.frame.dispose();
             faultFrame.dispose();
-            MineField.createMineField();
+            StartFrame.createStartFrame();
         });
         panel.add(exitButton);
     }
