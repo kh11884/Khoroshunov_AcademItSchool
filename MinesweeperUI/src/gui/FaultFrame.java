@@ -5,8 +5,8 @@ import java.awt.*;
 
 class FaultFrame {
 
-    static void createFaultFrame(JFrame frame) {
-        frame.setEnabled(false);
+    static void createFaultFrame() {
+        MineField.frame.setEnabled(false);
         JFrame faultFrame = new JFrame("Вы проиграли");
         faultFrame.setSize(300, 200);
         faultFrame.setResizable(false);
@@ -28,11 +28,10 @@ class FaultFrame {
         ImageIcon winIcon = new ImageIcon(".\\MinesweeperUI\\src\\resources\\explosion.jpg");
         label.setIcon(new ImageIcon(winIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
         panel.add(label);
-        //panel.add(new Label());
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
-            frame.dispose();
+            MineField.frame.dispose();
             faultFrame.dispose();
             MineField.createMineField();
         });

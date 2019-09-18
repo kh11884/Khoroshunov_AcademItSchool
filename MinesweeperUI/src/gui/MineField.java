@@ -6,13 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MineField {
+    static JFrame frame;
 
     public static void createMineField() {
         int height = 9;
         int weight = 9;
         int minesQuantity = 10;
 
-        JFrame frame = new JFrame("Сапер");
+        frame = new JFrame("Сапер");
         frame.setSize(640, 480);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
@@ -36,7 +37,7 @@ public class MineField {
         });
         leftPanel.add(newGameButton);
 
-        JButton aboutButton = new JButton("около");
+        JButton aboutButton = new JButton("About");
         aboutButton.setPreferredSize(dimension);
         leftPanel.add(aboutButton);
 
@@ -53,25 +54,14 @@ public class MineField {
         JPanel panel = new JPanel(new GridLayout(height, weight, 1, 1));
         frame.add(panel);
 
-        MinesFieldTable minesFieldTable = new MinesFieldTable(minesQuantity, weight, height);
-
         ButtonsField buttonsField = new ButtonsField(weight, height);
 
-        for (int i = 0; i < buttonsField.getHeigth(); i++) {
-            for (int j = 0; j < buttonsField.getWidth(); j++) {
-                JButton button = buttonsField.getButton(j, i);
-
-                String buttonText;
-                int buttonValue = minesFieldTable.getCellValue(j, i);
-                if (buttonValue == 0) {
-                    buttonText = "";
-                } else {
-                    buttonText = String.valueOf(buttonValue);
-                }
-
-                button.addMouseListener(new FieldButtonClick(frame, buttonsField, button, j, i, buttonText));
+        for (int y = 0; y < buttonsField.getHeight(); y++) {
+            for (int x = 0; x < buttonsField.getWidth(); x++) {
+                JButton button = buttonsField.getButton(x, y);
                 panel.add(button);
             }
         }
     }
+
 }

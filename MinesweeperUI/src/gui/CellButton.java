@@ -6,11 +6,17 @@ public class CellButton {
     private JButton button = new JButton();
     private int posX;
     private int posY;
+    private String value;
 
 
-    public CellButton(int posX, int posY){
-        this.posX=posX;
-        this.posY=posY;
+    public String getValue() {
+        return value;
+    }
+
+    CellButton(int posX, int posY, String value) {
+        this.posX = posX;
+        this.posY = posY;
+        this.value = value;
     }
 
     public int getPosX() {
@@ -36,7 +42,7 @@ public class CellButton {
         return button;
     }
 
-    public void setText(String text){
+    public void setText(String text) {
         button.setText(text);
     }
 }

@@ -34,7 +34,7 @@ public class FieldButtonClick implements MouseListener {
             button.setContentAreaFilled(false);
             if (text.equals("9")) {
                 button.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
-                FaultFrame.createFaultFrame(frame);
+                FaultFrame.createFaultFrame();
             } else {
                 button.setText(text);
 //                System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
@@ -74,25 +74,5 @@ public class FieldButtonClick implements MouseListener {
 
     }
 
-    void reveal(int x, int y) {
-        if (outBounds(x, y)) return;
-        //if(revealed[x][y])return;
-        JButton button = buttonsField.getButton(x, y);
-        button.setContentAreaFilled(false);
-        button.setText(text);
-        //if(calcNear(x,y)!=0)return;
-        reveal(x + 1, y + 1);
-        reveal(x - 1, y - 1);
-        reveal(x - 1, y + 1);
-        reveal(x + 1, y - 1);
 
-        reveal(x - 1, y);
-        reveal(x + 1, y);
-        reveal(x, y - 1);
-        reveal(x, y + 1);
-    }
-
-    private boolean outBounds(int x, int y) {
-        return x < 0 || x > 8 || y < 0 || y > 8;
-    }
 }
