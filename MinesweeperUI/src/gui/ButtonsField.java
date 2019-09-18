@@ -10,17 +10,22 @@ import java.awt.event.MouseListener;
 public class ButtonsField {
     private int width;
     private int height;
+    private int minesQuantity;
     private CellButton[][] buttonsField;
     private boolean[][] revealed;
+    private int unRevealedCellsQuantity;
+    private int flagsQuantity;
 
-    public ButtonsField(int width, int height) {
+    public ButtonsField(int width, int height, int minesQuantity) {
         this.width = width;
         this.height = height;
+        this.minesQuantity = minesQuantity;
+        unRevealedCellsQuantity = width * height;
         buttonsField = new CellButton[height][width];
-        revealed = new boolean [height][width];
-        MinesFieldTable minesFieldTable = new MinesFieldTable(10, width, height);
-        for(int y = 0; y < height; y++){
-            for(int x = 0; x< width; x++){
+        revealed = new boolean[height][width];
+        MinesFieldTable minesFieldTable = new MinesFieldTable(minesQuantity, width, height);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 String cellValue = String.valueOf(minesFieldTable.getCellValue(y, x));
                 buttonsField[y][x] = new CellButton(x, y, cellValue);
                 buttonsField[y][x].getButton().addMouseListener(new MouseClicker(x, y));
@@ -41,23 +46,23 @@ public class ButtonsField {
         public void mouseClicked(MouseEvent e) {
             ImageIcon bomb = new ImageIcon(".\\MinesweeperUI\\src\\resources\\mines_icon.jpg");
             JButton button = buttonsField[posY][posX].getButton();
-            String value =  buttonsField[posY][posX].getValue();
-
+            String value = buttonsField[posY][posX].getValue();
             if (e.getButton() == MouseEvent.BUTTON1) {
 
                 if (value.equals("9")) {
                     button.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
                     FaultFrame.createFaultFrame();
                 } else {
-                    if(value.equals("0")){
+                    if (value.equals("0")) {
                         button.setText("");
                         reveal(posX, posY);
-                    }else {
+                    } else {
                         button.setContentAreaFilled(false);
+                        unRevealedCellsQuantity--;
+
                         button.setText(value);
                     }
-                System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
-
+   //                 System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
                 }
             }
 
@@ -65,11 +70,20 @@ public class ButtonsField {
             Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
 
             if (e.getButton() == MouseEvent.BUTTON3) {
-                if (button.getIcon() == null) {
-                    button.setIcon(flag);
-                } else {
-                    button.setIcon(null);
+                if(!revealed[posY][posX]) {
+                    if (button.getIcon() == null) {
+                        button.setIcon(flag);
+                        flagsQuantity++;
+                    } else {
+                        button.setIcon(null);
+                        flagsQuantity--;
+                    }
                 }
+            }
+            //System.out.println(flagsQuantity);
+            if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
+                MineField.recordTable.addNewRecord(MineField.secondRest.get());
+                WinFrame.createWinFrame();
             }
         }
 
@@ -94,10 +108,6 @@ public class ButtonsField {
         }
     }
 
-    public CellButton[][] getButtonsField() {
-        return buttonsField;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -106,23 +116,25 @@ public class ButtonsField {
         return height;
     }
 
-    public JButton getButton(int indexWidth, int indexHeight){
+    public JButton getButton(int indexWidth, int indexHeight) {
         return buttonsField[indexHeight][indexWidth].getButton();
     }
 
     void reveal(int x, int y) {
         if (outBounds(x, y)) return;
-        if(revealed[y][x])return;
+        if (revealed[y][x]) return;
+        unRevealedCellsQuantity--;
         JButton button = buttonsField[y][x].getButton();
         String text = buttonsField[y][x].getValue();
         button.setContentAreaFilled(false);
-        if (text.equals("0")){
+        if (text.equals("0")) {
             button.setText("");
-        }else {
+        } else {
             button.setText(text);
         }
         revealed[y][x] = true;
-        if(!text.equals("0"))return;
+
+        if (!text.equals("0")) return;
         reveal(x + 1, y + 1);
         reveal(x - 1, y - 1);
         reveal(x - 1, y + 1);
@@ -136,4 +148,5 @@ public class ButtonsField {
     private boolean outBounds(int x, int y) {
         return x < 0 || x >= width || y < 0 || y >= height;
     }
+
 }

@@ -6,22 +6,23 @@ import java.awt.*;
 
 class WinFrame {
 
-    static void createWinFrame(JFrame frame) {
-        frame.setEnabled(false);
-        JFrame faultFrame = new JFrame("Вы выйграли");
-        faultFrame.setSize(300, 200);
-        faultFrame.setResizable(false);
+    static void createWinFrame() {
+        MineField.timer.stop();
+        MineField.frame.setEnabled(false);
+        JFrame winFrame = new JFrame("Вы выйграли");
+        winFrame.setSize(300, 200);
+        winFrame.setResizable(false);
         //frame.setLocationRelativeTo(null);
-        faultFrame.setLocationByPlatform(true);
+        winFrame.setLocationByPlatform(true);
         ImageIcon icon = new ImageIcon("./MinesweeperUI/src/resources/Minesweeper_icon.jpg");
-        faultFrame.setIconImage(icon.getImage());
-        faultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        faultFrame.setVisible(true);
+        winFrame.setIconImage(icon.getImage());
+        winFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        winFrame.setVisible(true);
 
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         JPanel panel = new JPanel(new GridLayout(3, 1, 1, 1));
-        faultFrame.add(flow);
+        winFrame.add(flow);
         flow.add(panel);
 
         JLabel label = new JLabel("Вы выйграли!");
@@ -30,12 +31,15 @@ class WinFrame {
         panel.add(label);
         panel.add(new Label());
 
+
+
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
-            frame.dispose();
-            faultFrame.dispose();
+            MineField.frame.dispose();
+            winFrame.dispose();
             MineField.createMineField();
         });
         panel.add(exitButton);
+
     }
 }

@@ -6,6 +6,7 @@ import java.awt.*;
 class FaultFrame {
 
     static void createFaultFrame() {
+        MineField.timer.stop();
         MineField.frame.setEnabled(false);
         JFrame faultFrame = new JFrame("Вы проиграли");
         faultFrame.setSize(300, 200);
