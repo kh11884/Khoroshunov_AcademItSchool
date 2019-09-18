@@ -15,7 +15,7 @@ public class RecordFrame {
         recordFrame.setLocationByPlatform(true);
         ImageIcon icon = new ImageIcon("./MinesweeperUI/src/resources/Minesweeper_icon.jpg");
         recordFrame.setIconImage(icon.getImage());
-        recordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        recordFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         recordFrame.setVisible(true);
 
         JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -26,7 +26,14 @@ public class RecordFrame {
         JLabel title = new JLabel("Таблица рекордов:" );
         panel.add(title);
         for (int i = 0; i < 10 ; i++) {
-            JLabel label = new JLabel(String.valueOf(i));
+            String labelText;
+            if(i < MineField.recordTable.getRecordTable().size()){
+                labelText = "1 место - " + MineField.recordTable.getRecordTable().get(i) + " секунд";
+            } else {
+                labelText = "";
+            }
+
+            JLabel label = new JLabel(labelText);
             panel.add(label);
         }
 

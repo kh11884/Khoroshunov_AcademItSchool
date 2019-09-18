@@ -1,31 +1,43 @@
 package main;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Test {
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Calculator"); // создаём фрейм нашей программы
+        ArrayList<Double> arrayList = new ArrayList<>();
+        arrayList.add(1.0);
+        arrayList.add(1.1);
+        arrayList.add(1.2);
+        arrayList.add(1.3);
+        arrayList.add(1.4);
 
-        JPanel mainPane = new JPanel(); // создаём панель, на которой будет лежать текстовое поле
-        JTextArea textarea = new JTextArea();
+        System.out.println(arrayList.toString());
 
-        mainPane.add(textarea); // добавляем на панель
-
-        ActionListener listener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textarea.append("5"); // ставим задачу - добавлять пятерку в textarea
+        try (DataOutputStream stream =
+                     new DataOutputStream(new FileOutputStream(".\\ForTest\\src\\files\\test.bin"))) {
+            for (double record : arrayList) {
+                System.out.println(record);
+                stream.writeDouble(record);
             }
-        };
-        Timer timer = new Timer( 100, listener ); // ставим задачу на таймер на каждые 100 милисекунд
-        timer.start(); // запускаем таймер
 
-        frame.setContentPane(mainPane); // кидаем панель в JFrame
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Double> arrayListOut = new ArrayList<>();
+        try (DataInputStream stream =
+                     new DataInputStream(new FileInputStream(".\\ForTest\\src\\files\\test.bin"))) {
+            while (stream.available() > 0) {
+                double x = stream.readDouble();
+                arrayListOut.add(x);
+                System.out.println(x);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(arrayListOut.toString());
+
+
     }
 }

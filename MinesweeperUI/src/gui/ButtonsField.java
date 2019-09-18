@@ -62,7 +62,6 @@ public class ButtonsField {
 
                         button.setText(value);
                     }
-   //                 System.out.println("x: " + posX + " y: " + posY + " text: " + button.getText());
                 }
             }
 
@@ -70,7 +69,7 @@ public class ButtonsField {
             Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
 
             if (e.getButton() == MouseEvent.BUTTON3) {
-                if(!revealed[posY][posX]) {
+                if (!revealed[posY][posX]) {
                     if (button.getIcon() == null) {
                         button.setIcon(flag);
                         flagsQuantity++;
@@ -80,9 +79,9 @@ public class ButtonsField {
                     }
                 }
             }
-            //System.out.println(flagsQuantity);
             if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
-                MineField.recordTable.addNewRecord(MineField.secondRest.get());
+                double newRecord = (double) (6000 - MineField.secondRest.get()) / 10;
+                MineField.recordTable.addNewRecord(newRecord);
                 WinFrame.createWinFrame();
             }
         }

@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MineField {
     static JFrame frame;
     static Timer timer;
-    static RecordTable recordTable;
+    public static RecordTable recordTable;
     static AtomicInteger secondRest;
 
     public static void createMineField() {
@@ -21,7 +21,7 @@ public class MineField {
         recordTable = new RecordTable("простой");
 
         frame = new JFrame("Сапер");
-        frame.setSize(640, 480);
+        frame.setSize(660, 480);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -55,29 +55,26 @@ public class MineField {
         });
         leftPanel.add(highScoresSButton);
 
-        secondRest = new AtomicInteger(100);
+        secondRest = new AtomicInteger(6000);
         JTextArea timeRest = new JTextArea();
-        timer = new Timer(100, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                secondRest.getAndDecrement();
-
-                timeRest.setText(String.valueOf(secondRest));
-                if(0 == secondRest.get()){
-                    FaultFrame.createFaultFrame();
-                }
+        timer = new Timer(100, e -> {
+            double timerValue = (double)secondRest.getAndDecrement()/10;
+            timeRest.setText("Осталось " + timerValue + " секунд.");
+            if(0 == secondRest.get()){
+                FaultFrame.createFaultFrame();
             }
         });
         timer.start();
-
-
 
         leftPanel.add(timeRest);
 
         leftPanel.add(new Label());
 
         JButton exitButton = new JButton("выход");
-        exitButton.addActionListener(e -> frame.dispose());
+        exitButton.addActionListener(e -> {
+            timer.stop();
+            frame.dispose();
+        });
         leftPanel.add(exitButton);
 
         JPanel panel = new JPanel(new GridLayout(height, weight, 1, 1));
