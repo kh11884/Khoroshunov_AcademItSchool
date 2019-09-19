@@ -10,13 +10,13 @@ public class GameField {
     static JFrame frame;
     static Timer timer;
     public static RecordTable recordTable;
-    static AtomicInteger secondRest;
+    static AtomicInteger timerValue;
 
-    public static void createMineField(int height, int weight, int minesQuantity, String level) {
+    static void createMineField(int height, int weight, int minesQuantity, String level) {
         recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(44 * weight + 250, 44 * height);
+        frame.setSize(45 * weight + 180, 45 * height);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -35,35 +35,38 @@ public class GameField {
         newGameButton.setPreferredSize(dimension);
         newGameButton.addActionListener(e -> {
             frame.dispose();
+            timer.stop();
             StartFrame.createStartFrame();
         });
         leftPanel.add(newGameButton);
 
-        JButton aboutButton = new JButton("About");
-        aboutButton.setPreferredSize(dimension);
-        aboutButton.addActionListener(e-> {
-            AboutPane.createAboutPane();
-        });
-        leftPanel.add(aboutButton);
-
         JButton highScoresSButton = new JButton("Таблица рекордов");
         highScoresSButton.setPreferredSize(dimension);
-        highScoresSButton.addActionListener(e -> {
-            RecordFrame.createRecordFrame();
-        });
+        highScoresSButton.addActionListener(e -> RecordFrame.createRecordFrame());
         leftPanel.add(highScoresSButton);
 
-        secondRest = new AtomicInteger(6000);
-        JTextArea timeRest = new JTextArea();
+        timerValue = new AtomicInteger(0);
+        JLabel timeRest = new JLabel();
         timer = new Timer(100, e -> {
-            double timerValue = (double) secondRest.getAndDecrement() / 10;
-            timeRest.setText("Осталось " + timerValue + " секунд.");
-            if (0 == secondRest.get()) {
-                FaultFrame.createFaultFrame();
-            }
+            timerValue.getAndIncrement();
+            timeRest.setText("Время игры " + String.format("%02d:%02d.%01d", timerValue.get() / 600, timerValue.get() / 10 % 60, timerValue.get() % 10));
         });
         timer.start();
         leftPanel.add(timeRest);
+
+        JLabel minesQuantityLabel = new JLabel("Количество мин: " + minesQuantity);
+        leftPanel.add(minesQuantityLabel);
+
+        ButtonsField buttonsField = new ButtonsField(weight, height, minesQuantity);
+
+        JPanel panel = new JPanel(new GridLayout(height, weight, 1, 1));
+        frame.add(panel);
+        for (int y = 0; y < buttonsField.getHeight(); y++) {
+            for (int x = 0; x < buttonsField.getWidth(); x++) {
+                JButton button = buttonsField.getButton(x, y);
+                panel.add(button);
+            }
+        }
 
         leftPanel.add(new Label());
 
@@ -73,17 +76,5 @@ public class GameField {
             frame.dispose();
         });
         leftPanel.add(exitButton);
-
-        JPanel panel = new JPanel(new GridLayout(height, weight, 1, 1));
-        frame.add(panel);
-
-        ButtonsField buttonsField = new ButtonsField(weight, height, minesQuantity);
-
-        for (int y = 0; y < buttonsField.getHeight(); y++) {
-            for (int x = 0; x < buttonsField.getWidth(); x++) {
-                JButton button = buttonsField.getButton(x, y);
-                panel.add(button);
-            }
-        }
     }
 }

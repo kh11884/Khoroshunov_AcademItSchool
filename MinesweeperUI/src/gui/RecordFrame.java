@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
- class RecordFrame {
+class RecordFrame {
     static void createRecordFrame() {
         GameField.timer.stop();
         GameField.frame.setEnabled(false);
@@ -30,12 +30,13 @@ import java.awt.*;
         JPanel panel = new JPanel(new GridLayout(12, 1, 1, 1));
         recordFrame.add(flow);
         flow.add(panel);
-        JLabel title = new JLabel("Таблица рекордов:" );
+        JLabel title = new JLabel("Таблица рекордов:");
         panel.add(title);
-        for (int i = 0; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             String labelText;
-            if(i < GameField.recordTable.getRecordTable().size()){
-                labelText = i + 1 + " место - " + GameField.recordTable.getRecordTable().get(i) + " секунд";
+            if (i < GameField.recordTable.getRecordTable().size()) {
+                int recordTime = GameField.recordTable.getRecordTable().get(i);
+                labelText = i + 1 + " место - " + String.format("%02d:%02d.%01d", recordTime / 600, recordTime / 10 % 60, recordTime % 10);
             } else {
                 labelText = "";
             }

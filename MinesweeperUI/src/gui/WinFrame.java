@@ -38,8 +38,6 @@ class WinFrame {
         panel.add(label);
         panel.add(new Label());
 
-
-
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
             GameField.frame.dispose();

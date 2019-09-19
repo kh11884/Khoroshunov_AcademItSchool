@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class ButtonsField {
+class ButtonsField {
     private int width;
     private int height;
     private int minesQuantity;
@@ -16,7 +16,7 @@ public class ButtonsField {
     private int unRevealedCellsQuantity;
     private int flagsQuantity;
 
-    public ButtonsField(int width, int height, int minesQuantity) {
+    ButtonsField(int width, int height, int minesQuantity) {
         this.width = width;
         this.height = height;
         this.minesQuantity = minesQuantity;
@@ -27,9 +27,9 @@ public class ButtonsField {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int nearMinesQuantity = minesFieldTable.getCellValue(y, x);
-                CellButton cellButton = new CellButton(x, y, String.valueOf(nearMinesQuantity));
+                CellButton cellButton = new CellButton(String.valueOf(nearMinesQuantity));
                 cellButton.getButton().addMouseListener(new MouseClicker(x, y));
-                switch (nearMinesQuantity){
+                switch (nearMinesQuantity) {
                     case 1:
                         cellButton.getButton().setForeground(Color.BLUE);
                         break;
@@ -44,7 +44,6 @@ public class ButtonsField {
                         break;
                 }
                 buttonsField[y][x] = cellButton;
-
             }
         }
     }
@@ -53,7 +52,7 @@ public class ButtonsField {
         private int posX;
         private int posY;
 
-        public MouseClicker(int posX, int posY) {
+        MouseClicker(int posX, int posY) {
             this.posX = posX;
             this.posY = posY;
         }
@@ -75,7 +74,6 @@ public class ButtonsField {
                     } else {
                         button.setContentAreaFilled(false);
                         unRevealedCellsQuantity--;
-
                         button.setText(value);
                     }
                 }
@@ -87,8 +85,10 @@ public class ButtonsField {
             if (e.getButton() == MouseEvent.BUTTON3) {
                 if (!revealed[posY][posX]) {
                     if (button.getIcon() == null) {
-                        button.setIcon(flag);
-                        flagsQuantity++;
+                        if (flagsQuantity < minesQuantity) {
+                            button.setIcon(flag);
+                            flagsQuantity++;
+                        }
                     } else {
                         button.setIcon(null);
                         flagsQuantity--;
@@ -96,8 +96,7 @@ public class ButtonsField {
                 }
             }
             if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
-                double newRecord = (double) (6000 - GameField.secondRest.get()) / 10;
-                GameField.recordTable.addNewRecord(newRecord);
+                GameField.recordTable.addNewRecord(GameField.timerValue.get());
                 WinFrame.createWinFrame();
             }
         }
@@ -123,23 +122,27 @@ public class ButtonsField {
         }
     }
 
-    public int getWidth() {
+    int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    int getHeight() {
         return height;
     }
 
-    public JButton getButton(int indexWidth, int indexHeight) {
+    JButton getButton(int indexWidth, int indexHeight) {
         return buttonsField[indexHeight][indexWidth].getButton();
     }
 
-    void reveal(int x, int y) {
+    private void reveal(int x, int y) {
         if (outBounds(x, y)) return;
         if (revealed[y][x]) return;
-        unRevealedCellsQuantity--;
         JButton button = buttonsField[y][x].getButton();
+        if (button.getIcon() != null) {
+            return;
+        }
+
+        unRevealedCellsQuantity--;
         String text = buttonsField[y][x].getValue();
         button.setContentAreaFilled(false);
         if (text.equals("0")) {
@@ -163,5 +166,4 @@ public class ButtonsField {
     private boolean outBounds(int x, int y) {
         return x < 0 || x >= width || y < 0 || y >= height;
     }
-
 }

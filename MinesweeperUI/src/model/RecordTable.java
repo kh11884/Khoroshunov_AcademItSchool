@@ -6,15 +6,15 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class RecordTable {
-    private ArrayList<Double> recordTable;
+    private ArrayList<Integer> recordTable;
     private String type;
 
     public RecordTable(String type) {
         this.type = type;
         recordTable = new ArrayList<>(10);
-        try (DataInputStream stream = new DataInputStream(new FileInputStream(".\\MinesweeperUI\\src\\resources\\easy.txt"))) {
+        try (DataInputStream stream = new DataInputStream(new FileInputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin"))) {
             while (stream.available() > 0) {
-                double record = stream.readDouble();
+                int record = stream.readInt();
                 recordTable.add(record);
             }
         } catch (IOException e) {
@@ -22,15 +22,11 @@ public class RecordTable {
         }
     }
 
-    public ArrayList<Double> getRecordTable() {
+    public ArrayList<Integer> getRecordTable() {
         return recordTable;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void addNewRecord(double result) {
+    public void addNewRecord(int result) {
         for (int i = 0; i < 10; i++) {
             if (recordTable.size() == 0) {
                 recordTable.add(result);
@@ -50,9 +46,9 @@ public class RecordTable {
         }
 
         try (DataOutputStream stream =
-                     new DataOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\easy.txt"))) {
-            for (double record : GameField.recordTable.getRecordTable()) {
-                stream.writeDouble(record);
+                     new DataOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin"))) {
+            for (int record : GameField.recordTable.getRecordTable()) {
+                stream.writeInt(record);
             }
 
         } catch (IOException e) {
