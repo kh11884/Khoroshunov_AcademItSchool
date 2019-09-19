@@ -26,9 +26,25 @@ public class ButtonsField {
         MinesFieldTable minesFieldTable = new MinesFieldTable(minesQuantity, width, height);
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                String cellValue = String.valueOf(minesFieldTable.getCellValue(y, x));
-                buttonsField[y][x] = new CellButton(x, y, cellValue);
-                buttonsField[y][x].getButton().addMouseListener(new MouseClicker(x, y));
+                int nearMinesQuantity = minesFieldTable.getCellValue(y, x);
+                CellButton cellButton = new CellButton(x, y, String.valueOf(nearMinesQuantity));
+                cellButton.getButton().addMouseListener(new MouseClicker(x, y));
+                switch (nearMinesQuantity){
+                    case 1:
+                        cellButton.getButton().setForeground(Color.BLUE);
+                        break;
+                    case 2:
+                        cellButton.getButton().setForeground(Color.GREEN);
+                        break;
+                    case 3:
+                        cellButton.getButton().setForeground(Color.RED);
+                        break;
+                    case 4:
+                        cellButton.getButton().setForeground(Color.BLACK);
+                        break;
+                }
+                buttonsField[y][x] = cellButton;
+
             }
         }
     }
@@ -80,8 +96,8 @@ public class ButtonsField {
                 }
             }
             if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
-                double newRecord = (double) (6000 - MineField.secondRest.get()) / 10;
-                MineField.recordTable.addNewRecord(newRecord);
+                double newRecord = (double) (6000 - GameField.secondRest.get()) / 10;
+                GameField.recordTable.addNewRecord(newRecord);
                 WinFrame.createWinFrame();
             }
         }

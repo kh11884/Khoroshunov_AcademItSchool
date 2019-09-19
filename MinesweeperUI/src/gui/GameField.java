@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MineField {
+public class GameField {
     static JFrame frame;
     static Timer timer;
     public static RecordTable recordTable;
@@ -16,7 +16,7 @@ public class MineField {
         recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(45 * weight + 250, 45 * height);
+        frame.setSize(44 * weight + 250, 44 * height);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -41,6 +41,9 @@ public class MineField {
 
         JButton aboutButton = new JButton("About");
         aboutButton.setPreferredSize(dimension);
+        aboutButton.addActionListener(e-> {
+            AboutPane.createAboutPane();
+        });
         leftPanel.add(aboutButton);
 
         JButton highScoresSButton = new JButton("Таблица рекордов");

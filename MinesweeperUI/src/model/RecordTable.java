@@ -1,6 +1,6 @@
 package model;
 
-import gui.MineField;
+import gui.GameField;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class RecordTable {
 
         try (DataOutputStream stream =
                      new DataOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\easy.txt"))) {
-            for (double record : MineField.recordTable.getRecordTable()) {
+            for (double record : GameField.recordTable.getRecordTable()) {
                 stream.writeDouble(record);
             }
 

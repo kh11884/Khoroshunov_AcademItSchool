@@ -5,8 +5,8 @@ import java.awt.*;
 
  class RecordFrame {
     static void createRecordFrame() {
-        MineField.timer.stop();
-        MineField.frame.setEnabled(false);
+        GameField.timer.stop();
+        GameField.frame.setEnabled(false);
         JFrame recordFrame = new JFrame("Таблица рекордов");
         recordFrame.setSize(200, 400);
         recordFrame.setResizable(false);
@@ -19,9 +19,9 @@ import java.awt.*;
         recordFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                MineField.frame.setVisible(true);
-                MineField.frame.setEnabled(true);
-                MineField.timer.start();
+                GameField.frame.setVisible(true);
+                GameField.frame.setEnabled(true);
+                GameField.timer.start();
             }
         });
 
@@ -34,8 +34,8 @@ import java.awt.*;
         panel.add(title);
         for (int i = 0; i < 10 ; i++) {
             String labelText;
-            if(i < MineField.recordTable.getRecordTable().size()){
-                labelText = i + 1 + " место - " + MineField.recordTable.getRecordTable().get(i) + " секунд";
+            if(i < GameField.recordTable.getRecordTable().size()){
+                labelText = i + 1 + " место - " + GameField.recordTable.getRecordTable().get(i) + " секунд";
             } else {
                 labelText = "";
             }
@@ -47,9 +47,9 @@ import java.awt.*;
         JButton exitButton = new JButton("Закрыть");
         exitButton.addActionListener(e -> {
             recordFrame.dispose();
-            MineField.frame.setEnabled(true);
-            MineField.frame.setVisible(true);
-            MineField.timer.start();
+            GameField.frame.setEnabled(true);
+            GameField.frame.setVisible(true);
+            GameField.timer.start();
         });
         panel.add(exitButton);
     }

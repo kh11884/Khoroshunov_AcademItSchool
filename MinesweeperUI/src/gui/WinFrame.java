@@ -7,8 +7,8 @@ import java.awt.*;
 class WinFrame {
 
     static void createWinFrame() {
-        MineField.timer.stop();
-        MineField.frame.setEnabled(false);
+        GameField.timer.stop();
+        GameField.frame.setEnabled(false);
         JFrame winFrame = new JFrame("Вы выйграли");
         winFrame.setSize(300, 200);
         winFrame.setResizable(false);
@@ -21,8 +21,8 @@ class WinFrame {
         winFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                MineField.frame.setVisible(true);
-                MineField.frame.setEnabled(true);
+                GameField.frame.setVisible(true);
+                GameField.frame.setEnabled(true);
             }
         });
 
@@ -42,7 +42,7 @@ class WinFrame {
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
-            MineField.frame.dispose();
+            GameField.frame.dispose();
             winFrame.dispose();
             StartFrame.createStartFrame();
         });

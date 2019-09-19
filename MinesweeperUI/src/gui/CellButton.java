@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class CellButton {
     private JButton button = new JButton();
@@ -17,6 +18,7 @@ public class CellButton {
         this.posX = posX;
         this.posY = posY;
         this.value = value;
+        button.setFont(new Font("Verdana", Font.BOLD, 9));
     }
 
     public int getPosX() {

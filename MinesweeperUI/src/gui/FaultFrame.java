@@ -6,8 +6,8 @@ import java.awt.*;
 class FaultFrame {
 
     static void createFaultFrame() {
-        MineField.timer.stop();
-        MineField.frame.setEnabled(false);
+        GameField.timer.stop();
+        GameField.frame.setEnabled(false);
         JFrame faultFrame = new JFrame("Вы проиграли");
         faultFrame.setSize(300, 200);
         faultFrame.setResizable(false);
@@ -21,8 +21,8 @@ class FaultFrame {
         faultFrame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                MineField.frame.setVisible(true);
-                MineField.frame.setEnabled(true);
+                GameField.frame.setVisible(true);
+                GameField.frame.setEnabled(true);
             }
         });
 
@@ -39,7 +39,7 @@ class FaultFrame {
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
-            MineField.frame.dispose();
+            GameField.frame.dispose();
             faultFrame.dispose();
             StartFrame.createStartFrame();
         });

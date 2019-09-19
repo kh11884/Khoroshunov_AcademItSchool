@@ -24,7 +24,7 @@ public class StartFrame {
         //newGameButton.setPreferredSize(dimension);
         beginnerButton.addActionListener(e -> {
             startFrame.dispose();
-            MineField.createMineField(9, 9, 10, "beginner");
+            GameField.createMineField(9, 9, 10, "beginner");
         });
         panel.add(beginnerButton);
 
@@ -32,7 +32,7 @@ public class StartFrame {
         //newGameButton.setPreferredSize(dimension);
         intermediateButton.addActionListener(e -> {
             startFrame.dispose();
-            MineField.createMineField(16, 16, 40, "intermediate");
+            GameField.createMineField(16, 16, 40, "intermediate");
         });
         panel.add(intermediateButton);
 
@@ -40,7 +40,7 @@ public class StartFrame {
         //newGameButton.setPreferredSize(dimension);
         expertButton.addActionListener(e -> {
             startFrame.dispose();
-            MineField.createMineField(16, 30, 99, "expert");
+            GameField.createMineField(16, 30, 99, "expert");
         });
 
         panel.add(expertButton);
