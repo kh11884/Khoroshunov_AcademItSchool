@@ -16,7 +16,7 @@ public class GameField {
         recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(45 * weight + 180, 46 * height);
+        frame.setSize(40 * weight + 180, 40 * height);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);

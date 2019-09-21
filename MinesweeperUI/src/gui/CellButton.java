@@ -14,7 +14,9 @@ class CellButton {
     CellButton(String value) {
 
         this.value = value;
-        button.setFont(new Font("Verdana", Font.BOLD, 9));
+        Insets insets = new Insets(0, 0, 0, 0);
+        button.setMargin(insets);
+        button.setFont(new Font("verdana", Font.BOLD, 16));
     }
 
     JButton getButton() {
