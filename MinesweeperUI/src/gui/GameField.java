@@ -16,7 +16,7 @@ public class GameField {
         recordTable = new RecordTable(level);
 
         frame = new JFrame("Сапер");
-        frame.setSize(45 * weight + 180, 45 * height);
+        frame.setSize(45 * weight + 180, 46 * height);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.setLocationByPlatform(true);
@@ -31,7 +31,7 @@ public class GameField {
         frame.add(leftPanel, BorderLayout.LINE_START);
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        JButton newGameButton = new JButton("новая игра");
+        JButton newGameButton = new JButton("Новая игра");
         newGameButton.setPreferredSize(dimension);
         newGameButton.addActionListener(e -> {
             frame.dispose();
@@ -70,7 +70,7 @@ public class GameField {
 
         leftPanel.add(new Label());
 
-        JButton exitButton = new JButton("выход");
+        JButton exitButton = new JButton("Выход");
         exitButton.addActionListener(e -> {
             timer.stop();
             frame.dispose();

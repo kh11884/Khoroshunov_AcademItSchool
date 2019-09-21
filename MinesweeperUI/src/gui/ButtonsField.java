@@ -4,8 +4,8 @@ import model.MinesFieldTable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 class ButtonsField {
     private int width;
@@ -48,7 +48,41 @@ class ButtonsField {
         }
     }
 
-    public class MouseClicker implements MouseListener {
+    private void openField() {
+        ImageIcon bomb = new ImageIcon(".\\MinesweeperUI\\src\\resources\\mines_icon.jpg");
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                JButton checkButton = buttonsField[y][x].getButton();
+                if (buttonsField[y][x].getValue().equals("9")) {
+                    if (checkButton.getIcon() == null) {
+                        checkButton.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
+                    }
+                } else if (checkButton.getIcon() != null) {
+                    setFlagX(checkButton);
+                }
+            }
+        }
+        FaultFrame.createFaultFrame();
+    }
+
+    private void setRedBomb(JButton button) {
+        ImageIcon bomb = new ImageIcon(".\\MinesweeperUI\\src\\resources\\red_mines_icon.jpg");
+        button.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
+    }
+
+    private void setFlag(JButton button) {
+        ImageIcon imageFlag = new ImageIcon(".\\MinesweeperUI\\src\\resources\\flag.jpg");
+        Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+        button.setIcon(flag);
+    }
+
+    private void setFlagX(JButton button) {
+        ImageIcon imageFlag = new ImageIcon(".\\MinesweeperUI\\src\\resources\\flagX.jpg");
+        Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+        button.setIcon(flag);
+    }
+
+    public class MouseClicker extends MouseAdapter {
         private int posX;
         private int posY;
 
@@ -58,35 +92,57 @@ class ButtonsField {
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            ImageIcon bomb = new ImageIcon(".\\MinesweeperUI\\src\\resources\\mines_icon.jpg");
+        public void mousePressed(MouseEvent e) {
             JButton button = buttonsField[posY][posX].getButton();
             String value = buttonsField[posY][posX].getValue();
-            if (e.getButton() == MouseEvent.BUTTON1) {
 
+            if (e.getButton() == MouseEvent.BUTTON1) {
                 if (value.equals("9")) {
-                    button.setIcon(new ImageIcon(bomb.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT)));
-                    FaultFrame.createFaultFrame();
+                    setRedBomb(button);
+                    openField();
                 } else {
-                    if (value.equals("0")) {
-                        button.setText("");
-                        reveal(posX, posY);
-                    } else {
-                        button.setContentAreaFilled(false);
-                        unRevealedCellsQuantity--;
-                        button.setText(value);
-                    }
+                    reveal(posX, posY);
                 }
             }
 
-            ImageIcon imageFlag = new ImageIcon(".\\MinesweeperUI\\src\\resources\\flag.jpg");
-            Icon flag = new ImageIcon(imageFlag.getImage().getScaledInstance(35, 35, Image.SCALE_DEFAULT));
+            if (e.getButton() == MouseEvent.BUTTON2) {
+                if (revealed[posY][posX]) {
+                    int nearCellsFlagsQuantity = 0;
+                    for (int y = posY - 1; y <= posY + 1; y++) {
+                        for (int x = posX - 1; x <= posX + 1; x++) {
+                            if (!outBounds(x, y)) {
+                                if (buttonsField[y][x].getButton().getIcon() != null) {
+                                    nearCellsFlagsQuantity++;
+                                }
+                            }
+                        }
+                    }
+
+                    if (nearCellsFlagsQuantity == Integer.valueOf(value)) {
+                        boolean isFault = false;
+                        for (int y = posY - 1; y <= posY + 1; y++) {
+                            for (int x = posX - 1; x <= posX + 1; x++) {
+                                if (!outBounds(x, y)) {
+                                    if (buttonsField[y][x].getValue().equals("9") && buttonsField[y][x].getButton().getIcon() == null) {
+                                        isFault = true;
+                                        setRedBomb(buttonsField[y][x].getButton());
+                                    }
+                                }
+                                reveal(x, y);
+                            }
+                        }
+                        if (isFault) {
+                            openField();
+                        }
+                    }
+                }
+            }
 
             if (e.getButton() == MouseEvent.BUTTON3) {
                 if (!revealed[posY][posX]) {
                     if (button.getIcon() == null) {
                         if (flagsQuantity < minesQuantity) {
-                            button.setIcon(flag);
+                            setFlag(button);
                             flagsQuantity++;
                         }
                     } else {
@@ -95,30 +151,11 @@ class ButtonsField {
                     }
                 }
             }
+
             if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
                 GameField.recordTable.addNewRecord(GameField.timerValue.get());
                 WinFrame.createWinFrame();
             }
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
         }
     }
 
@@ -142,10 +179,10 @@ class ButtonsField {
             return;
         }
 
-        unRevealedCellsQuantity--;
         String text = buttonsField[y][x].getValue();
+        unRevealedCellsQuantity--;
         button.setContentAreaFilled(false);
-        if (text.equals("0")) {
+        if (text.equals("0") || text.equals("9")) {
             button.setText("");
         } else {
             button.setText(text);

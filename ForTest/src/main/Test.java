@@ -2,8 +2,9 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Test {
@@ -37,12 +38,54 @@ public class Test {
             JLabel levelLabel = new JLabel("Выбери уровень игры:");
             panel.add(levelLabel);
 
-
-
-
             JButton exitButton = new JButton("выход");
-            exitButton.addActionListener(e -> {
-                startFrame.dispose();
+            exitButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                        if(e.getButton() == MouseEvent.BUTTON1){
+                            System.out.println("Кнопка 1");
+                        }
+                        if(e.getButton() == MouseEvent.BUTTON2){
+                            System.out.println("Кнопка 2");
+                        }
+                        if(e.getButton() == MouseEvent.BUTTON3){
+                            System.out.println("Кнопка 3");
+                        }
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    super.mouseReleased(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    super.mouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    super.mouseExited(e);
+                }
+
+                @Override
+                public void mouseWheelMoved(MouseWheelEvent e) {
+                    super.mouseWheelMoved(e);
+                }
+
+                @Override
+                public void mouseDragged(MouseEvent e) {
+                    super.mouseDragged(e);
+                }
+
+                @Override
+                public void mouseMoved(MouseEvent e) {
+                    super.mouseMoved(e);
+                }
             });
             panel.add(exitButton);
         }

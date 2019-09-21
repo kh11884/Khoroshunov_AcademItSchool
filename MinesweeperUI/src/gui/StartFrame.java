@@ -23,7 +23,7 @@ public class StartFrame {
         JLabel levelLabel = new JLabel("Выбери уровень игры:");
         panel.add(levelLabel);
 
-        JButton beginnerButton = new JButton("<html><div align=\"center\">\"новичок\"<br>" +
+        JButton beginnerButton = new JButton("<html><div align=\"center\">\"Новичок\"<br>" +
                 "размер поля 9х9<br>" +
                 "Количество мин 10<div><html>");
         beginnerButton.addActionListener(e -> {
@@ -32,7 +32,7 @@ public class StartFrame {
         });
         panel.add(beginnerButton);
 
-        JButton intermediateButton = new JButton("<html><div align=\"center\">\"опытный\"<br>" +
+        JButton intermediateButton = new JButton("<html><div align=\"center\">\"Опытный\"<br>" +
                 "размер поля 16х16<br>" +
                 "Количество мин 40<div><html>");
         intermediateButton.addActionListener(e -> {
@@ -41,7 +41,7 @@ public class StartFrame {
         });
         panel.add(intermediateButton);
 
-        JButton expertButton = new JButton("<html><div align=\"center\">\"эксперт\"<br>" +
+        JButton expertButton = new JButton("<html><div align=\"center\">\"Эксперт\"<br>" +
                 "размер поля 16х16<br>" +
                 "Количество мин 99<div><html>");
         expertButton.addActionListener(e -> {
@@ -53,11 +53,11 @@ public class StartFrame {
         JLabel emptyLabel = new JLabel();
         panel.add(emptyLabel);
 
-        JButton aboutButton = new JButton("About");
+        JButton aboutButton = new JButton("О программе");
         aboutButton.addActionListener(e -> AboutPane.createAboutPane());
         panel.add(aboutButton);
 
-        JButton exitButton = new JButton("выход");
+        JButton exitButton = new JButton("Выход");
         exitButton.addActionListener(e -> startFrame.dispose());
         panel.add(exitButton);
     }
