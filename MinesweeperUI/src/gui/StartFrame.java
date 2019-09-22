@@ -20,7 +20,7 @@ public class StartFrame {
         JPanel panel = new JPanel(new GridLayout(7, 1, 1, 1));
         flow.add(panel);
 
-        JLabel levelLabel = new JLabel("Выбери уровень игры:");
+        JLabel levelLabel = new JLabel("Выберите уровень игры:");
         panel.add(levelLabel);
 
         JButton beginnerButton = new JButton("<html><div align=\"center\">\"Новичок\"<br>" +
