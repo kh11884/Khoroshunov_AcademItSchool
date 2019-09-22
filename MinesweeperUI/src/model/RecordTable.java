@@ -13,9 +13,11 @@ public class RecordTable {
     public RecordTable(String type) {
         this.type = type;
         recordTable = new ArrayList<>(10);
+
         RecordNote recordNote = null;
+
         try (FileInputStream fileInputStream = new FileInputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin");
-                ObjectInputStream stream = new ObjectInputStream(fileInputStream)) {
+             ObjectInputStream stream = new ObjectInputStream(fileInputStream)) {
             recordNote = (RecordNote) stream.readObject();
             recordTable.add(recordNote);
             while (fileInputStream.available() > 0) {
@@ -23,9 +25,9 @@ public class RecordTable {
                 recordTable.add(recordNote);
             }
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Ошибка чтения файла таблицы рекордов. " + e.getMessage());
+            System.out.println("Ошибка чтения файла таблицы рекордов. " + type + ".bin - " + e.getMessage());
         }
-        if(!recordTable.isEmpty()) {
+        if (!recordTable.isEmpty()) {
             worstRecord = recordNote.getRecordValue();
         }
     }
@@ -55,7 +57,7 @@ public class RecordTable {
             }
 
         } catch (IOException e) {
-            System.out.println("Ошибка записи файла таблицы рекордов. " + e.getMessage());
+            System.out.println("Ошибка записи файла таблицы рекордов. " + type + ".bin - " + e.getMessage());
         }
     }
 

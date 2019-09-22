@@ -41,12 +41,12 @@ class RecordFrame {
                 RecordNote recordNote = GameField.recordTable.getRecordTable().get(i);
 
                 String name = recordNote.getName();
-                if(name.length() > 17) {
+                if (name.length() > 17) {
                     name = name.substring(0, 16);
                 }
                 int recordTime = recordNote.getRecordValue();
 
-                labelText = i + 1 + " место - "  + String.format("%02d:%02d.%01d - ", recordTime / 600, recordTime / 10 % 60, recordTime % 10) + name;
+                labelText = i + 1 + " место - " + String.format("%02d:%02d.%01d - ", recordTime / 600, recordTime / 10 % 60, recordTime % 10) + name;
             } else {
                 labelText = "";
             }

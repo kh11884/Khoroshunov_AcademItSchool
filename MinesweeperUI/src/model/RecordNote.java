@@ -15,15 +15,7 @@ public class RecordNote implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getRecordValue() {
         return recordValue;
-    }
-
-    public void setRecordValue(int recordValue) {
-        this.recordValue = recordValue;
     }
 }

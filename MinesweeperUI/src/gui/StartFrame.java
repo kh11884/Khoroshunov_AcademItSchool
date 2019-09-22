@@ -25,16 +25,16 @@ public class StartFrame {
 
         JButton beginnerButton = new JButton("<html><div align=\"center\">\"Новичок\"<br>" +
                 "размер поля 9х9<br>" +
-                "Количество мин 10<div><html>");
+                "Количество мин 10</div></html>");
         beginnerButton.addActionListener(e -> {
             startFrame.dispose();
-            GameField.createMineField(9, 9, 3, "beginner");
+            GameField.createMineField(9, 9, 10, "beginner");
         });
         panel.add(beginnerButton);
 
         JButton intermediateButton = new JButton("<html><div align=\"center\">\"Опытный\"<br>" +
                 "размер поля 16х16<br>" +
-                "Количество мин 40<div><html>");
+                "Количество мин 40</div></html>");
         intermediateButton.addActionListener(e -> {
             startFrame.dispose();
             GameField.createMineField(16, 16, 40, "intermediate");
@@ -43,7 +43,7 @@ public class StartFrame {
 
         JButton expertButton = new JButton("<html><div align=\"center\">\"Эксперт\"<br>" +
                 "размер поля 16х16<br>" +
-                "Количество мин 99<div><html>");
+                "Количество мин 99</div></html>");
         expertButton.addActionListener(e -> {
             startFrame.dispose();
             GameField.createMineField(16, 30, 99, "expert");

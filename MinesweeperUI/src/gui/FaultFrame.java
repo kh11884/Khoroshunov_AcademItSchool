@@ -26,16 +26,30 @@ class FaultFrame {
             }
         });
 
-        JPanel flow = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel panel = new JPanel(new GridBagLayout());
+        faultFrame.add(panel);
 
-        JPanel panel = new JPanel(new GridLayout(3, 1, 1, 1));
-        faultFrame.add(flow);
-        flow.add(panel);
+        GridBagConstraints cell_1 = new GridBagConstraints();
+        cell_1.gridx = 0;
+        cell_1.gridy = 0;
+        cell_1.insets = new Insets(3, 5, 5, 5);
+
+        GridBagConstraints cell_2 = new GridBagConstraints();
+        cell_2.gridx = 0;
+        cell_2.gridy = 1;
+        cell_2.insets = new Insets(3, 5, 5, 5);
+
+        GridBagConstraints cell_3 = new GridBagConstraints();
+        cell_3.gridx = 0;
+        cell_3.gridy = 2;
+        cell_3.insets = new Insets(3, 5, 5, 5);
 
         JLabel label = new JLabel("Вы програли!");
         ImageIcon winIcon = new ImageIcon(".\\MinesweeperUI\\src\\resources\\explosion.jpg");
         label.setIcon(new ImageIcon(winIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
-        panel.add(label);
+        panel.add(label, cell_1);
+
+        panel.add(new Label(), cell_2);
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
@@ -43,6 +57,6 @@ class FaultFrame {
             faultFrame.dispose();
             StartFrame.createStartFrame();
         });
-        panel.add(exitButton);
+        panel.add(exitButton, cell_3);
     }
 }

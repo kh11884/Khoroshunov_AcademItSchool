@@ -53,7 +53,7 @@ public class Test {
                 }
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     System.out.println("Кнопка 1");
-                    System.out.println(exitButton.getMargin());
+                    NewRecordDialog.createNewRecordDialog();
                 }
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
