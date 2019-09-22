@@ -153,8 +153,19 @@ class ButtonsField {
             }
 
             if (unRevealedCellsQuantity == minesQuantity && flagsQuantity == minesQuantity) {
-                GameField.recordTable.addNewRecord(GameField.timerValue.get());
+
                 WinFrame.createWinFrame();
+                int timerResult = GameField.timerValue.get();
+                String name = null;
+                if(GameField.recordTable.isNewRecord(timerResult)){
+                    name = NewRecordDialog.createNewRecordDialog();
+                }
+                if(name != null){
+                    if (name.length() > 17) {
+                        name = name.substring(0, 16);
+                    }
+                    GameField.recordTable.addNewRecord(name, timerResult);
+                }
             }
         }
     }

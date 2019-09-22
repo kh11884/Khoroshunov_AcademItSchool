@@ -28,7 +28,7 @@ public class StartFrame {
                 "Количество мин 10<div><html>");
         beginnerButton.addActionListener(e -> {
             startFrame.dispose();
-            GameField.createMineField(9, 9, 10, "beginner");
+            GameField.createMineField(9, 9, 3, "beginner");
         });
         panel.add(beginnerButton);
 

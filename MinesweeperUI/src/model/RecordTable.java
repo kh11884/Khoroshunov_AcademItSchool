@@ -6,53 +6,63 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class RecordTable {
-    private ArrayList<Integer> recordTable;
+    private ArrayList<RecordNote> recordTable;
     private String type;
+    private Integer worstRecord;
 
     public RecordTable(String type) {
         this.type = type;
         recordTable = new ArrayList<>(10);
-        try (DataInputStream stream = new DataInputStream(new FileInputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin"))) {
-            while (stream.available() > 0) {
-                int record = stream.readInt();
-                recordTable.add(record);
+        RecordNote recordNote = null;
+        try (FileInputStream fileInputStream = new FileInputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin");
+                ObjectInputStream stream = new ObjectInputStream(fileInputStream)) {
+            recordNote = (RecordNote) stream.readObject();
+            recordTable.add(recordNote);
+            while (fileInputStream.available() > 0) {
+                recordNote = (RecordNote) stream.readObject();
+                recordTable.add(recordNote);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Ошибка чтения файла таблицы рекордов. " + e.getMessage());
+        }
+        if(!recordTable.isEmpty()) {
+            worstRecord = recordNote.getRecordValue();
         }
     }
 
-    public ArrayList<Integer> getRecordTable() {
+    public ArrayList<RecordNote> getRecordTable() {
         return recordTable;
     }
 
-    public void addNewRecord(int result) {
+    public void addNewRecord(String name, int result) {
         for (int i = 0; i < 10; i++) {
-            if (recordTable.size() == 0) {
-                recordTable.add(result);
-                break;
-            }
             if (recordTable.size() == i) {
-                recordTable.add(i, result);
+                recordTable.add(i, new RecordNote(name, result));
                 break;
             }
-            if (recordTable.get(i) > result) {
-                recordTable.add(i, result);
+            if (recordTable.get(i).getRecordValue() > result) {
+                recordTable.add(i, new RecordNote(name, result));
                 break;
             }
         }
         if (recordTable.size() == 11) {
             recordTable.remove(10);
         }
-
-        try (DataOutputStream stream =
-                     new DataOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin"))) {
-            for (int record : GameField.recordTable.getRecordTable()) {
-                stream.writeInt(record);
+        try (ObjectOutputStream stream =
+                     new ObjectOutputStream(new FileOutputStream(".\\MinesweeperUI\\src\\resources\\" + type + ".bin"))) {
+            for (RecordNote recordNote : GameField.recordTable.getRecordTable()) {
+                stream.writeObject(recordNote);
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Ошибка записи файла таблицы рекордов. " + e.getMessage());
         }
+    }
+
+    public boolean isNewRecord(int result) {
+        if (recordTable.size() < 10) {
+            return true;
+        }
+        return result < worstRecord;
     }
 }
