@@ -12,7 +12,6 @@ class CellButton {
     }
 
     CellButton(String value) {
-
         this.value = value;
         Insets insets = new Insets(0, 0, 0, 0);
         button.setMargin(insets);

@@ -27,7 +27,7 @@ public class GameField {
         frame.setVisible(true);
 
         GameMenuBar menuBar = new GameMenuBar();
-        frame.setJMenuBar(menuBar);
+        frame.setJMenuBar(menuBar.getJMenu());
 
         JPanel topPanel = new JPanel();
         frame.add(topPanel, BorderLayout.NORTH);

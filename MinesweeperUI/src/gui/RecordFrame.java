@@ -53,7 +53,6 @@ class RecordFrame {
             JLabel label = new JLabel(labelText);
             panel.add(label);
         }
-
         JButton exitButton = new JButton("Закрыть");
         exitButton.addActionListener(e -> {
             recordFrame.dispose();

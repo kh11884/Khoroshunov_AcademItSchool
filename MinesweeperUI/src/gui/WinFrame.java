@@ -5,7 +5,6 @@ import java.awt.*;
 
 
 class WinFrame {
-
     static void createWinFrame() {
         GameField.timer.stop();
         GameField.frame.setEnabled(false);
@@ -29,32 +28,32 @@ class WinFrame {
         JPanel panel = new JPanel(new GridBagLayout());
         winFrame.add(panel);
 
-        GridBagConstraints cell_1 = new GridBagConstraints();
-        cell_1.gridx = 0;
-        cell_1.gridy = 0;
-        cell_1.insets = new Insets(3, 5, 5, 5);
+        GridBagConstraints cell1 = new GridBagConstraints();
+        cell1.gridx = 0;
+        cell1.gridy = 0;
+        cell1.insets = new Insets(3, 5, 5, 5);
 
-        GridBagConstraints cell_2 = new GridBagConstraints();
-        cell_2.gridx = 0;
-        cell_2.gridy = 1;
-        cell_2.insets = new Insets(3, 5, 5, 5);
+        GridBagConstraints cell2 = new GridBagConstraints();
+        cell2.gridx = 0;
+        cell2.gridy = 1;
+        cell2.insets = new Insets(3, 5, 5, 5);
 
-        GridBagConstraints cell_3 = new GridBagConstraints();
-        cell_3.gridx = 0;
-        cell_3.gridy = 2;
-        cell_3.insets = new Insets(3, 5, 5, 5);
+        GridBagConstraints cell3 = new GridBagConstraints();
+        cell3.gridx = 0;
+        cell3.gridy = 2;
+        cell3.insets = new Insets(3, 5, 5, 5);
 
-        GridBagConstraints cell_4 = new GridBagConstraints();
-        cell_4.gridx = 0;
-        cell_4.gridy = 3;
-        cell_4.insets = new Insets(3, 5, 5, 5);
+        GridBagConstraints cell4 = new GridBagConstraints();
+        cell4.gridx = 0;
+        cell4.gridy = 3;
+        cell4.insets = new Insets(3, 5, 5, 5);
 
         JLabel label = new JLabel("Вы выйграли!");
         ImageIcon winIcon = new ImageIcon(".\\MinesweeperUI\\src\\resources\\win.jpg");
         label.setIcon(new ImageIcon(winIcon.getImage().getScaledInstance(70, 70, Image.SCALE_DEFAULT)));
-        panel.add(label, cell_1);
+        panel.add(label, cell1);
 
-        panel.add(new Label(), cell_2);
+        panel.add(new Label(), cell2);
 
         JButton exitButton = new JButton("Начать заново");
         exitButton.addActionListener(e -> {
@@ -62,6 +61,6 @@ class WinFrame {
             winFrame.dispose();
             StartFrame.createStartFrame();
         });
-        panel.add(exitButton, cell_3);
+        panel.add(exitButton, cell3);
     }
 }

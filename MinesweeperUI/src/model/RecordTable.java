@@ -55,7 +55,6 @@ public class RecordTable {
             for (RecordNote recordNote : GameField.recordTable.getRecordTable()) {
                 stream.writeObject(recordNote);
             }
-
         } catch (IOException e) {
             System.out.println("Ошибка записи файла таблицы рекордов. " + type + ".bin - " + e.getMessage());
         }

@@ -6,7 +6,7 @@ public class RecordNote implements Serializable {
     private String name;
     private int recordValue;
 
-    public RecordNote(String name, int recordValue) {
+    RecordNote(String name, int recordValue) {
         this.name = name;
         this.recordValue = recordValue;
     }
